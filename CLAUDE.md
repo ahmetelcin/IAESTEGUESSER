@@ -86,7 +86,7 @@ Her fazın sonunda dur, kısaca özetle, onay bekle. Onaysız sonraki faza geçm
 - `scripts/curate.ts`: şehir listesi alır, Mapillary API'den şehir başına 3–5 adet 360° pano çeker (2018 öncesini ele), harita JSON'larına yazar.
 - Üç harita: IAESTE Dünya (40+ şehir), Avrupa, Türkiye (15+ şehir).
 - Şehir haritaları (Faz 3'te eklendi): Edirne, Bursa. Şehrin tamamı taranır, noktalar birbirinden en uzak olacak şekilde seçilir (`CITY_MAPS` in `scripts/cities.ts`).
-- **Kapsama notu (Ekim 2026):** Mapillary'de Türkiye'nin çoğunda 360° pano yok (Ankara, Antalya, Konya, Kayseri, Eskişehir… 0). Türkiye listesi sadece pano bulunan şehirlerden oluşur. Yeni şehir eklemeden önce `npm run curate -- turkey --only <id>` ile dene.
+- **Kapsama notu (Ekim 2026):** Mapillary'de Türkiye'nin çoğunda 360° pano yok (Ankara, Antalya, Konya, Kayseri, Eskişehir… 0). Bu yüzden **Türkiye, Edirne ve Bursa haritaları düz (360° olmayan) görüntüleri de kabul eder**, varsa 360° tercih edilir (`FLAT_ALLOWED` in `scripts/cities.ts`). Dünya ve Avrupa sadece 360°. Yeni şehir eklemeden önce `npm run curate -- turkey --only <id>` ile dene.
 - Bir sonraki turun panoramasını önceden yükle.
 - **Not (Faz 2'den):** Mapillary Graph API, yoğun şehir merkezlerinde en küçük bbox'ta bile HTTP 500 ("reduce the amount of data") dönüyor; `limit` küçültmek işe yaramıyor. `curate.ts` bbox'ı küçük parçalara (ızgara) bölerek arasın, parça hata verirse daha da bölsün. Bu sayede Faz 1'de çıkarılan **Berlin ve Viyana geri eklensin**.
 
@@ -103,6 +103,9 @@ Her fazın sonunda dur, kısaca özetle, onay bekle. Onaysız sonraki faza geçm
   - Bağlantı bilgisi sadece sunucu tarafında (Netlify env); tarayıcıya ve git'e girmez.
   - Sunucu doğrulaması: puan 0–25.000, isim uzunluğu, istek sınırı.
   - Çevrimdışı yedek: API'ye ulaşılamazsa skor localStorage'a yazılır, bağlantı gelince gönderilir. Oyun asla sunucuyu beklemez.
+- **Semt adları (şehir haritaları):** `curate` sırasında her noktanın semt/mahalle adı Nominatim (OpenStreetMap) ters geocoding ile **bir kez** alınıp harita JSON'una yazılsın (`district` alanı); oyun çalışırken istek atılmaz.
+  - Nominatim kullanım kurallarına uy: en fazla 1 istek/sn, tanımlayıcı `User-Agent`, sonuçları önbelleğe al (aynı nokta tekrar sorgulanmasın).
+  - Oyun sonu tablosunda ve tur sonucunda şehir haritalarında "Edirne, Türkiye" yerine semt gösterilsin (ör. "Kaleiçi, Edirne"). Semt bulunamazsa şehir adına düşülsün.
 - Ses efektleri (kapatılabilir), geçiş animasyonları, kulüp logosu için yer.
 
 ## Kurallar

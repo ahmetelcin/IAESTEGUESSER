@@ -91,6 +91,8 @@ const WORLD_EXTRA: City[] = [
 // ── Türkiye ─────────────────────────────────────────────────────────────
 const TURKEY: City[] = [
   c('istanbul', 'İstanbul', 'Türkiye', 41.0082, 28.9784),
+  c('ankara', 'Ankara', 'Türkiye', 39.9334, 32.8597),
+  c('antalya', 'Antalya', 'Türkiye', 36.8969, 30.7133),
   c('izmir', 'İzmir', 'Türkiye', 38.4237, 27.1428),
   c('bursa', 'Bursa', 'Türkiye', 40.1885, 29.061),
   c('mersin', 'Mersin', 'Türkiye', 36.8121, 34.6415),
@@ -134,3 +136,10 @@ export const CITY_MAPS = {
   edirne: { city: 'Edirne', country: 'Türkiye', lat: 41.6771, lng: 26.5557, radius: 0.04, count: 20, spacingM: 300 },
   bursa: { city: 'Bursa', country: 'Türkiye', lat: 40.1955, lng: 29.03, radius: 0.07, count: 30, spacingM: 500 },
 } satisfies Record<string, CityMap>;
+
+/**
+ * Maps that also accept regular (non-360°) photos. 360° coverage in Türkiye is thin, so
+ * these maps take flat images too, preferring panoramas when a place has both.
+ * World and Europe stay panorama-only.
+ */
+export const FLAT_ALLOWED: ReadonlySet<string> = new Set(['turkey', 'edirne', 'bursa']);
