@@ -1,1 +1,82 @@
-[]
+[
+  {
+    "id": "istanbul",
+    "imageId": "1063664467722454",
+    "lat": 41.004011935026,
+    "lng": 28.974693153882,
+    "city": "İstanbul",
+    "country": "Türkiye"
+  },
+  {
+    "id": "lisbon",
+    "imageId": "756278218384928",
+    "lat": 38.727401163927,
+    "lng": -9.1090480790744,
+    "city": "Lizbon",
+    "country": "Portekiz"
+  },
+  {
+    "id": "warsaw",
+    "imageId": "1311405394492409",
+    "lat": 52.231690458717,
+    "lng": 21.015568088732,
+    "city": "Varşova",
+    "country": "Polonya"
+  },
+  {
+    "id": "prague",
+    "imageId": "548052957621048",
+    "lat": 50.108243115341,
+    "lng": 14.434906585,
+    "city": "Prag",
+    "country": "Çekya"
+  },
+  {
+    "id": "budapest",
+    "imageId": "1565924385244559",
+    "lat": 47.467051403742,
+    "lng": 19.038471094381,
+    "city": "Budapeşte",
+    "country": "Macaristan"
+  },
+  {
+    "id": "tokyo",
+    "imageId": "310645700636968",
+    "lat": 35.654825175131,
+    "lng": 139.76321535809,
+    "city": "Tokyo",
+    "country": "Japonya"
+  },
+  {
+    "id": "sao-paulo",
+    "imageId": "672399539023503",
+    "lat": -23.5547505,
+    "lng": -46.5902489,
+    "city": "São Paulo",
+    "country": "Brezilya"
+  },
+  {
+    "id": "toronto",
+    "imageId": "666502919116852",
+    "lat": 43.658141233931,
+    "lng": -79.386268860925,
+    "city": "Toronto",
+    "country": "Kanada"
+  },
+  {
+    "id": "cape-town",
+    "imageId": "4176955505893233",
+    "lat": -33.922151362231,
+    "lng": 18.419080732279,
+    "city": "Cape Town",
+    "country": "Güney Afrika"
+  },
+  {
+    "id": "auckland",
+    "imageId": "3674922462644654",
+    "lat": -36.851555717868,
+    "lng": 174.76529920533,
+    "city": "Auckland",
+    "country": "Yeni Zelanda"
+  }
+]
