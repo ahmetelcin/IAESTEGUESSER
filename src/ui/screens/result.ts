@@ -46,7 +46,7 @@ export function createResultScreen(root: HTMLElement, onNext: () => void): Resul
   root.append(screen);
 
   const map = L.map(mapEl, { center: [25, 10], zoom: 2, minZoom: 1, zoomControl: false });
-  L.tileLayer(TILE_URL, { attribution: TILE_ATTRIBUTION, subdomains: 'abcd', maxZoom: 19 }).addTo(map);
+  L.tileLayer(TILE_URL, { attribution: TILE_ATTRIBUTION, maxZoom: 19 }).addTo(map);
   map.attributionControl.setPrefix(false);
   const layers = L.layerGroup().addTo(map);
 

@@ -21,7 +21,7 @@ GeoGuessr'ın marka adı, logosu, renk paleti ve görselleri kullanılmayacak; s
   - Fare üstüne gelince büyür, ayrılınca küçülür.
   - Kenarında boyut butonları (küçük/orta/büyük) ve "sabitle" iğnesi.
   - Tıklayınca pin; pin varken altındaki **TAHMİN ET** butonu aktif olur.
-  - Tile: CARTO Voyager, attribution görünür.
+  - Tile: Esri World Street Map (anahtarsız; CARTO artık API anahtarı istiyor), attribution görünür.
 - **Klavye:** Boşluk = tahmin et / sonraki tur, R = başlangıca dön, M = haritayı büyüt/küçült, +/- = zoom.
 
 ### Tur sonucu ekranı

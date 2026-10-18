@@ -51,7 +51,7 @@ export function createMiniMap(
     zoomControl: false,
     attributionControl: true,
   });
-  L.tileLayer(TILE_URL, { attribution: TILE_ATTRIBUTION, subdomains: 'abcd', maxZoom: 19 }).addTo(map);
+  L.tileLayer(TILE_URL, { attribution: TILE_ATTRIBUTION, maxZoom: 19 }).addTo(map);
   map.attributionControl.setPrefix(false);
 
   // Keep Leaflet in sync while the container animates between sizes.

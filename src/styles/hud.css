@@ -1,7 +1,8 @@
 .screen--round {
   z-index: 0;
 }
-.round__viewer {
+/* Extra specificity: mapillary.css loads later and sets .mapillary-viewer { position: relative }. */
+.screen--round > .round__viewer {
   position: absolute;
   inset: 0;
 }
