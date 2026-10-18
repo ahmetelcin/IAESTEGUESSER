@@ -18,6 +18,7 @@ export function createPanorama(container: HTMLElement, accessToken: string): Pan
       cover: false,
       bearing: false,
       sequence: false,
+      zoom: false, // our own zoom controls arrive in phase 2
     },
   });
 
