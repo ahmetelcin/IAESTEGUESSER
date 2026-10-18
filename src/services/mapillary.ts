@@ -1,9 +1,20 @@
 import { TransitionMode, Viewer } from 'mapillary-js';
 import 'mapillary-js/dist/mapillary.css';
 
+const MAX_ZOOM = 3;
+/** Full turns per second for the menu background rotation. */
+const AUTO_ROTATE_SPEED = 1 / 120;
+
 export interface Panorama {
   /** Jumps to a new panorama without a cross-city transition animation. */
   show(imageId: string): Promise<void>;
+  /** Moves back to `imageId` (if the player walked away) and resets heading and zoom. */
+  reset(imageId: string): Promise<void>;
+  zoomBy(delta: number): Promise<void>;
+  onBearing(listener: (degrees: number) => void): void;
+  setAutoRotate(on: boolean): void;
+  /** Shows or hides the movement arrows (hidden behind the menu). */
+  setNavigation(on: boolean): void;
   resize(): void;
 }
 
@@ -18,18 +29,67 @@ export function createPanorama(container: HTMLElement, accessToken: string): Pan
       cover: false,
       bearing: false,
       sequence: false,
-      zoom: false, // our own zoom controls arrive in phase 2
+      zoom: false, // replaced by our HUD buttons
+      // Our own +/- shortcuts handle zoom; Mapillary's would double it.
+      keyboard: { keyZoom: false, keyPlay: false, keySequenceNavigation: false },
     },
   });
 
+  let currentId: string | null = null;
+  viewer.on('image', (e) => {
+    currentId = e.image?.id ?? currentId;
+  });
+
+  let rotateFrame = 0;
+  let rotating = false;
+
+  async function rotateLoop() {
+    const [x0, y] = await viewer.getCenter();
+    let x = x0;
+    let last = performance.now();
+    const step = (now: number) => {
+      if (!rotating) return;
+      x = (x + ((now - last) / 1000) * AUTO_ROTATE_SPEED) % 1;
+      last = now;
+      viewer.setCenter([x, y]);
+      rotateFrame = requestAnimationFrame(step);
+    };
+    rotateFrame = requestAnimationFrame(step);
+  }
+
+  async function show(imageId: string) {
+    viewer.setTransitionMode(TransitionMode.Instantaneous);
+    try {
+      await viewer.moveTo(imageId);
+      currentId = imageId;
+    } finally {
+      viewer.setTransitionMode(TransitionMode.Default);
+    }
+  }
+
   return {
-    async show(imageId) {
-      viewer.setTransitionMode(TransitionMode.Instantaneous);
-      try {
-        await viewer.moveTo(imageId);
-      } finally {
-        viewer.setTransitionMode(TransitionMode.Default);
-      }
+    show,
+    async reset(imageId) {
+      if (currentId !== imageId) await show(imageId);
+      viewer.setZoom(0);
+      viewer.setCenter([0.5, 0.5]);
+    },
+    async zoomBy(delta) {
+      const z = await viewer.getZoom();
+      viewer.setZoom(Math.max(0, Math.min(MAX_ZOOM, z + delta)));
+    },
+    onBearing(listener) {
+      viewer.on('bearing', (e) => listener(e.bearing));
+    },
+    setAutoRotate(on) {
+      if (on === rotating) return;
+      rotating = on;
+      cancelAnimationFrame(rotateFrame);
+      if (on) void rotateLoop();
+    },
+    setNavigation(on) {
+      if (on) viewer.activateComponent('direction');
+      else viewer.deactivateComponent('direction');
     },
     resize() {
       viewer.resize();

@@ -86,6 +86,7 @@ Her fazın sonunda dur, kısaca özetle, onay bekle. Onaysız sonraki faza geçm
 - `scripts/curate.ts`: şehir listesi alır, Mapillary API'den şehir başına 3–5 adet 360° pano çeker (2018 öncesini ele), harita JSON'larına yazar.
 - Üç harita: IAESTE Dünya (40+ şehir), Avrupa, Türkiye (15+ şehir).
 - Bir sonraki turun panoramasını önceden yükle.
+- **Not (Faz 2'den):** Mapillary Graph API, yoğun şehir merkezlerinde en küçük bbox'ta bile HTTP 500 ("reduce the amount of data") dönüyor; `limit` küçültmek işe yaramıyor. `curate.ts` bbox'ı küçük parçalara (ızgara) bölerek arasın, parça hata verirse daha da bölsün. Bu sayede Faz 1'de çıkarılan **Berlin ve Viyana geri eklensin**.
 
 ### Faz 4 — Modlar ve stant özellikleri
 - Hareketli / Hareketsiz / NMPZ.

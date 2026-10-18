@@ -1,0 +1,130 @@
+.screen--menu {
+  z-index: 25;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 40px;
+  /* Let the rotating panorama show through on the right. */
+  background: linear-gradient(
+    110deg,
+    rgba(6, 33, 79, 0.92) 0%,
+    rgba(6, 33, 79, 0.7) 45%,
+    rgba(6, 33, 79, 0.35) 100%
+  );
+}
+.menu__main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: min(560px, 100%);
+}
+.menu__kicker {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+}
+.menu__title {
+  margin: 4px 0 6px;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.menu__tagline {
+  margin: 0;
+  color: var(--hud-muted);
+  font-size: 17px;
+}
+.menu__form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px;
+}
+.menu__group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.menu__label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--hud-muted);
+  padding: 0;
+}
+.menu__input {
+  font: inherit;
+  font-size: 20px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--hud-border);
+  background: rgba(232, 240, 250, 0.08);
+  color: var(--hud-text);
+}
+.menu__input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.segmented__opt {
+  font: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--hud-border);
+  background: rgba(232, 240, 250, 0.05);
+  color: var(--hud-text);
+  cursor: pointer;
+  text-align: left;
+}
+.segmented__opt:hover:not(:disabled) {
+  border-color: var(--blue-300);
+}
+.segmented__opt.is-active {
+  border-color: var(--accent);
+  background: rgba(255, 138, 0, 0.14);
+}
+.segmented__opt:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.segmented__title {
+  font-weight: 700;
+}
+.segmented__hint {
+  font-size: 12px;
+  color: var(--hud-muted);
+}
+.segmented__opt .badge {
+  margin-top: 4px;
+}
+.menu__play {
+  font-size: 20px;
+  padding: 14px;
+}
+.menu__board {
+  width: min(360px, 100%);
+  padding: 20px;
+  max-height: calc(100vh - 80px);
+  overflow: auto;
+}
+.menu__board-title {
+  margin: 0 0 12px;
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}

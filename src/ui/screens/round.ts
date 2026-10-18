@@ -1,13 +1,19 @@
 import type { Location } from '../../data/maps';
-import { createPanorama } from '../../services/mapillary';
+import { createPanorama, type Panorama } from '../../services/mapillary';
 import { el } from '../dom';
+import { createControls } from '../hud/controls';
 import { createMiniMap, type MiniMap } from '../hud/miniMap';
 import { createStatusBar, type StatusBar } from '../hud/statusBar';
 
+const ZOOM_STEP = 0.5;
+
 export interface RoundScreen {
+  readonly panorama: Panorama;
   readonly miniMap: MiniMap;
   readonly statusBar: StatusBar;
   load(location: Location): Promise<void>;
+  resetView(): void;
+  zoom(direction: 1 | -1): void;
 }
 
 export function createRoundScreen(
@@ -22,15 +28,35 @@ export function createRoundScreen(
   root.append(screen);
 
   const panorama = createPanorama(viewerEl, token);
+  let startImageId: string | null = null;
+
+  const resetView = () => {
+    if (startImageId) void panorama.reset(startImageId).catch(() => {});
+  };
+  const zoom = (direction: 1 | -1) => void panorama.zoomBy(direction * ZOOM_STEP);
+
+  const controls = createControls(hud, {
+    onReset: resetView,
+    onZoomIn: () => zoom(1),
+    onZoomOut: () => zoom(-1),
+  });
+  panorama.onBearing((deg) => controls.setBearing(deg));
+
   const statusBar = createStatusBar(hud);
   const miniMap = createMiniMap(hud, onGuess);
 
   return {
+    panorama,
     miniMap,
     statusBar,
     async load(location) {
       miniMap.reset();
+      panorama.setAutoRotate(false);
+      panorama.setNavigation(true);
       await panorama.show(location.imageId);
+      startImageId = location.imageId;
     },
+    resetView,
+    zoom,
   };
 }

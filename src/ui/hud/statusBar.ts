@@ -1,7 +1,16 @@
 import { el, scoreFormat } from '../dom';
 
+/** Seconds left at which the timer turns red and blinks. */
+const WARNING_SECONDS = 10;
+
 export interface StatusBar {
-  update(info: { round: number; totalRounds?: number; score: number }): void;
+  update(info: { round: number; totalRounds: number; score: number }): void;
+  setTime(secondsLeft: number): void;
+}
+
+export function formatClock(seconds: number): string {
+  const s = Math.max(0, seconds);
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 }
 
 export function createStatusBar(parent: HTMLElement): StatusBar {
@@ -16,15 +25,16 @@ export function createStatusBar(parent: HTMLElement): StatusBar {
   const round = item('Tur');
   const score = item('Puan');
   const time = item('Süre');
-  time.wrap.hidden = true; // timer arrives in phase 2
   parent.append(root);
 
   return {
     update(info) {
-      round.value.textContent = info.totalRounds
-        ? `${info.round} / ${info.totalRounds}`
-        : String(info.round);
+      round.value.textContent = `${info.round} / ${info.totalRounds}`;
       score.value.textContent = scoreFormat.format(info.score);
+    },
+    setTime(secondsLeft) {
+      time.value.textContent = formatClock(secondsLeft);
+      time.wrap.classList.toggle('is-warning', secondsLeft <= WARNING_SECONDS);
     },
   };
 }

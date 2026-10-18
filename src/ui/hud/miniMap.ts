@@ -16,6 +16,8 @@ export interface MiniMap {
   /** Normalized guess (longitude wrapped to [-180, 180)), or null. */
   readonly guess: LatLng | null;
   reset(): void;
+  /** Keyboard shortcut (M): expand or collapse without hovering. */
+  toggle(): void;
 }
 
 export function createMiniMap(
@@ -103,6 +105,11 @@ export function createMiniMap(
   return {
     get guess() {
       return guess;
+    },
+    toggle() {
+      window.clearTimeout(collapseTimer);
+      if (root.classList.contains('is-expanded') && !pinned) root.classList.remove('is-expanded');
+      else root.classList.add('is-expanded');
     },
     reset() {
       marker?.remove();

@@ -1,20 +1,13 @@
 import L from 'leaflet';
 import { TILE_ATTRIBUTION, TILE_URL } from '../../config';
-import type { Location } from '../../data/maps';
 import { shortestPathTarget, type LatLng } from '../../game/geo';
 import { MAX_SCORE, formatDistance } from '../../game/scoring';
+import type { RoundResult } from '../../game/session';
 import { animateNumber, el, scoreFormat } from '../dom';
 import { actualIcon, guessIcon } from '../pins';
 
-export interface RoundResult {
-  guess: LatLng;
-  location: Location;
-  km: number;
-  score: number;
-}
-
 export interface ResultScreen {
-  show(result: RoundResult): void;
+  show(result: RoundResult, isLastRound: boolean): void;
 }
 
 const LINE_MS = 900;
@@ -45,7 +38,8 @@ export function createResultScreen(root: HTMLElement, onNext: () => void): Resul
   screen.append(mapEl, panel);
   root.append(screen);
 
-  const map = L.map(mapEl, { center: [25, 10], zoom: 2, minZoom: 1, zoomControl: false });
+  // minZoom 2: at zoom 1 the world is shorter than the screen and repeats sideways.
+  const map = L.map(mapEl, { center: [25, 10], zoom: 2, minZoom: 2, zoomControl: false });
   L.tileLayer(TILE_URL, { attribution: TILE_ATTRIBUTION, maxZoom: 19 }).addTo(map);
   map.attributionControl.setPrefix(false);
   const layers = L.layerGroup().addTo(map);
@@ -73,28 +67,35 @@ export function createResultScreen(root: HTMLElement, onNext: () => void): Resul
   }
 
   return {
-    show({ guess, location, km, score }) {
+    show({ guess, location, km, score }, isLastRound) {
       cancelAnimationFrame(lineFrame);
       layers.clearLayers();
 
       // The screen was display:none until now; let Leaflet measure it first.
       map.invalidateSize({ pan: false });
-      const target = shortestPathTarget(guess, location);
-      L.marker([guess.lat, guess.lng], { icon: guessIcon, keyboard: false }).addTo(layers);
-      map.fitBounds(L.latLngBounds([guess.lat, guess.lng], [target.lat, target.lng]), {
-        padding: [60, 60],
-        maxZoom: 14,
-        animate: false,
-      });
-      drawLine(guess, target);
+      if (guess) {
+        const target = shortestPathTarget(guess, location);
+        L.marker([guess.lat, guess.lng], { icon: guessIcon, keyboard: false }).addTo(layers);
+        map.fitBounds(L.latLngBounds([guess.lat, guess.lng], [target.lat, target.lng]), {
+          padding: [60, 60],
+          maxZoom: 14,
+          animate: false,
+        });
+        drawLine(guess, target);
+      } else {
+        L.marker([location.lat, location.lng], { icon: actualIcon, keyboard: false }).addTo(layers);
+        map.setView([location.lat, location.lng], 4, { animate: false });
+      }
 
       animateNumber(scoreEl, score, COUNT_MS, (n) => scoreFormat.format(n));
       barFill.style.width = '0%';
       requestAnimationFrame(() => {
         barFill.style.width = `${(score / MAX_SCORE) * 100}%`;
       });
-      distanceEl.innerHTML = `Tahminin <strong>${formatDistance(km)}</strong> uzakta`;
+      if (km === null) distanceEl.textContent = 'Süre doldu — tahmin yapılmadı';
+      else distanceEl.innerHTML = `Tahminin <strong>${formatDistance(km)}</strong> uzakta`;
       placeEl.textContent = `${location.city}, ${location.country}`;
+      nextBtn.textContent = isLastRound ? 'SONUÇLARI GÖR' : 'SONRAKİ TUR';
       nextBtn.focus({ preventScroll: true });
     },
   };

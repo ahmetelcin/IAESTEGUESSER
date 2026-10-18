@@ -8,3 +8,7 @@ export const TILE_ATTRIBUTION =
 
 /** How many times to retry with another location when a panorama fails to load. */
 export const MAX_LOAD_ATTEMPTS = 3;
+
+export const ROUNDS_PER_GAME = 5;
+/** Seconds per round. Becomes adjustable in the admin panel (phase 4). */
+export const ROUND_SECONDS = 120;

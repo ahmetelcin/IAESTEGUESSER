@@ -1,0 +1,59 @@
+/* Leaderboard list (menu + summary) */
+.board {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.board__row {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(232, 240, 250, 0.05);
+  font-variant-numeric: tabular-nums;
+}
+.board__row:nth-child(-n + 3) .board__rank {
+  color: var(--accent);
+}
+.board__row.is-me {
+  background: rgba(255, 138, 0, 0.18);
+  outline: 1px solid var(--accent);
+}
+.board__rank {
+  font-weight: 800;
+  color: var(--hud-muted);
+  text-align: center;
+}
+.board__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.board__score {
+  font-weight: 700;
+}
+.board__empty {
+  color: var(--hud-muted);
+  padding: 12px 4px;
+}
+.board--compact .board__row {
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(232, 240, 250, 0.14);
+  color: var(--hud-muted);
+}
