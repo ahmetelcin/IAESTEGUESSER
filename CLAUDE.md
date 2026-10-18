@@ -48,7 +48,7 @@ GeoGuessr'ın marka adı, logosu, renk paleti ve görselleri kullanılmayacak; s
 - **mapillary-js** (npm) ve **Leaflet** (npm). Mapillary attribution'ı zorunlu, kaldırılmayacak.
 - **Token:** `.env` → `VITE_MAPILLARY_TOKEN`. `.env` git'e girmez, `.env.example` olur.
 - **Stant derlemesi:** `vite-plugin-singlefile` ile tek HTML (`npm run build:stand`), çift tıkla çalışmalı.
-- **Liderlik tablosu:** localStorage (try/catch). Sunucu yok.
+- **Liderlik tablosu:** localStorage (try/catch). Faz 5'e kadar sunucu yok. Faz 5'te ortak tablo eklenir (aşağıya bak); localStorage yedek olarak kalır.
 - **Puanlama:** haversine mesafe; `5000 * exp(-km / ölçek)`. Ölçek haritaya göre: Dünya 2000, Avrupa 800, Türkiye 250. 150 m altı tam puan.
 - **Testler:** Vitest — mesafe, puanlama, liderlik tablosu, state geçişleri.
 
@@ -97,6 +97,10 @@ Her fazın sonunda dur, kısaca özetle, onay bekle. Onaysız sonraki faza geçm
 ### Faz 5 — Telefon sürümü ve cila
 - Dokunmatik düzen: harita alttan açılan panel.
 - GitHub Pages/Netlify yayını + menüde QR kod.
+- **Ortak liderlik tablosu:** MongoDB Atlas (ücretsiz katman) + Netlify Functions (`skor ekle`, `günün ilk 10'u`). Telefon ve stant aynı tabloyu görür.
+  - Bağlantı bilgisi sadece sunucu tarafında (Netlify env); tarayıcıya ve git'e girmez.
+  - Sunucu doğrulaması: puan 0–25.000, isim uzunluğu, istek sınırı.
+  - Çevrimdışı yedek: API'ye ulaşılamazsa skor localStorage'a yazılır, bağlantı gelince gönderilir. Oyun asla sunucuyu beklemez.
 - Ses efektleri (kapatılabilir), geçiş animasyonları, kulüp logosu için yer.
 
 ## Kurallar
