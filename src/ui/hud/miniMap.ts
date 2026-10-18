@@ -16,6 +16,8 @@ export interface MiniMap {
   /** Normalized guess (longitude wrapped to [-180, 180)), or null. */
   readonly guess: LatLng | null;
   reset(): void;
+  /** Starting view for the current map (world, a country, a city). */
+  setHome(center: [number, number], zoom: number): void;
   /** Keyboard shortcut (M): expand or collapse without hovering. */
   toggle(): void;
 }
@@ -59,6 +61,7 @@ export function createMiniMap(
   // Keep Leaflet in sync while the container animates between sizes.
   new ResizeObserver(() => map.invalidateSize({ pan: false })).observe(mapEl);
 
+  let home: { center: [number, number]; zoom: number } = { center: [25, 10], zoom: 1 };
   let marker: L.Marker | null = null;
   let guess: LatLng | null = null;
   let pinned = false;
@@ -111,12 +114,15 @@ export function createMiniMap(
       if (root.classList.contains('is-expanded') && !pinned) root.classList.remove('is-expanded');
       else root.classList.add('is-expanded');
     },
+    setHome(center, zoom) {
+      home = { center, zoom };
+    },
     reset() {
       marker?.remove();
       marker = null;
       guess = null;
       guessBtn.disabled = true;
-      map.setView([25, 10], 1, { animate: false });
+      map.setView(home.center, home.zoom, { animate: false });
       if (!pinned) root.classList.remove('is-expanded');
     },
   };

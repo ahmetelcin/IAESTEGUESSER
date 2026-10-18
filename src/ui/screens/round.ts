@@ -12,6 +12,11 @@ export interface RoundScreen {
   readonly miniMap: MiniMap;
   readonly statusBar: StatusBar;
   load(location: Location): Promise<void>;
+  /**
+   * Starts loading the next round while the result screen covers the viewer,
+   * so the following `load` of the same location is instant.
+   */
+  preload(location: Location): void;
   resetView(): void;
   zoom(direction: 1 | -1): void;
 }
@@ -29,6 +34,7 @@ export function createRoundScreen(
 
   const panorama = createPanorama(viewerEl, token);
   let startImageId: string | null = null;
+  let preloading: { imageId: string; done: Promise<void> } | null = null;
 
   const resetView = () => {
     if (startImageId) void panorama.reset(startImageId).catch(() => {});
@@ -53,8 +59,15 @@ export function createRoundScreen(
       miniMap.reset();
       panorama.setAutoRotate(false);
       panorama.setNavigation(true);
-      await panorama.show(location.imageId);
+      const pending = preloading?.imageId === location.imageId ? preloading.done : null;
+      preloading = null;
+      await (pending ?? panorama.show(location.imageId));
       startImageId = location.imageId;
+    },
+    preload(location) {
+      const done = panorama.show(location.imageId);
+      done.catch(() => {}); // surfaced again by load()
+      preloading = { imageId: location.imageId, done };
     },
     resetView,
     zoom,

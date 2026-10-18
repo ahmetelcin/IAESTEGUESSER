@@ -8,8 +8,8 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "fetch-panos": "tsx scripts/fetch-panos.ts",
-    "build:stand": "tsc --noEmit && vite build --mode stand"
+    "build:stand": "tsc --noEmit && vite build --mode stand",
+    "curate": "tsx scripts/curate.ts"
   },
   "dependencies": {
     "leaflet": "^1.9.4",

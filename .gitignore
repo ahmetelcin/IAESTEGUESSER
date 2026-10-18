@@ -4,3 +4,4 @@ dist
 .env.local
 *.log
 dist-stand
+scripts/.curate-cache.json

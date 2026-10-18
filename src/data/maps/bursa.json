@@ -1,0 +1,272 @@
+[
+  {
+    "id": "bursa-01",
+    "cityId": "bursa-01",
+    "imageId": "1783370145964553",
+    "lat": 40.189941248684,
+    "lng": 29.060647031731,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-02",
+    "cityId": "bursa-02",
+    "imageId": "4230984153830342",
+    "lat": 40.274936123756,
+    "lng": 29.046675659538,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-03",
+    "cityId": "bursa-03",
+    "imageId": "1316660280533490",
+    "lat": 40.213040783263,
+    "lng": 28.96753063336,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-04",
+    "cityId": "bursa-04",
+    "imageId": "1974569426537404",
+    "lat": 40.239211318227,
+    "lng": 29.015173781121,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-05",
+    "cityId": "bursa-05",
+    "imageId": "1328679525921778",
+    "lat": 40.222800918748,
+    "lng": 29.087811296615,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-06",
+    "cityId": "bursa-06",
+    "imageId": "1792109458863816",
+    "lat": 40.20637647988,
+    "lng": 29.022397425689,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-07",
+    "cityId": "bursa-07",
+    "imageId": "1653832473038147",
+    "lat": 40.174308772321,
+    "lng": 29.096134018062,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-08",
+    "cityId": "bursa-08",
+    "imageId": "2242956073182272",
+    "lat": 40.242830173417,
+    "lng": 29.063314226277,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-09",
+    "cityId": "bursa-09",
+    "imageId": "1623888268686639",
+    "lat": 40.212702438809,
+    "lng": 29.061175896612,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-10",
+    "cityId": "bursa-10",
+    "imageId": "1490285275708925",
+    "lat": 40.212431525333,
+    "lng": 28.995516672145,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-11",
+    "cityId": "bursa-11",
+    "imageId": "1536430411224501",
+    "lat": 40.259512406461,
+    "lng": 29.027814588313,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-12",
+    "cityId": "bursa-12",
+    "imageId": "1907702849932594",
+    "lat": 40.191786559639,
+    "lng": 29.085744178224,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-13",
+    "cityId": "bursa-13",
+    "imageId": "982978854507327",
+    "lat": 40.260613526953,
+    "lng": 29.06075187246,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-14",
+    "cityId": "bursa-14",
+    "imageId": "1056133616976567",
+    "lat": 40.189408139682,
+    "lng": 29.038409383895,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-15",
+    "cityId": "bursa-15",
+    "imageId": "1051097787686990",
+    "lat": 40.174653366026,
+    "lng": 29.069989516936,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-16",
+    "cityId": "bursa-16",
+    "imageId": "3948490305458938",
+    "lat": 40.206969024704,
+    "lng": 29.080763965532,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-17",
+    "cityId": "bursa-17",
+    "imageId": "2331166237373670",
+    "lat": 40.227743176024,
+    "lng": 29.06258755348,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-18",
+    "cityId": "bursa-18",
+    "imageId": "980959328119309",
+    "lat": 40.200742155603,
+    "lng": 29.039493966803,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-19",
+    "cityId": "bursa-19",
+    "imageId": "1022283450353151",
+    "lat": 40.213273203505,
+    "lng": 29.009893937197,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-20",
+    "cityId": "bursa-20",
+    "imageId": "1480700979925083",
+    "lat": 40.180262365867,
+    "lng": 29.0548617741,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-21",
+    "cityId": "bursa-21",
+    "imageId": "1004944075236483",
+    "lat": 40.2494065224,
+    "lng": 29.024554210596,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-22",
+    "cityId": "bursa-22",
+    "imageId": "1021218713924723",
+    "lat": 40.225129043905,
+    "lng": 29.075207268326,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-23",
+    "cityId": "bursa-23",
+    "imageId": "1358729116196667",
+    "lat": 40.182537221377,
+    "lng": 29.089496462497,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-24",
+    "cityId": "bursa-24",
+    "imageId": "1027853043082027",
+    "lat": 40.197129728036,
+    "lng": 29.075536275332,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-25",
+    "cityId": "bursa-25",
+    "imageId": "1508202740685635",
+    "lat": 40.211470198822,
+    "lng": 28.979198907934,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-26",
+    "cityId": "bursa-26",
+    "imageId": "1562128982154400",
+    "lat": 40.17070974982,
+    "lng": 29.085303870727,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-27",
+    "cityId": "bursa-27",
+    "imageId": "1299588099025411",
+    "lat": 40.265495198952,
+    "lng": 29.036514107099,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-28",
+    "cityId": "bursa-28",
+    "imageId": "814315748429178",
+    "lat": 40.19175571036,
+    "lng": 29.097385111055,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-29",
+    "cityId": "bursa-29",
+    "imageId": "974242298755474",
+    "lat": 40.190842681383,
+    "lng": 29.049723893692,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-30",
+    "cityId": "bursa-30",
+    "imageId": "1014667081119420",
+    "lat": 40.188916214167,
+    "lng": 29.071142653991,
+    "city": "Bursa",
+    "country": "Türkiye"
+  }
+]

@@ -4,6 +4,7 @@ import 'mapillary-js/dist/mapillary.css';
 const MAX_ZOOM = 3;
 /** Full turns per second for the menu background rotation. */
 const AUTO_ROTATE_SPEED = 1 / 120;
+const LOAD_TIMEOUT_MS = 15_000;
 
 export interface Panorama {
   /** Jumps to a new panorama without a cross-city transition animation. */
@@ -60,7 +61,17 @@ export function createPanorama(container: HTMLElement, accessToken: string): Pan
   async function show(imageId: string) {
     viewer.setTransitionMode(TransitionMode.Instantaneous);
     try {
-      await viewer.moveTo(imageId);
+      // moveTo can stay pending forever on a bad image or a stalled API; give up so the
+      // caller can try another location instead of leaving the stand on a spinner.
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      const timeout = new Promise<never>((_, reject) => {
+        timer = setTimeout(() => reject(new Error(`moveTo timed out: ${imageId}`)), LOAD_TIMEOUT_MS);
+      });
+      try {
+        await Promise.race([viewer.moveTo(imageId), timeout]);
+      } finally {
+        clearTimeout(timer);
+      }
       currentId = imageId;
     } finally {
       viewer.setTransitionMode(TransitionMode.Default);

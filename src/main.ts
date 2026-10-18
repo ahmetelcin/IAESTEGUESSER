@@ -9,7 +9,7 @@ import './styles/menu.css';
 import './styles/summary.css';
 
 import { MAPILLARY_TOKEN, MAX_LOAD_ATTEMPTS, ROUNDS_PER_GAME, ROUND_SECONDS } from './config';
-import { MAPS, type Location } from './data/maps';
+import { MAPS, MAP_INFO, type Location } from './data/maps';
 import type { LatLng } from './game/geo';
 import { createSession, type Session } from './game/session';
 import { createStateMachine } from './game/state';
@@ -34,7 +34,7 @@ const loading = createLoadingScreen(app);
 if (!MAPILLARY_TOKEN) {
   loading.showError('Mapillary token eksik — .env dosyasına VITE_MAPILLARY_TOKEN ekleyin.');
 } else if (MAPS.world.length === 0) {
-  loading.showError('Lokasyon yok — önce "npm run fetch-panos" çalıştırın.');
+  loading.showError('Lokasyon yok — önce "npm run curate" çalıştırın.');
 } else {
   start();
 }
@@ -72,6 +72,7 @@ function start() {
   function play(choice: MenuChoice) {
     if (state.current !== 'menu') return;
     playerName = choice.name;
+    round.miniMap.setHome(MAP_INFO[choice.mapId].center, MAP_INFO[choice.mapId].zoom);
     session = createSession({
       pool: MAPS[choice.mapId],
       rounds: ROUNDS_PER_GAME,
@@ -115,6 +116,7 @@ function start() {
     });
     state.transition('result');
     result.show(r, session.isLastRound);
+    if (session.upcoming) round.preload(session.upcoming);
   }
 
   function next() {

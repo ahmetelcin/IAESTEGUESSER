@@ -1,6 +1,6 @@
 import L from 'leaflet';
 import { TILE_ATTRIBUTION, TILE_URL } from '../../config';
-import { shortestPathTarget } from '../../game/geo';
+import { fitLongitudes, shortestPathTarget } from '../../game/geo';
 import { MAX_SCORE, formatDistance } from '../../game/scoring';
 import type { RoundResult } from '../../game/session';
 import type { LeaderboardEntry } from '../../services/leaderboard';
@@ -57,8 +57,13 @@ export function createSummaryScreen(root: HTMLElement, onNewPlayer: () => void):
   screen.append(mapEl, panel);
   root.append(screen);
 
-  // minZoom 2: at zoom 1 the world is shorter than the screen and repeats sideways.
-  const map = L.map(mapEl, { center: [25, 10], zoom: 2, minZoom: 2, zoomControl: false });
+  // Fractional zoom so fitBounds can use the exact level that shows every pin.
+  const map = L.map(mapEl, {
+    center: [25, 10],
+    zoom: 2,
+    zoomSnap: 0.1,
+    zoomControl: false,
+  });
   L.tileLayer(TILE_URL, { attribution: TILE_ATTRIBUTION, maxZoom: 19 }).addTo(map);
   map.attributionControl.setPrefix(false);
   const layers = L.layerGroup().addTo(map);
@@ -68,27 +73,42 @@ export function createSummaryScreen(root: HTMLElement, onNewPlayer: () => void):
       layers.clearLayers();
       map.invalidateSize({ pan: false });
 
+      // Never zoom out so far that the world is shorter than the map (grey bands).
+      map.setMinZoom(Math.ceil(Math.log2(mapEl.clientHeight / 256) * 10) / 10);
+
+      // Place all points in the narrowest longitude window (antimeridian-aware). Lines take
+      // the short way when that stays inside the window; otherwise they use the window copy,
+      // so every pin is guaranteed to be on screen.
+      const lngs = fitLongitudes(results.flatMap((r) => (r.guess ? [r.guess.lng, r.location.lng] : [r.location.lng])));
+      const west = Math.min(...lngs);
+      const east = Math.max(...lngs);
       const bounds = L.latLngBounds([]);
+      let k = 0;
       results.forEach((r, i) => {
         const { location, guess } = r;
         if (guess) {
-          const target = shortestPathTarget(guess, location);
+          const g = { lat: guess.lat, lng: lngs[k] };
+          const short = shortestPathTarget(g, location);
+          const target =
+            short.lng >= west && short.lng <= east ? short : { lat: location.lat, lng: lngs[k + 1] };
+          k += 2;
           L.polyline(
             [
-              [guess.lat, guess.lng],
+              [g.lat, g.lng],
               [target.lat, target.lng],
             ],
             { className: 'result__line', dashArray: '8 10', weight: 3 },
           ).addTo(layers);
-          L.marker([guess.lat, guess.lng], { icon: guessIcon, keyboard: false }).addTo(layers);
+          L.marker([g.lat, g.lng], { icon: guessIcon, keyboard: false }).addTo(layers);
           L.marker([target.lat, target.lng], { icon: roundIcon(i + 1), keyboard: false }).addTo(layers);
-          bounds.extend([guess.lat, guess.lng]).extend([target.lat, target.lng]);
+          bounds.extend([g.lat, g.lng]).extend([target.lat, target.lng]);
         } else {
-          L.marker([location.lat, location.lng], { icon: roundIcon(i + 1), keyboard: false }).addTo(layers);
-          bounds.extend([location.lat, location.lng]);
+          const lng = lngs[k++];
+          L.marker([location.lat, lng], { icon: roundIcon(i + 1), keyboard: false }).addTo(layers);
+          bounds.extend([location.lat, lng]);
         }
       });
-      if (bounds.isValid()) map.fitBounds(bounds, { padding: [50, 50], maxZoom: 6, animate: false });
+      if (bounds.isValid()) map.fitBounds(bounds, { padding: [60, 60], maxZoom: 15, animate: false });
 
       const max = results.length * MAX_SCORE;
       title.textContent = `Oyun bitti, ${name}!`;

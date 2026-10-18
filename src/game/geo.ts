@@ -30,3 +30,26 @@ export function shortestPathTarget(from: LatLng, to: LatLng): LatLng {
   while (lng - from.lng < -180) lng += 360;
   return lng === to.lng ? to : { lat: to.lat, lng };
 }
+
+/**
+ * Shifts longitudes by multiples of 360° so they span the narrowest possible window,
+ * i.e. the window skips the widest empty gap on the globe (often the Pacific).
+ * Keeps the input order; used to fit several points on one Mercator map.
+ */
+export function fitLongitudes(lngs: number[]): number[] {
+  if (lngs.length < 2) return [...lngs];
+  const norm = lngs.map(normalizeLng);
+  const sorted = [...norm].sort((a, b) => a - b);
+  // Gap after sorted[i]; the last one wraps around to sorted[0] + 360.
+  let widest = sorted.length - 1;
+  let widestGap = sorted[0] + 360 - sorted[sorted.length - 1];
+  for (let i = 0; i < sorted.length - 1; i++) {
+    const gap = sorted[i + 1] - sorted[i];
+    if (gap > widestGap) {
+      widestGap = gap;
+      widest = i;
+    }
+  }
+  const start = sorted[(widest + 1) % sorted.length];
+  return norm.map((l) => (l < start ? l + 360 : l));
+}

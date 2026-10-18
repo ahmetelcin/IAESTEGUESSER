@@ -18,6 +18,14 @@ describe('scoreFor', () => {
     expect(scoreFor(250, 'turkey')).toBe(Math.round(5000 / Math.E));
   });
 
+  it('uses city-sized scales for the city maps', () => {
+    expect(scoreFor(1.5, 'edirne')).toBe(Math.round(5000 / Math.E));
+    expect(scoreFor(3, 'bursa')).toBe(Math.round(5000 / Math.E));
+    // A 1 km miss still earns about half; 10 km (outside the city) earns almost nothing.
+    expect(scoreFor(1, 'edirne')).toBeGreaterThan(2500);
+    expect(scoreFor(10, 'edirne')).toBeLessThan(10);
+  });
+
   it('is stricter on smaller maps', () => {
     const km = 300;
     expect(scoreFor(km, 'world')).toBeGreaterThan(scoreFor(km, 'europe'));
@@ -46,8 +54,15 @@ describe('formatDistance', () => {
     expect(formatDistance(0.999)).toBe('999 m');
   });
 
+  it('shows one decimal under 10 km (city maps)', () => {
+    expect(formatDistance(1.24)).toBe('1,2 km');
+    expect(formatDistance(4)).toBe('4,0 km');
+    expect(formatDistance(9.94)).toBe('9,9 km');
+  });
+
   it('uses km with Turkish thousands separator', () => {
     expect(formatDistance(12.4)).toBe('12 km');
+    expect(formatDistance(10)).toBe('10 km');
     expect(formatDistance(1234.6)).toBe('1.235 km');
   });
 });

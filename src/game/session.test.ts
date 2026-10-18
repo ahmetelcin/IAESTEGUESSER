@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { createSession } from './session';
 
-const loc = (id: string, lat = 0, lng = 0) => ({ id, imageId: `img-${id}`, lat, lng, city: id, country: 'X' });
+const loc = (id: string, lat = 0, lng = 0, cityId = id) => ({
+  id,
+  cityId,
+  imageId: `img-${id}`,
+  lat,
+  lng,
+  city: cityId,
+  country: 'X',
+});
 const POOL = ['a', 'b', 'c', 'd', 'e', 'f', 'g'].map((id) => loc(id));
 
 describe('game session', () => {
@@ -10,6 +18,32 @@ describe('game session', () => {
     const ids = s.locations.map((l) => l.id);
     expect(ids).toHaveLength(5);
     expect(new Set(ids).size).toBe(5);
+  });
+
+  it('never repeats a city when there are enough cities', () => {
+    // 6 cities with 3 panoramas each.
+    const pool = ['a', 'b', 'c', 'd', 'e', 'f'].flatMap((c) => [1, 2, 3].map((n) => loc(`${c}-${n}`, 0, 0, c)));
+    for (let i = 0; i < 30; i++) {
+      const s = createSession({ pool, rounds: 5, mapId: 'world' });
+      expect(new Set(s.locations.map((l) => l.cityId)).size).toBe(5);
+    }
+  });
+
+  it('fills up with repeat cities only when there are too few cities', () => {
+    const pool = ['a', 'b'].flatMap((c) => [1, 2, 3].map((n) => loc(`${c}-${n}`, 0, 0, c)));
+    const s = createSession({ pool, rounds: 5, mapId: 'world' });
+    expect(s.totalRounds).toBe(5);
+    expect(new Set(s.locations.map((l) => l.id)).size).toBe(5);
+    // The first two rounds are different cities.
+    expect(s.locations[0].cityId).not.toBe(s.locations[1].cityId);
+  });
+
+  it('excludes the whole city of the excluded location', () => {
+    const pool = ['a', 'b', 'c', 'd', 'e', 'f'].flatMap((c) => [1, 2].map((n) => loc(`${c}-${n}`, 0, 0, c)));
+    for (let i = 0; i < 20; i++) {
+      const s = createSession({ pool, rounds: 5, mapId: 'world', exclude: 'a-1' });
+      expect(s.locations.map((l) => l.cityId)).not.toContain('a');
+    }
   });
 
   it('caps rounds at the pool size', () => {
@@ -60,6 +94,14 @@ describe('game session', () => {
     expect(new Set(after).size).toBe(2);
     // The only unused location is now the dropped one... which is excluded, so nothing is left.
     expect(s.replaceCurrent()).toBe(false);
+  });
+
+  it('exposes the upcoming location for preloading', () => {
+    const s = createSession({ pool: POOL, rounds: 2, mapId: 'world' });
+    expect(s.upcoming).toBe(s.locations[1]);
+    s.submit(null);
+    s.next();
+    expect(s.upcoming).toBeNull();
   });
 
   it('refuses to advance before submitting', () => {

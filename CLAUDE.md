@@ -39,7 +39,7 @@ GeoGuessr'ın marka adı, logosu, renk paleti ve görselleri kullanılmayacak; s
 ### Ana menü
 - Arka planda yavaşça dönen bir panorama (attract mode ile aynı bileşen).
 - Oyuncu adı girişi + **OYNA**.
-- Harita seçimi: **IAESTE Dünya** (varsayılan), **Avrupa**, **Türkiye**.
+- Harita seçimi: **IAESTE Dünya** (varsayılan), **Avrupa**, **Türkiye**, şehir haritaları **Edirne** ve **Bursa** (5 tur da şehrin içinden). Yeterli verisi olmayan harita "Yakında" ile devre dışı görünür.
 - Mod seçimi: **Hareketli** (gezinebilir), **Hareketsiz** (bulunduğun yerde dön), **NMPZ** (hareket, döndürme, zoom yok).
 - Sağda günün liderlik tablosu (ilk 10).
 
@@ -49,7 +49,7 @@ GeoGuessr'ın marka adı, logosu, renk paleti ve görselleri kullanılmayacak; s
 - **Token:** `.env` → `VITE_MAPILLARY_TOKEN`. `.env` git'e girmez, `.env.example` olur.
 - **Stant derlemesi:** `vite-plugin-singlefile` ile tek HTML (`npm run build:stand`), çift tıkla çalışmalı.
 - **Liderlik tablosu:** localStorage (try/catch). Faz 5'e kadar sunucu yok. Faz 5'te ortak tablo eklenir (aşağıya bak); localStorage yedek olarak kalır.
-- **Puanlama:** haversine mesafe; `5000 * exp(-km / ölçek)`. Ölçek haritaya göre: Dünya 2000, Avrupa 800, Türkiye 250. 150 m altı tam puan.
+- **Puanlama:** haversine mesafe; `5000 * exp(-km / ölçek)`. Ölçek haritaya göre: Dünya 2000, Avrupa 800, Türkiye 250, Edirne 1,5, Bursa 3 (km). 150 m altı tam puan.
 - **Testler:** Vitest — mesafe, puanlama, liderlik tablosu, state geçişleri.
 
 ## Klasör yapısı (hedef)
@@ -57,7 +57,7 @@ GeoGuessr'ın marka adı, logosu, renk paleti ve görselleri kullanılmayacak; s
 src/
   main.ts
   config.ts
-  data/maps/{world,europe,turkey}.json   # lokasyonlar + pano ID'leri
+  data/maps/{world,europe,turkey,edirne,bursa}.json   # lokasyonlar + pano ID'leri
   game/state.ts
   game/scoring.ts
   game/modes.ts                          # hareketli / hareketsiz / NMPZ kısıtları
@@ -66,7 +66,7 @@ src/
   ui/hud/        # durum çubuğu, pusula, mini harita
   ui/screens/    # menu, loading, round, result, summary, admin
   styles/
-scripts/curate.ts
+scripts/curate.ts                        # + scripts/cities.ts (şehir listeleri)
 ```
 
 ## Fazlar
@@ -85,6 +85,8 @@ Her fazın sonunda dur, kısaca özetle, onay bekle. Onaysız sonraki faza geçm
 ### Faz 3 — Lokasyon verisi
 - `scripts/curate.ts`: şehir listesi alır, Mapillary API'den şehir başına 3–5 adet 360° pano çeker (2018 öncesini ele), harita JSON'larına yazar.
 - Üç harita: IAESTE Dünya (40+ şehir), Avrupa, Türkiye (15+ şehir).
+- Şehir haritaları (Faz 3'te eklendi): Edirne, Bursa. Şehrin tamamı taranır, noktalar birbirinden en uzak olacak şekilde seçilir (`CITY_MAPS` in `scripts/cities.ts`).
+- **Kapsama notu (Ekim 2026):** Mapillary'de Türkiye'nin çoğunda 360° pano yok (Ankara, Antalya, Konya, Kayseri, Eskişehir… 0). Türkiye listesi sadece pano bulunan şehirlerden oluşur. Yeni şehir eklemeden önce `npm run curate -- turkey --only <id>` ile dene.
 - Bir sonraki turun panoramasını önceden yükle.
 - **Not (Faz 2'den):** Mapillary Graph API, yoğun şehir merkezlerinde en küçük bbox'ta bile HTTP 500 ("reduce the amount of data") dönüyor; `limit` küçültmek işe yaramıyor. `curate.ts` bbox'ı küçük parçalara (ızgara) bölerek arasın, parça hata verirse daha da bölsün. Bu sayede Faz 1'de çıkarılan **Berlin ve Viyana geri eklensin**.
 

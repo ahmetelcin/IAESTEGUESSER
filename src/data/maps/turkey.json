@@ -1,0 +1,542 @@
+[
+  {
+    "id": "istanbul-1",
+    "cityId": "istanbul",
+    "imageId": "965515600866953",
+    "lat": 41.007058888889,
+    "lng": 28.978196944444,
+    "city": "İstanbul",
+    "country": "Türkiye"
+  },
+  {
+    "id": "istanbul-2",
+    "cityId": "istanbul",
+    "imageId": "106125375877365",
+    "lat": 41.021287847486,
+    "lng": 28.974387767567,
+    "city": "İstanbul",
+    "country": "Türkiye"
+  },
+  {
+    "id": "istanbul-3",
+    "cityId": "istanbul",
+    "imageId": "214195784059209",
+    "lat": 41.007040967299,
+    "lng": 28.972163725791,
+    "city": "İstanbul",
+    "country": "Türkiye"
+  },
+  {
+    "id": "izmir-1",
+    "cityId": "izmir",
+    "imageId": "833523699525596",
+    "lat": 38.410000817042,
+    "lng": 27.153702549995,
+    "city": "İzmir",
+    "country": "Türkiye"
+  },
+  {
+    "id": "izmir-2",
+    "cityId": "izmir",
+    "imageId": "1009154978508294",
+    "lat": 38.417138237127,
+    "lng": 27.124647716891,
+    "city": "İzmir",
+    "country": "Türkiye"
+  },
+  {
+    "id": "izmir-3",
+    "cityId": "izmir",
+    "imageId": "1043351098260508",
+    "lat": 38.433952111762,
+    "lng": 27.160991847616,
+    "city": "İzmir",
+    "country": "Türkiye"
+  },
+  {
+    "id": "izmir-4",
+    "cityId": "izmir",
+    "imageId": "27061834170142486",
+    "lat": 38.419199047448,
+    "lng": 27.15436444278,
+    "city": "İzmir",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-1",
+    "cityId": "bursa",
+    "imageId": "1318203460483932",
+    "lat": 40.181346829887,
+    "lng": 29.056930819795,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-2",
+    "cityId": "bursa",
+    "imageId": "1504290528154021",
+    "lat": 40.195524900694,
+    "lng": 29.059720155591,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-3",
+    "cityId": "bursa",
+    "imageId": "1350816627002620",
+    "lat": 40.189527738181,
+    "lng": 29.06070975326,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "bursa-4",
+    "cityId": "bursa",
+    "imageId": "1279718697256463",
+    "lat": 40.183945150005,
+    "lng": 29.059994125324,
+    "city": "Bursa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "mersin-1",
+    "cityId": "mersin",
+    "imageId": "2047301602459715",
+    "lat": 36.800753287437,
+    "lng": 34.624568821154,
+    "city": "Mersin",
+    "country": "Türkiye"
+  },
+  {
+    "id": "mersin-2",
+    "cityId": "mersin",
+    "imageId": "3865074906971959",
+    "lat": 36.795327033703,
+    "lng": 34.625190716723,
+    "city": "Mersin",
+    "country": "Türkiye"
+  },
+  {
+    "id": "mersin-3",
+    "cityId": "mersin",
+    "imageId": "1184150623293704",
+    "lat": 36.798499330418,
+    "lng": 34.630634203196,
+    "city": "Mersin",
+    "country": "Türkiye"
+  },
+  {
+    "id": "mersin-4",
+    "cityId": "mersin",
+    "imageId": "3203544463171141",
+    "lat": 36.804203333333,
+    "lng": 34.637355,
+    "city": "Mersin",
+    "country": "Türkiye"
+  },
+  {
+    "id": "edirne-1",
+    "cityId": "edirne",
+    "imageId": "902968852452677",
+    "lat": 41.669174799434,
+    "lng": 26.580295755997,
+    "city": "Edirne",
+    "country": "Türkiye"
+  },
+  {
+    "id": "edirne-2",
+    "cityId": "edirne",
+    "imageId": "2314291955771674",
+    "lat": 41.669318307503,
+    "lng": 26.586379408081,
+    "city": "Edirne",
+    "country": "Türkiye"
+  },
+  {
+    "id": "edirne-3",
+    "cityId": "edirne",
+    "imageId": "3004796356357616",
+    "lat": 41.671520192965,
+    "lng": 26.580099990907,
+    "city": "Edirne",
+    "country": "Türkiye"
+  },
+  {
+    "id": "edirne-4",
+    "cityId": "edirne",
+    "imageId": "1039389228798017",
+    "lat": 41.675947088702,
+    "lng": 26.557172795948,
+    "city": "Edirne",
+    "country": "Türkiye"
+  },
+  {
+    "id": "denizli-1",
+    "cityId": "denizli",
+    "imageId": "802702697791091",
+    "lat": 37.732671138779,
+    "lng": 29.135583104849,
+    "city": "Denizli",
+    "country": "Türkiye"
+  },
+  {
+    "id": "denizli-2",
+    "cityId": "denizli",
+    "imageId": "470297541404780",
+    "lat": 37.748563491917,
+    "lng": 29.102991815937,
+    "city": "Denizli",
+    "country": "Türkiye"
+  },
+  {
+    "id": "denizli-3",
+    "cityId": "denizli",
+    "imageId": "422150179677445",
+    "lat": 37.734243375179,
+    "lng": 29.122561112297,
+    "city": "Denizli",
+    "country": "Türkiye"
+  },
+  {
+    "id": "denizli-4",
+    "cityId": "denizli",
+    "imageId": "1004237863495423",
+    "lat": 37.751671408452,
+    "lng": 29.105294354037,
+    "city": "Denizli",
+    "country": "Türkiye"
+  },
+  {
+    "id": "izmit-1",
+    "cityId": "izmit",
+    "imageId": "836598434880167",
+    "lat": 40.760067877983,
+    "lng": 29.929718339525,
+    "city": "İzmit",
+    "country": "Türkiye"
+  },
+  {
+    "id": "izmit-2",
+    "cityId": "izmit",
+    "imageId": "1338590827718442",
+    "lat": 40.763593281173,
+    "lng": 29.91555581757,
+    "city": "İzmit",
+    "country": "Türkiye"
+  },
+  {
+    "id": "izmit-3",
+    "cityId": "izmit",
+    "imageId": "693590686087904",
+    "lat": 40.766575137853,
+    "lng": 29.929161987196,
+    "city": "İzmit",
+    "country": "Türkiye"
+  },
+  {
+    "id": "izmit-4",
+    "cityId": "izmit",
+    "imageId": "904005967442390",
+    "lat": 40.766687729381,
+    "lng": 29.933279631646,
+    "city": "İzmit",
+    "country": "Türkiye"
+  },
+  {
+    "id": "sakarya-1",
+    "cityId": "sakarya",
+    "imageId": "1502155805052085",
+    "lat": 40.745324218187,
+    "lng": 30.391722948353,
+    "city": "Sakarya",
+    "country": "Türkiye"
+  },
+  {
+    "id": "sakarya-2",
+    "cityId": "sakarya",
+    "imageId": "4525942024317883",
+    "lat": 40.764759017707,
+    "lng": 30.371382438062,
+    "city": "Sakarya",
+    "country": "Türkiye"
+  },
+  {
+    "id": "sakarya-3",
+    "cityId": "sakarya",
+    "imageId": "1143127414882961",
+    "lat": 40.749672444866,
+    "lng": 30.374198192608,
+    "city": "Sakarya",
+    "country": "Türkiye"
+  },
+  {
+    "id": "sakarya-4",
+    "cityId": "sakarya",
+    "imageId": "1418361316791005",
+    "lat": 40.746195714687,
+    "lng": 30.365310745627,
+    "city": "Sakarya",
+    "country": "Türkiye"
+  },
+  {
+    "id": "fethiye-1",
+    "cityId": "fethiye",
+    "imageId": "1043601358280263",
+    "lat": 36.620666,
+    "lng": 29.117994,
+    "city": "Fethiye",
+    "country": "Türkiye"
+  },
+  {
+    "id": "fethiye-2",
+    "cityId": "fethiye",
+    "imageId": "1517482479424979",
+    "lat": 36.616114232927,
+    "lng": 29.110177758617,
+    "city": "Fethiye",
+    "country": "Türkiye"
+  },
+  {
+    "id": "fethiye-3",
+    "cityId": "fethiye",
+    "imageId": "1834903750475018",
+    "lat": 36.607580313417,
+    "lng": 29.105320790973,
+    "city": "Fethiye",
+    "country": "Türkiye"
+  },
+  {
+    "id": "fethiye-4",
+    "cityId": "fethiye",
+    "imageId": "2081398069258710",
+    "lat": 36.608844655689,
+    "lng": 29.108780651219,
+    "city": "Fethiye",
+    "country": "Türkiye"
+  },
+  {
+    "id": "marmaris-1",
+    "cityId": "marmaris",
+    "imageId": "383595733266854",
+    "lat": 36.819218549964,
+    "lng": 28.305673320694,
+    "city": "Marmaris",
+    "country": "Türkiye"
+  },
+  {
+    "id": "marmaris-2",
+    "cityId": "marmaris",
+    "imageId": "423006359386726",
+    "lat": 36.818586921564,
+    "lng": 28.309009294172,
+    "city": "Marmaris",
+    "country": "Türkiye"
+  },
+  {
+    "id": "tekirdag-1",
+    "cityId": "tekirdag",
+    "imageId": "1571535144536151",
+    "lat": 40.970372100295,
+    "lng": 27.504218776581,
+    "city": "Tekirdağ",
+    "country": "Türkiye"
+  },
+  {
+    "id": "tekirdag-2",
+    "cityId": "tekirdag",
+    "imageId": "1054223690467940",
+    "lat": 40.973913464173,
+    "lng": 27.51034997993,
+    "city": "Tekirdağ",
+    "country": "Türkiye"
+  },
+  {
+    "id": "tekirdag-3",
+    "cityId": "tekirdag",
+    "imageId": "1288029763318593",
+    "lat": 40.984423594962,
+    "lng": 27.515761649989,
+    "city": "Tekirdağ",
+    "country": "Türkiye"
+  },
+  {
+    "id": "tekirdag-4",
+    "cityId": "tekirdag",
+    "imageId": "1892823041645485",
+    "lat": 40.973650926289,
+    "lng": 27.505501842308,
+    "city": "Tekirdağ",
+    "country": "Türkiye"
+  },
+  {
+    "id": "yalova-1",
+    "cityId": "yalova",
+    "imageId": "435709749366343",
+    "lat": 40.65885059667,
+    "lng": 29.276806438505,
+    "city": "Yalova",
+    "country": "Türkiye"
+  },
+  {
+    "id": "yalova-2",
+    "cityId": "yalova",
+    "imageId": "325169993975697",
+    "lat": 40.657368106336,
+    "lng": 29.271415613946,
+    "city": "Yalova",
+    "country": "Türkiye"
+  },
+  {
+    "id": "manisa-1",
+    "cityId": "manisa",
+    "imageId": "1692119785323194",
+    "lat": 38.663755337376,
+    "lng": 27.450265389811,
+    "city": "Manisa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "manisa-2",
+    "cityId": "manisa",
+    "imageId": "981388934779532",
+    "lat": 38.63905228071,
+    "lng": 27.429636664111,
+    "city": "Manisa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "manisa-3",
+    "cityId": "manisa",
+    "imageId": "1002162012214930",
+    "lat": 38.642410860935,
+    "lng": 27.39423979545,
+    "city": "Manisa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "manisa-4",
+    "cityId": "manisa",
+    "imageId": "2441072319747825",
+    "lat": 38.652070923034,
+    "lng": 27.445487739099,
+    "city": "Manisa",
+    "country": "Türkiye"
+  },
+  {
+    "id": "malatya-1",
+    "cityId": "malatya",
+    "imageId": "1434771545460650",
+    "lat": 38.360954992075,
+    "lng": 38.28596855186,
+    "city": "Malatya",
+    "country": "Türkiye"
+  },
+  {
+    "id": "malatya-2",
+    "cityId": "malatya",
+    "imageId": "874588955647443",
+    "lat": 38.347968435026,
+    "lng": 38.298844676355,
+    "city": "Malatya",
+    "country": "Türkiye"
+  },
+  {
+    "id": "malatya-3",
+    "cityId": "malatya",
+    "imageId": "1124217560054314",
+    "lat": 38.354292208429,
+    "lng": 38.331821543689,
+    "city": "Malatya",
+    "country": "Türkiye"
+  },
+  {
+    "id": "malatya-4",
+    "cityId": "malatya",
+    "imageId": "1611336977397536",
+    "lat": 38.342274952418,
+    "lng": 38.316447275151,
+    "city": "Malatya",
+    "country": "Türkiye"
+  },
+  {
+    "id": "sivas-1",
+    "cityId": "sivas",
+    "imageId": "777799877712909",
+    "lat": 39.738668556707,
+    "lng": 37.016174949573,
+    "city": "Sivas",
+    "country": "Türkiye"
+  },
+  {
+    "id": "sivas-2",
+    "cityId": "sivas",
+    "imageId": "247159347951204",
+    "lat": 39.735342685363,
+    "lng": 37.015479129663,
+    "city": "Sivas",
+    "country": "Türkiye"
+  },
+  {
+    "id": "ordu-1",
+    "cityId": "ordu",
+    "imageId": "1201085588139978",
+    "lat": 40.98895684887,
+    "lng": 37.875786489622,
+    "city": "Ordu",
+    "country": "Türkiye"
+  },
+  {
+    "id": "ordu-2",
+    "cityId": "ordu",
+    "imageId": "1748829882738300",
+    "lat": 40.983514514961,
+    "lng": 37.875570845959,
+    "city": "Ordu",
+    "country": "Türkiye"
+  },
+  {
+    "id": "ordu-3",
+    "cityId": "ordu",
+    "imageId": "218268380704243",
+    "lat": 40.975923795039,
+    "lng": 37.880610131254,
+    "city": "Ordu",
+    "country": "Türkiye"
+  },
+  {
+    "id": "ordu-4",
+    "cityId": "ordu",
+    "imageId": "2046254225514997",
+    "lat": 40.97604915086,
+    "lng": 37.884055446417,
+    "city": "Ordu",
+    "country": "Türkiye"
+  },
+  {
+    "id": "karabuk-1",
+    "cityId": "karabuk",
+    "imageId": "1174828259618511",
+    "lat": 41.217302954665,
+    "lng": 32.628299760009,
+    "city": "Karabük",
+    "country": "Türkiye"
+  },
+  {
+    "id": "karabuk-2",
+    "cityId": "karabuk",
+    "imageId": "829764481257432",
+    "lat": 41.194242348902,
+    "lng": 32.615630134484,
+    "city": "Karabük",
+    "country": "Türkiye"
+  },
+  {
+    "id": "karabuk-3",
+    "cityId": "karabuk",
+    "imageId": "210495377408637",
+    "lat": 41.187390397989,
+    "lng": 32.614894169955,
+    "city": "Karabük",
+    "country": "Türkiye"
+  }
+]

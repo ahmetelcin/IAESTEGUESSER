@@ -1,3 +1,5 @@
+import { ROUNDS_PER_GAME } from '../../config';
+import { MAP_INFO, isPlayable } from '../../data/maps';
 import type { MapId } from '../../game/scoring';
 import type { LeaderboardEntry } from '../../services/leaderboard';
 import { el } from '../dom';
@@ -22,11 +24,11 @@ interface Option<T extends string> {
   soon?: boolean;
 }
 
-const MAP_OPTIONS: Option<MapId>[] = [
-  { value: 'world', label: 'IAESTE Dünya' },
-  { value: 'europe', label: 'Avrupa', soon: true },
-  { value: 'turkey', label: 'Türkiye', soon: true },
-];
+const MAP_OPTIONS: Option<MapId>[] = (Object.keys(MAP_INFO) as MapId[]).map((value) => ({
+  value,
+  label: MAP_INFO[value].label,
+  soon: !isPlayable(value, ROUNDS_PER_GAME),
+}));
 
 const MODE_OPTIONS: Option<Mode>[] = [
   { value: 'moving', label: 'Hareketli', hint: 'Sokaklarda gezin' },
