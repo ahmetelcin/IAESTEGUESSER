@@ -294,12 +294,13 @@ const MAX_REQUESTS_SPREAD = 600;
 async function curateSpread(city: City, cfg: CitySpots, panoOnly: boolean) {
   const stats: CityStats = { requests: 0, failures: 0, cap: MAX_REQUESTS_SPREAD, limit: 200, panoOnly };
   const cells: [number, number][] = [];
-  for (let lat = city.lat - cfg.radius; lat < city.lat + cfg.radius; lat += SPOT_CELL)
-    for (let lng = city.lng - cfg.radius; lng < city.lng + cfg.radius; lng += SPOT_CELL) cells.push([lng, lat]);
+  const cell = cfg.cell ?? SPOT_CELL;
+  for (let lat = city.lat - cfg.radius; lat < city.lat + cfg.radius; lat += cell)
+    for (let lng = city.lng - cfg.radius; lng < city.lng + cfg.radius; lng += cell) cells.push([lng, lat]);
 
   const byId = new Map<string, Candidate>();
   for (let i = 0; i < cells.length; i += 6) {
-    const results = await Promise.all(cells.slice(i, i + 6).map(([w, so]) => queryCell(w, so, SPOT_CELL, stats)));
+    const results = await Promise.all(cells.slice(i, i + 6).map(([w, so]) => queryCell(w, so, cell, stats)));
     for (const img of results.flat()) {
       const c = toCandidate(img);
       if (c) byId.set(c.imageId, c);
@@ -402,7 +403,9 @@ async function curateLists(maps: ListMapId[], panoOnly: boolean) {
   await Promise.all(
     Array.from({ length: PARALLEL_CITIES }, async () => {
       for (let c = queue.shift(); c; c = queue.shift()) {
-        const spots = CITY_SPOTS[c.id];
+        // Spots belong to the Türkiye list (the only non-panorama list); World keeps
+        // İstanbul as an ordinary 360°-only city.
+        const spots = panoOnly ? undefined : CITY_SPOTS[c.id];
         let r: Awaited<ReturnType<typeof curateCity>>;
         let locations: Location[];
         try {

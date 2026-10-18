@@ -126,13 +126,13 @@ describe('leaderboard', () => {
         { name: 'Eski', score: 5, mapId: 'world', day: dayKey(DAY1), ts: 1 },
         // No map at all: the leaderboard predates the other maps.
         { name: 'Haritasiz', score: 4, day: dayKey(DAY1), ts: 2 },
-        // Former city maps are part of Türkiye now.
+        // City-map scores stay on their city map.
         { name: 'Edirneli', score: 3, mapId: 'edirne', mode: 'moving', rounds: 5, day: dayKey(DAY1), ts: 3 },
       ]),
     );
     const lb = createLeaderboard(storage);
     expect(names(lb.board(TODAY_WORLD, DAY1))).toEqual(['Eski', 'Haritasiz']);
-    expect(names(lb.board({ ...TODAY_WORLD, mapId: 'turkey' }, DAY1))).toEqual(['Edirneli']);
+    expect(names(lb.board({ ...TODAY_WORLD, mapId: 'edirne' }, DAY1))).toEqual(['Edirneli']);
     expect(lb.all().every((e) => e.mode && e.rounds && e.mapId)).toBe(true);
   });
 

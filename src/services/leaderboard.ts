@@ -10,10 +10,8 @@ const MAX_ENTRIES = 2000;
 /** Only full-length games are ranked; shorter/longer admin games are stored but not shown. */
 export const RANKED_ROUNDS = 5;
 
-const MAP_IDS: readonly MapId[] = ['world', 'europe', 'turkey'];
+const MAP_IDS: readonly MapId[] = ['world', 'europe', 'turkey', 'istanbul', 'edirne', 'bursa'];
 const MODES: readonly Mode[] = ['moving', 'no-move', 'nmpz'];
-/** Maps that no longer exist and where their scores belong now. */
-const RENAMED_MAPS: Record<string, MapId> = { edirne: 'turkey', bursa: 'turkey' };
 
 export interface LeaderboardEntry {
   name: string;
@@ -62,7 +60,7 @@ function normalize(x: unknown): LeaderboardEntry | null {
   const e = x as Record<string, unknown>;
   if (typeof e.name !== 'string' || typeof e.score !== 'number' || typeof e.day !== 'string' || typeof e.ts !== 'number')
     return null;
-  const rawMap = typeof e.mapId === 'string' ? (RENAMED_MAPS[e.mapId] ?? e.mapId) : 'world';
+  const rawMap = typeof e.mapId === 'string' ? e.mapId : 'world';
   if (!MAP_IDS.includes(rawMap as MapId)) return null;
   const mode = MODES.includes(e.mode as Mode) ? (e.mode as Mode) : 'moving';
   const rounds = typeof e.rounds === 'number' ? e.rounds : RANKED_ROUNDS;

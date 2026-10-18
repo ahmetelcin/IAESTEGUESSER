@@ -143,13 +143,15 @@ export const CITY_LISTS = {
 } satisfies Record<string, City[]>;
 
 /**
- * Cities that get many spots spread across town instead of a few around the center
- * (the club's university cities). Still one city: a game asks it at most once, but
- * every visit can land somewhere else. Keyed by city id.
+ * Cities that get many spots spread across town instead of a few around the center.
+ * In the Türkiye map each is still one city (asked at most once per game); the game's
+ * city maps (İstanbul, Edirne, Bursa) are built from these same spots. Keyed by city id.
  */
 export interface CitySpots {
   /** Half-size of the scanned square, degrees. */
   radius: number;
+  /** Grid cell size, degrees (default 0.01; bigger for big cities to bound requests). */
+  cell?: number;
   count: number;
   spacingM: number;
 }
@@ -157,6 +159,7 @@ export interface CitySpots {
 export const CITY_SPOTS: Record<string, CitySpots> = {
   edirne: { radius: 0.04, count: 20, spacingM: 300 },
   bursa: { radius: 0.07, count: 30, spacingM: 500 },
+  istanbul: { radius: 0.18, cell: 0.03, count: 40, spacingM: 1000 },
 };
 
 /**

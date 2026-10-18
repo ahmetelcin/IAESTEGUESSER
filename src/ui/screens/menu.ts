@@ -1,5 +1,5 @@
 import { ROUNDS_PER_GAME } from '../../config';
-import { MAP_INFO, isPlayable } from '../../data/maps';
+import { CITY_MAP_IDS, MAP_INFO, isPlayable } from '../../data/maps';
 import type { Mode } from '../../game/modes';
 import type { MapId } from '../../game/scoring';
 import { el } from '../dom';
@@ -26,9 +26,11 @@ interface Option<T extends string> {
   soon?: boolean;
 }
 
+// Three regions, then the three city maps (second row of the 3-column grid).
 const MAP_OPTIONS: Option<MapId>[] = (Object.keys(MAP_INFO) as MapId[]).map((value) => ({
   value,
   label: MAP_INFO[value].label,
+  hint: CITY_MAP_IDS.includes(value) ? 'Şehir' : undefined,
   soon: !isPlayable(value, ROUNDS_PER_GAME),
 }));
 

@@ -39,14 +39,14 @@ GeoGuessr'ın marka adı, logosu, renk paleti ve görselleri kullanılmayacak; s
 ### Ana menü
 - Arka planda yavaşça dönen bir panorama (attract mode ile aynı bileşen).
 - Oyuncu adı girişi + **OYNA**.
-- Harita seçimi: **IAESTE Dünya** (varsayılan), **Avrupa**, **Türkiye**. Edirne ve Bursa ayrı harita değil; Türkiye haritasında şehrin her yerine yayılmış çok noktalı şehirler. Yeterli verisi olmayan harita "Yakında" ile devre dışı görünür.
+- Harita seçimi: **IAESTE Dünya** (varsayılan), **Avrupa**, **Türkiye** ve şehir haritaları **İstanbul**, **Edirne**, **Bursa** (seçilebilen şehir sadece bu üçü; 5 tur da şehrin içinden). Şehir haritaları Türkiye verisindeki o şehrin noktalarından türetilir; Türkiye haritasında bu şehirler yine çok noktalı tek şehirdir. Yeterli verisi olmayan harita "Yakında" ile devre dışı görünür.
 - Mod seçimi: **Hareketli** (gezinebilir), **Hareketsiz** (bulunduğun yerde dön), **NMPZ** (hareket, döndürme, zoom yok).
 - **Liderlik tablosu** ve **Görüntü kaynakları** butonları (ayrı ekranlar, Esc ile menüye dönülür).
 
 ### Liderlik tablosu ekranı
 - Sekmeler: dönem (Bugün / Tüm zamanlar), harita, mod. İlk 20.
 - Sadece 5 turluk oyunlar sıralanır; admin'in değiştirdiği tur sayısıyla oynanan oyunlar kaydedilir (CSV'de görünür) ama sıralanmaz.
-- Eski kayıtlar yüklenirken tamamlanır: mod yoksa Hareketli, tur yoksa 5, harita yoksa Dünya; Edirne/Bursa kayıtları Türkiye'ye taşınır.
+- Eski kayıtlar yüklenirken tamamlanır: mod yoksa Hareketli, tur yoksa 5, harita yoksa Dünya.
 
 ### Görüntü kaynakları ekranı
 - Oyundaki tüm Mapillary fotoğrafçıları (görüntü sayısıyla), CC BY-SA 4.0 notu, harita kaynakları.
@@ -58,7 +58,7 @@ GeoGuessr'ın marka adı, logosu, renk paleti ve görselleri kullanılmayacak; s
 - **Admin PIN:** `.env` → `VITE_ADMIN_PIN` (4 hane). Derlemeye gömülür; stantta caydırıcıdır, gerçek güvenlik değildir. 5 hatalı denemede 30 sn kilit.
 - **Stant derlemesi:** `vite-plugin-singlefile` ile tek HTML (`npm run build:stand`), çift tıkla çalışmalı.
 - **Liderlik tablosu:** localStorage (try/catch). Faz 5'e kadar sunucu yok. Faz 5'te ortak tablo eklenir (aşağıya bak); localStorage yedek olarak kalır.
-- **Puanlama:** haversine mesafe; `5000 * exp(-km / ölçek)`. Ölçek haritaya göre: Dünya 2000, Avrupa 800, Türkiye 250 (km). 150 m altı tam puan.
+- **Puanlama:** haversine mesafe; `5000 * exp(-km / ölçek)`. Ölçek haritaya göre: Dünya 2000, Avrupa 800, Türkiye 250, İstanbul 5, Edirne 1,5, Bursa 3 (km). 150 m altı tam puan.
 - **Testler:** Vitest — mesafe, puanlama, liderlik tablosu, state geçişleri.
 
 ## Klasör yapısı (hedef)
@@ -94,7 +94,7 @@ Her fazın sonunda dur, kısaca özetle, onay bekle. Onaysız sonraki faza geçm
 ### Faz 3 — Lokasyon verisi
 - `scripts/curate.ts`: şehir listesi alır, Mapillary API'den şehir başına 3–5 adet 360° pano çeker (2018 öncesini ele), harita JSON'larına yazar.
 - Üç harita: IAESTE Dünya (40+ şehir), Avrupa, Türkiye (15+ şehir).
-- Çok noktalı şehirler: Edirne (20), Bursa (30). Şehrin tamamı taranır, noktalar birbirinden en uzak olacak şekilde seçilir (`CITY_SPOTS` in `scripts/cities.ts`). Bir oyunda şehir yine en fazla bir kez gelir.
+- Çok noktalı şehirler: İstanbul (40), Edirne (20), Bursa (30). Şehrin tamamı taranır, noktalar birbirinden en uzak olacak şekilde seçilir (`CITY_SPOTS` in `scripts/cities.ts`). Bir oyunda şehir yine en fazla bir kez gelir.
 - Her görüntünün fotoğrafçısı (`creator`) JSON'a yazılır; eksikleri `npm run curate -- --creators` tamamlar.
 - **Kapsama notu (Ekim 2026):** Mapillary'de Türkiye'nin çoğunda 360° pano yok (Ankara, Antalya, Konya, Kayseri, Eskişehir… 0). Bu yüzden **Türkiye haritası düz (360° olmayan) görüntüleri de kabul eder**, varsa 360° tercih edilir (`FLAT_ALLOWED` in `scripts/cities.ts`). Dünya ve Avrupa sadece 360°. Yeni şehir eklemeden önce `npm run curate -- turkey --only <id>` ile dene.
 - Bir sonraki turun panoramasını önceden yükle.
@@ -115,7 +115,7 @@ Her fazın sonunda dur, kısaca özetle, onay bekle. Onaysız sonraki faza geçm
   - Çevrimdışı yedek: API'ye ulaşılamazsa skor localStorage'a yazılır, bağlantı gelince gönderilir. Oyun asla sunucuyu beklemez.
 - **Semt adları (çok noktalı şehirler):** `curate` sırasında her noktanın semt/mahalle adı Nominatim (OpenStreetMap) ters geocoding ile **bir kez** alınıp harita JSON'una yazılsın (`district` alanı); oyun çalışırken istek atılmaz.
   - Nominatim kullanım kurallarına uy: en fazla 1 istek/sn, tanımlayıcı `User-Agent`, sonuçları önbelleğe al (aynı nokta tekrar sorgulanmasın).
-  - Oyun sonu tablosunda ve tur sonucunda Edirne ve Bursa noktalarında "Edirne, Türkiye" yerine semt gösterilsin (ör. "Kaleiçi, Edirne"). Semt bulunamazsa şehir adına düşülsün.
+  - Oyun sonu tablosunda ve tur sonucunda İstanbul, Edirne ve Bursa noktalarında (özellikle şehir haritalarında) "Edirne, Türkiye" yerine semt gösterilsin (ör. "Kaleiçi, Edirne"). Semt bulunamazsa şehir adına düşülsün.
 - Ses efektleri (kapatılabilir), geçiş animasyonları, kulüp logosu için yer.
 
 ## Kurallar

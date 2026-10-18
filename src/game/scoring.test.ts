@@ -18,6 +18,13 @@ describe('scoreFor', () => {
     expect(scoreFor(250, 'turkey')).toBe(Math.round(5000 / Math.E));
   });
 
+  it('uses city-sized scales for the city maps', () => {
+    expect(scoreFor(1.5, 'edirne')).toBe(Math.round(5000 / Math.E));
+    expect(scoreFor(3, 'bursa')).toBe(Math.round(5000 / Math.E));
+    expect(scoreFor(5, 'istanbul')).toBe(Math.round(5000 / Math.E));
+    expect(scoreFor(30, 'istanbul')).toBeLessThan(20);
+  });
+
   it('is stricter on smaller maps', () => {
     const km = 300;
     expect(scoreFor(km, 'world')).toBeGreaterThan(scoreFor(km, 'europe'));
