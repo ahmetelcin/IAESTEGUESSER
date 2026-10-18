@@ -30,12 +30,17 @@ export function createResultScreen(root: HTMLElement, onNext: () => void): Resul
   const distanceEl = el('p', 'result__distance');
   const placeEl = el('p', 'result__place');
   const iaesteEl = el('p', 'result__iaeste', 'Bu ülkede IAESTE stajı var — standımızda sor');
+  // The photographer is hidden during the round (their username can give the place away).
+  const creditEl = el('p', 'result__credit');
   const nextBtn = el('button', 'btn btn--primary result__next', 'SONRAKİ TUR');
   nextBtn.type = 'button';
   nextBtn.addEventListener('click', onNext);
 
   panel.append(scoreRow, bar, distanceEl, placeEl, iaesteEl, nextBtn);
-  screen.append(mapEl, panel);
+  // Bottom-left corner of the map, opposite the tile attribution.
+  const mapWrap = el('div', 'result__map-wrap');
+  mapWrap.append(mapEl, creditEl);
+  screen.append(mapWrap, panel);
   root.append(screen);
 
   // minZoom 2: at zoom 1 the world is shorter than the screen and repeats sideways.
@@ -95,6 +100,7 @@ export function createResultScreen(root: HTMLElement, onNext: () => void): Resul
       if (km === null) distanceEl.textContent = 'Süre doldu — tahmin yapılmadı';
       else distanceEl.innerHTML = `Tahminin <strong>${formatDistance(km)}</strong> uzakta`;
       placeEl.textContent = `${location.city}, ${location.country}`;
+      creditEl.textContent = `Görüntü: ${location.creator ?? 'Mapillary katkıcısı'} · Mapillary · CC BY-SA`;
       nextBtn.textContent = isLastRound ? 'SONUÇLARI GÖR' : 'SONRAKİ TUR';
       nextBtn.focus({ preventScroll: true });
     },

@@ -106,3 +106,17 @@
 .admin__hint {
   padding-top: 12px;
 }
+.admin__pin {
+  width: 140px;
+  font-size: 26px;
+  letter-spacing: 0.4em;
+  text-align: center;
+}
+.admin__pin-msg {
+  margin: 0;
+  font-size: 14px;
+  color: var(--hud-muted);
+}
+.admin__content {
+  display: contents;
+}

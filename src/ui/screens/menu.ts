@@ -2,10 +2,7 @@ import { ROUNDS_PER_GAME } from '../../config';
 import { MAP_INFO, isPlayable } from '../../data/maps';
 import type { Mode } from '../../game/modes';
 import type { MapId } from '../../game/scoring';
-import type { LeaderboardEntry } from '../../services/leaderboard';
 import { el } from '../dom';
-import { renderLeaderboard } from '../leaderboardList';
-
 
 export interface MenuChoice {
   name: string;
@@ -15,9 +12,11 @@ export interface MenuChoice {
 
 export interface MenuScreen {
   /** Fresh menu for a new player (clears the name). */
-  show(entries: LeaderboardEntry[]): void;
-  /** Updates only the leaderboard, keeping whatever is being typed. */
-  setBoard(entries: LeaderboardEntry[]): void;
+  show(): void;
+  /** Back from a sub-screen: keeps the typed name and picks. */
+  resume(): void;
+  /** Currently picked map and mode (the leaderboard opens on them). */
+  readonly picks: { mapId: MapId; mode: Mode };
 }
 
 interface Option<T extends string> {
@@ -70,10 +69,12 @@ function segmented<T extends string>(title: string, options: Option<T>[], onChan
   return group;
 }
 
-export function createMenuScreen(root: HTMLElement, onPlay: (choice: MenuChoice) => void): MenuScreen {
+export function createMenuScreen(
+  root: HTMLElement,
+  actions: { onPlay: (choice: MenuChoice) => void; onLeaderboard: () => void; onCredits: () => void },
+): MenuScreen {
   const screen = el('section', 'screen screen--menu');
   const main = el('div', 'menu__main');
-  const side = el('aside', 'hud-panel menu__board');
 
   const brand = el('header', 'menu__brand');
   brand.append(
@@ -105,13 +106,18 @@ export function createMenuScreen(root: HTMLElement, onPlay: (choice: MenuChoice)
   playBtn.disabled = true;
 
   form.append(nameGroup, mapGroup, modeGroup, playBtn);
-  main.append(brand, form);
 
-  side.append(el('h2', 'menu__board-title', 'Günün Liderleri'));
-  const list = el('ol', 'board');
-  side.append(list);
+  const links = el('nav', 'menu__links');
+  const link = (text: string, onClick: () => void) => {
+    const b = el('button', 'btn menu__link', text);
+    b.type = 'button';
+    b.addEventListener('click', onClick);
+    return b;
+  };
+  links.append(link('🏆 LİDERLİK TABLOSU', actions.onLeaderboard), link('📷 GÖRÜNTÜ KAYNAKLARI', actions.onCredits));
+  main.append(brand, form, links);
 
-  screen.append(main, side);
+  screen.append(main);
   root.append(screen);
 
   const cleanName = () => nameInput.value.trim().replace(/\s+/g, ' ');
@@ -125,15 +131,17 @@ export function createMenuScreen(root: HTMLElement, onPlay: (choice: MenuChoice)
       nameInput.focus();
       return;
     }
-    onPlay({ name, mapId, mode });
+    actions.onPlay({ name, mapId, mode });
   });
 
   return {
-    setBoard(entries) {
-      renderLeaderboard(list, entries);
+    get picks() {
+      return { mapId, mode };
     },
-    show(entries) {
-      renderLeaderboard(list, entries);
+    resume() {
+      requestAnimationFrame(() => nameInput.focus({ preventScroll: true }));
+    },
+    show() {
       nameInput.value = '';
       playBtn.disabled = true;
       // Wait a frame so the screen is visible before focusing.

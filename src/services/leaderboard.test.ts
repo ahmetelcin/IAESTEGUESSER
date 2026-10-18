@@ -4,6 +4,7 @@ import {
   createLeaderboard,
   dayKey,
   leaderboardCsv,
+  type BoardFilter,
   type LeaderboardEntry,
   type StorageLike,
 } from './leaderboard';
@@ -30,6 +31,17 @@ const DAY1 = new Date(2026, 9, 19, 10, 0);
 const DAY1_LATER = new Date(2026, 9, 19, 18, 0);
 const DAY2 = new Date(2026, 9, 20, 9, 0);
 
+const TODAY_WORLD: BoardFilter = { mode: 'moving', mapId: 'world', period: 'today' };
+const game = (name: string, score: number, over: Partial<LeaderboardEntry> = {}) => ({
+  name,
+  score,
+  mapId: 'world' as const,
+  mode: 'moving' as const,
+  rounds: 5,
+  ...over,
+});
+const names = (entries: LeaderboardEntry[]) => entries.map((e) => e.name);
+
 describe('leaderboard', () => {
   let storage: ReturnType<typeof memoryStorage>;
   beforeEach(() => {
@@ -37,66 +49,106 @@ describe('leaderboard', () => {
   });
 
   it('starts empty', () => {
-    expect(createLeaderboard(storage).today(DAY1)).toEqual([]);
+    expect(createLeaderboard(storage).board(TODAY_WORLD, DAY1)).toEqual([]);
   });
 
-  it('returns entries sorted by score, highest first', () => {
+  it('sorts by score, highest first', () => {
     const lb = createLeaderboard(storage);
-    lb.add({ name: 'Ada', score: 12000, mapId: 'world' }, DAY1);
-    lb.add({ name: 'Can', score: 18000, mapId: 'world' }, DAY1);
-    lb.add({ name: 'Ece', score: 9000, mapId: 'world' }, DAY1);
-    expect(lb.today(DAY1).map((e) => e.name)).toEqual(['Can', 'Ada', 'Ece']);
+    lb.add(game('Ada', 12000), DAY1);
+    lb.add(game('Can', 18000), DAY1);
+    lb.add(game('Ece', 9000), DAY1);
+    expect(names(lb.board(TODAY_WORLD, DAY1))).toEqual(['Can', 'Ada', 'Ece']);
   });
 
-  it('returns the 1-based daily rank of the new entry', () => {
+  it('returns the 1-based rank on today’s board for the same mode and map', () => {
     const lb = createLeaderboard(storage);
-    expect(lb.add({ name: 'Ada', score: 12000, mapId: 'world' }, DAY1)).toBe(1);
-    expect(lb.add({ name: 'Can', score: 18000, mapId: 'world' }, DAY1)).toBe(1);
-    expect(lb.add({ name: 'Ece', score: 15000, mapId: 'world' }, DAY1)).toBe(2);
-    expect(lb.add({ name: 'Efe', score: 100, mapId: 'world' }, DAY1)).toBe(4);
+    expect(lb.add(game('Ada', 12000), DAY1)).toBe(1);
+    expect(lb.add(game('Can', 18000), DAY1)).toBe(1);
+    expect(lb.add(game('Ece', 15000), DAY1)).toBe(2);
+    expect(lb.add(game('Efe', 100), DAY1)).toBe(4);
+    // Other boards don't count against you.
+    expect(lb.add(game('Nur', 50, { mode: 'nmpz' }), DAY1)).toBe(1);
+    expect(lb.add(game('Tan', 60, { mapId: 'turkey' }), DAY1)).toBe(1);
   });
 
-  it('ranks the earlier entry first on equal scores', () => {
+  it('ranks the earlier game first on equal scores', () => {
     const lb = createLeaderboard(storage);
-    lb.add({ name: 'Ilk', score: 10000, mapId: 'world' }, DAY1);
-    expect(lb.add({ name: 'Sonra', score: 10000, mapId: 'world' }, DAY1_LATER)).toBe(2);
-    expect(lb.today(DAY1).map((e) => e.name)).toEqual(['Ilk', 'Sonra']);
+    lb.add(game('Ilk', 10000), DAY1);
+    expect(lb.add(game('Sonra', 10000), DAY1_LATER)).toBe(2);
+    expect(names(lb.board(TODAY_WORLD, DAY1))).toEqual(['Ilk', 'Sonra']);
   });
 
-  it('only counts entries from the same local day', () => {
+  it('filters by mode and map', () => {
     const lb = createLeaderboard(storage);
-    lb.add({ name: 'Dun', score: 20000, mapId: 'world' }, DAY1);
-    lb.add({ name: 'Bugun', score: 5000, mapId: 'world' }, DAY2);
-    expect(lb.today(DAY2).map((e) => e.name)).toEqual(['Bugun']);
-    expect(lb.add({ name: 'Yeni', score: 1000, mapId: 'world' }, DAY2)).toBe(2);
+    lb.add(game('Dunya', 1), DAY1);
+    lb.add(game('Nmpz', 2, { mode: 'nmpz' }), DAY1);
+    lb.add(game('Turkiye', 3, { mapId: 'turkey' }), DAY1);
+    expect(names(lb.board(TODAY_WORLD, DAY1))).toEqual(['Dunya']);
+    expect(names(lb.board({ ...TODAY_WORLD, mode: 'nmpz' }, DAY1))).toEqual(['Nmpz']);
+    expect(names(lb.board({ ...TODAY_WORLD, mapId: 'turkey' }, DAY1))).toEqual(['Turkiye']);
+  });
+
+  it('today vs all time', () => {
+    const lb = createLeaderboard(storage);
+    lb.add(game('Dun', 20000), DAY1);
+    lb.add(game('Bugun', 5000), DAY2);
+    expect(names(lb.board(TODAY_WORLD, DAY2))).toEqual(['Bugun']);
+    expect(names(lb.board({ ...TODAY_WORLD, period: 'all' }, DAY2))).toEqual(['Dun', 'Bugun']);
+    expect(lb.add(game('Yeni', 1000), DAY2)).toBe(2);
+  });
+
+  it('only ranks 5-round games, but still stores the others', () => {
+    const lb = createLeaderboard(storage);
+    expect(lb.add(game('Kisa', 9000, { rounds: 3 }), DAY1)).toBeNull();
+    expect(lb.add(game('Uzun', 30000, { rounds: 10 }), DAY1)).toBeNull();
+    expect(lb.board(TODAY_WORLD, DAY1)).toEqual([]);
+    expect(lb.all()).toHaveLength(2);
   });
 
   it('limits the list', () => {
     const lb = createLeaderboard(storage);
-    for (let i = 0; i < 15; i++) lb.add({ name: `P${i}`, score: i * 100, mapId: 'world' }, DAY1);
-    const top = lb.today(DAY1, 10);
+    for (let i = 0; i < 15; i++) lb.add(game(`P${i}`, i * 100), DAY1);
+    const top = lb.board(TODAY_WORLD, DAY1, 10);
     expect(top).toHaveLength(10);
     expect(top[0].name).toBe('P14');
   });
 
   it('persists across instances', () => {
-    createLeaderboard(storage).add({ name: 'Ada', score: 12000, mapId: 'world' }, DAY1);
-    expect(createLeaderboard(storage).today(DAY1)).toHaveLength(1);
+    createLeaderboard(storage).add(game('Ada', 12000), DAY1);
+    expect(createLeaderboard(storage).board(TODAY_WORLD, DAY1)).toHaveLength(1);
+  });
+
+  it('fills in fields missing from older saves', () => {
+    storage.data.set(
+      STORAGE_KEY,
+      JSON.stringify([
+        // Phase 2: no mode, no rounds (always Moving, 5 rounds back then).
+        { name: 'Eski', score: 5, mapId: 'world', day: dayKey(DAY1), ts: 1 },
+        // No map at all: the leaderboard predates the other maps.
+        { name: 'Haritasiz', score: 4, day: dayKey(DAY1), ts: 2 },
+        // Former city maps are part of Türkiye now.
+        { name: 'Edirneli', score: 3, mapId: 'edirne', mode: 'moving', rounds: 5, day: dayKey(DAY1), ts: 3 },
+      ]),
+    );
+    const lb = createLeaderboard(storage);
+    expect(names(lb.board(TODAY_WORLD, DAY1))).toEqual(['Eski', 'Haritasiz']);
+    expect(names(lb.board({ ...TODAY_WORLD, mapId: 'turkey' }, DAY1))).toEqual(['Edirneli']);
+    expect(lb.all().every((e) => e.mode && e.rounds && e.mapId)).toBe(true);
   });
 
   it('clears all entries', () => {
     const lb = createLeaderboard(storage);
-    lb.add({ name: 'Ada', score: 12000, mapId: 'world' }, DAY1);
+    lb.add(game('Ada', 12000), DAY1);
     lb.clear();
-    expect(lb.today(DAY1)).toEqual([]);
-    expect(createLeaderboard(storage).today(DAY1)).toEqual([]);
+    expect(lb.all()).toEqual([]);
+    expect(createLeaderboard(storage).all()).toEqual([]);
   });
 
   it('ignores corrupt stored data', () => {
     storage.data.set(STORAGE_KEY, '{not json');
     const lb = createLeaderboard(storage);
-    expect(lb.today(DAY1)).toEqual([]);
-    expect(lb.add({ name: 'Ada', score: 1, mapId: 'world' }, DAY1)).toBe(1);
+    expect(lb.all()).toEqual([]);
+    expect(lb.add(game('Ada', 1), DAY1)).toBe(1);
   });
 
   it('drops malformed entries', () => {
@@ -104,19 +156,19 @@ describe('leaderboard', () => {
       STORAGE_KEY,
       JSON.stringify([{ name: 'Ok', score: 5, mapId: 'world', day: dayKey(DAY1), ts: 1 }, { foo: 1 }, null]),
     );
-    expect(createLeaderboard(storage).today(DAY1).map((e) => e.name)).toEqual(['Ok']);
+    expect(names(createLeaderboard(storage).all())).toEqual(['Ok']);
   });
 
   it('keeps working in memory when storage throws', () => {
     const lb = createLeaderboard(throwingStorage);
-    expect(lb.add({ name: 'Ada', score: 12000, mapId: 'world' }, DAY1)).toBe(1);
-    expect(lb.today(DAY1)).toHaveLength(1);
+    expect(lb.add(game('Ada', 12000), DAY1)).toBe(1);
+    expect(lb.board(TODAY_WORLD, DAY1)).toHaveLength(1);
   });
 
   it('works with no storage at all', () => {
     const lb = createLeaderboard(null);
-    lb.add({ name: 'Ada', score: 12000, mapId: 'world' }, DAY1);
-    expect(lb.today(DAY1)).toHaveLength(1);
+    lb.add(game('Ada', 12000), DAY1);
+    expect(lb.board(TODAY_WORLD, DAY1)).toHaveLength(1);
   });
 });
 
@@ -153,7 +205,7 @@ describe('leaderboardCsv', () => {
     expect(line).toContain(`;"'=HYPERLINK(""x"")";`);
   });
 
-  it('leaves unknown mode and rounds empty for old entries', () => {
+  it('leaves unknown mode and rounds empty', () => {
     expect(leaderboardCsv([entry({})]).split('\r\n')[1]).toBe('2026-10-19;14:05;Ada;12345;world;;');
   });
 });

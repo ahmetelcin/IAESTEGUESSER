@@ -1,6 +1,10 @@
 import { SETTINGS_LIMITS, type Settings, type SettingsStore } from '../../services/settings';
 import { dayKey, leaderboardCsv, type Leaderboard } from '../../services/leaderboard';
+import type { PinGate } from '../../services/pin';
 import { el } from '../dom';
+
+/** Shown in the panel; keep in sync with the keydown check in main.ts. */
+export const ADMIN_SHORTCUT = 'Ctrl+Shift+F8';
 
 export interface AdminPanel {
   readonly isOpen: boolean;
@@ -9,10 +13,10 @@ export interface AdminPanel {
   toggle(): void;
 }
 
-/** Staff-only overlay (Ctrl+Shift+A or #admin): stand settings and score management. */
+/** Staff-only overlay (Ctrl+Shift+F8 or #admin, behind a PIN): stand settings and scores. */
 export function createAdminPanel(
   root: HTMLElement,
-  deps: { settings: SettingsStore; leaderboard: Leaderboard; onChange: () => void },
+  deps: { settings: SettingsStore; leaderboard: Leaderboard; pin: PinGate; onChange: () => void },
 ): AdminPanel {
   const overlay = el('div', 'admin');
   overlay.hidden = true;
@@ -68,8 +72,52 @@ export function createAdminPanel(
   scoreRow.append(csvBtn, clearBtn);
   scores.append(el('h3', 'admin__subtitle', 'Skorlar'), count, scoreRow, confirmRow);
 
-  const hint = el('p', 'admin__hint', 'Kısayol: Ctrl+Shift+A · Kapat: Esc');
-  panel.append(header, form, scores, hint);
+  const hint = el('p', 'admin__hint', `Kısayol: ${ADMIN_SHORTCUT} · Kapat: Esc`);
+
+  // ── PIN step (every time the panel opens) ──
+  const lock = el('form', 'admin__section admin__lock');
+  lock.noValidate = true;
+  const pinInput = el('input', 'admin__input admin__pin');
+  pinInput.type = 'password';
+  pinInput.inputMode = 'numeric';
+  pinInput.maxLength = 4;
+  pinInput.autocomplete = 'off';
+  pinInput.setAttribute('aria-label', 'PIN');
+  const pinMsg = el('p', 'admin__pin-msg');
+  pinMsg.setAttribute('aria-live', 'polite');
+  lock.append(el('h3', 'admin__subtitle', 'PIN'), pinInput, pinMsg);
+  const content = el('div', 'admin__content');
+  content.append(form, scores);
+
+  panel.append(header, lock, content, hint);
+
+  const unlock = (on: boolean) => {
+    lock.hidden = on;
+    content.hidden = !on;
+  };
+  const tryPin = () => {
+    const result = deps.pin.check(pinInput.value);
+    if (result === 'ok') {
+      unlock(true);
+      refresh();
+      rounds.input.focus();
+      return;
+    }
+    pinInput.value = '';
+    if (result === 'wrong') pinMsg.textContent = 'Hatalı PIN.';
+    else if (result === 'locked') {
+      const secs = Math.max(1, Math.ceil((deps.pin.lockedUntil - Date.now()) / 1000));
+      pinMsg.textContent = `Çok fazla hatalı deneme — ${secs} sn bekleyin.`;
+    }
+  };
+  pinInput.addEventListener('input', () => {
+    pinInput.value = pinInput.value.replace(/\D/g, '');
+    if (pinInput.value.length === 4) tryPin();
+  });
+  lock.addEventListener('submit', (e) => {
+    e.preventDefault();
+    tryPin();
+  });
   overlay.append(panel);
   root.append(overlay);
 
@@ -133,9 +181,15 @@ export function createAdminPanel(
       return !overlay.hidden;
     },
     open() {
-      refresh();
+      unlock(false);
+      pinInput.value = '';
+      pinInput.disabled = !deps.pin.configured;
+      pinMsg.textContent = deps.pin.configured
+        ? '4 haneli PIN’i girin.'
+        : 'PIN tanımlı değil — .env dosyasına 4 haneli VITE_ADMIN_PIN ekleyip yeniden derleyin.';
       overlay.hidden = false;
-      rounds.input.focus();
+      // Next frame, so it runs after any focus a screen queued the same way (menu's name field).
+      requestAnimationFrame(() => pinInput.focus());
     },
     close() {
       overlay.hidden = true;

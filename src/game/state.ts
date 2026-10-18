@@ -1,11 +1,13 @@
-export type GameState = 'menu' | 'loading' | 'round' | 'result' | 'summary';
+export type GameState = 'menu' | 'loading' | 'round' | 'result' | 'summary' | 'leaderboard' | 'credits';
 
 const TRANSITIONS: Record<GameState, readonly GameState[]> = {
-  menu: ['loading'],
+  menu: ['loading', 'leaderboard', 'credits'],
   loading: ['round', 'menu'],
   round: ['result', 'menu'],
   result: ['loading', 'summary', 'menu'],
   summary: ['menu', 'loading'],
+  leaderboard: ['menu'],
+  credits: ['menu'],
 };
 
 type Listener = (to: GameState, from: GameState) => void;

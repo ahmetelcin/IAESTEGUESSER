@@ -34,13 +34,23 @@ body {
 .screen--loading,
 .screen--result,
 .screen--menu,
-.screen--summary {
+.screen--summary,
+.screen--board,
+.screen--credits {
   display: none;
 }
 #app[data-state='loading'] .screen--loading,
 #app[data-state='result'] .screen--result,
-#app[data-state='menu'] .screen--menu {
+#app[data-state='menu'] .screen--menu,
+#app[data-state='leaderboard'] .screen--board,
+#app[data-state='credits'] .screen--credits {
   display: flex;
+}
+/* Anti-cheat: the photographer's username can name the place, so it is hidden while
+   playing (logo and date stay) and shown on the result screen and the credits page. */
+#app[data-state='round'] .mapillary-attribution-image-container,
+#app[data-state='loading'] .mapillary-attribution-image-container {
+  display: none;
 }
 #app[data-state='summary'] .screen--summary {
   display: grid;

@@ -12,7 +12,10 @@ export interface SummaryData {
   name: string;
   results: readonly RoundResult[];
   totalScore: number;
-  rank: number;
+  /** Rank on today's board for this mode and map; null when the game isn't ranked. */
+  rank: number | null;
+  /** e.g. "IAESTE Dünya · Hareketli" */
+  boardLabel: string;
   board: LeaderboardEntry[];
   me: LeaderboardEntry | undefined;
 }
@@ -69,7 +72,7 @@ export function createSummaryScreen(root: HTMLElement, onNewPlayer: () => void):
   const layers = L.layerGroup().addTo(map);
 
   return {
-    show({ name, results, totalScore, rank, board: entries, me }) {
+    show({ name, results, totalScore, rank, boardLabel, board: entries, me }) {
       layers.clearLayers();
       map.invalidateSize({ pan: false });
 
@@ -118,7 +121,9 @@ export function createSummaryScreen(root: HTMLElement, onNewPlayer: () => void):
       requestAnimationFrame(() => {
         barFill.style.width = `${(totalScore / max) * 100}%`;
       });
-      rankEl.innerHTML = `Günün sıralamasında <strong>${rank}.</strong> sıradasın`;
+      if (rank === null) rankEl.textContent = 'Bu oyun sıralamaya girmez (sadece 5 turluk oyunlar sıralanır).';
+      else rankEl.innerHTML = `Günün sıralamasında <strong>${rank}.</strong> sıradasın`;
+      boardTitle.textContent = `Günün liderleri — ${boardLabel}`;
 
       body.replaceChildren();
       results.forEach((r, i) => {
@@ -132,7 +137,7 @@ export function createSummaryScreen(root: HTMLElement, onNewPlayer: () => void):
         body.append(tr);
       });
 
-      renderLeaderboard(board, entries, me);
+      renderLeaderboard(board, entries, { highlight: me, empty: 'Bugün bu tabloda henüz skor yok.' });
       newBtn.focus({ preventScroll: true });
     },
   };

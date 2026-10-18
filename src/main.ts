@@ -8,18 +8,22 @@ import './styles/result.css';
 import './styles/menu.css';
 import './styles/summary.css';
 import './styles/admin.css';
+import './styles/board.css';
 
-import { ATTRACT_TIMEOUT_MS, MAPILLARY_TOKEN, MAX_LOAD_ATTEMPTS } from './config';
+import { ADMIN_PIN, ATTRACT_TIMEOUT_MS, MAPILLARY_TOKEN, MAX_LOAD_ATTEMPTS } from './config';
 import { MAPS, MAP_INFO, type Location } from './data/maps';
 import type { LatLng } from './game/geo';
 import { createIdleWatcher } from './game/idle';
-import { MODE_RULES, type Mode } from './game/modes';
+import { MODE_LABELS, MODE_RULES, type Mode } from './game/modes';
 import { createSession, type Session } from './game/session';
 import { createStateMachine } from './game/state';
 import { createTimer } from './game/timer';
 import { createLeaderboard } from './services/leaderboard';
+import { createPinGate } from './services/pin';
 import { createSettings } from './services/settings';
 import { createAdminPanel } from './ui/screens/admin';
+import { createCreditsScreen } from './ui/screens/credits';
+import { createLeaderboardScreen } from './ui/screens/leaderboard';
 import { createLoadingScreen } from './ui/screens/loading';
 import { createMenuScreen, type MenuChoice } from './ui/screens/menu';
 import { createResultScreen } from './ui/screens/result';
@@ -55,12 +59,32 @@ function start() {
   const round = createRoundScreen(app, MAPILLARY_TOKEN, guess);
   const result = createResultScreen(app, next);
   const summary = createSummaryScreen(app, newPlayer);
-  const menu = createMenuScreen(app, play);
+  const menu = createMenuScreen(app, {
+    onPlay: play,
+    onLeaderboard: () => openSubScreen('leaderboard'),
+    onCredits: () => openSubScreen('credits'),
+  });
+  const board = createLeaderboardScreen(app, leaderboard, backToMenu);
+  const credits = createCreditsScreen(app, backToMenu);
   const admin = createAdminPanel(app, {
     settings,
     leaderboard,
-    onChange: () => menu.setBoard(leaderboard.today()),
+    pin: createPinGate(ADMIN_PIN),
+    onChange: () => board.refresh(),
   });
+
+  function openSubScreen(screen: 'leaderboard' | 'credits') {
+    if (state.current !== 'menu') return;
+    state.transition(screen);
+    if (screen === 'leaderboard') board.show({ ...menu.picks, period: 'today' });
+    else credits.show();
+  }
+
+  function backToMenu() {
+    if (state.current !== 'leaderboard' && state.current !== 'credits') return;
+    state.transition('menu');
+    menu.resume();
+  }
 
   const timer = createTimer({
     onTick: (s) => round.statusBar.setTime(s),
@@ -69,7 +93,7 @@ function start() {
   });
 
   function enterMenu() {
-    menu.show(leaderboard.today());
+    menu.show();
     const pool = MAPS.world;
     menuLocation = pool[Math.floor(Math.random() * pool.length)];
     round.panorama.setRules({ move: false, pan: false, zoom: false });
@@ -156,15 +180,16 @@ function start() {
       mode,
       rounds: s.totalRounds,
     });
-    const board = leaderboard.today();
+    const today = leaderboard.board({ mode, mapId: s.mapId, period: 'today' });
     state.transition('summary');
     summary.show({
       name: playerName,
       results: s.results,
       totalScore: s.totalScore,
       rank,
-      board,
-      me: board[rank - 1],
+      boardLabel: `${MAP_INFO[s.mapId].label} · ${MODE_LABELS[mode]}`,
+      board: today,
+      me: rank !== null ? today[rank - 1] : undefined,
     });
   }
 
@@ -192,14 +217,21 @@ function start() {
 
   // ── Keyboard ──
   window.addEventListener('keydown', (e) => {
-    // Staff shortcut works everywhere, even while typing a name.
-    if (e.ctrlKey && e.shiftKey && e.code === 'KeyA') {
+    // Staff shortcut (ADMIN_SHORTCUT) works everywhere, even while typing a name.
+    // Not Ctrl+Shift+A: Chrome reserves that for tab search.
+    if (e.ctrlKey && e.shiftKey && e.code === 'F8') {
       e.preventDefault();
       admin.toggle();
       return;
     }
     if (admin.isOpen) {
       if (e.code === 'Escape') admin.close();
+      return;
+    }
+
+    // Before the text-field check: focus may still sit in the (now hidden) name field.
+    if (e.code === 'Escape' && (state.current === 'leaderboard' || state.current === 'credits')) {
+      backToMenu();
       return;
     }
 
@@ -228,7 +260,7 @@ function start() {
     if (e.code === 'Space' && (e.target as HTMLElement | null)?.tagName === 'BUTTON') e.preventDefault();
   });
 
-  // Fallback for browsers that reserve Ctrl+Shift+A (Chrome's tab search): open with #admin.
+  // Fallback when the shortcut is awkward (laptop Fn keys, kiosk keyboards): open with #admin.
   const openAdminFromHash = () => {
     if (location.hash === '#admin' && !admin.isOpen) admin.open();
   };

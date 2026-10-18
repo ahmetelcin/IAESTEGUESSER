@@ -1,4 +1,4 @@
-export type MapId = 'world' | 'europe' | 'turkey' | 'edirne' | 'bursa';
+export type MapId = 'world' | 'europe' | 'turkey';
 
 export const MAX_SCORE = 5000;
 export const FULL_SCORE_KM = 0.15;
@@ -7,9 +7,6 @@ export const SCALES: Record<MapId, number> = {
   world: 2000,
   europe: 800,
   turkey: 250,
-  // City maps: a few km across, so a miss of a few km should already cost most points.
-  edirne: 1.5,
-  bursa: 3,
 };
 
 export function scoreFor(km: number, mapId: MapId): number {

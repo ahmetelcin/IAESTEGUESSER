@@ -13,3 +13,9 @@ export const MODE_RULES: Record<Mode, ModeRules> = {
   'no-move': { move: false, pan: true, zoom: true },
   nmpz: { move: false, pan: false, zoom: false },
 };
+
+export const MODE_LABELS: Record<Mode, string> = {
+  moving: 'Hareketli',
+  'no-move': 'Hareketsiz',
+  nmpz: 'NMPZ',
+};

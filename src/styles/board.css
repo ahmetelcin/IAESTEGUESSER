@@ -1,0 +1,113 @@
+/* Leaderboard and credits screens: a centered panel over the menu's rotating panorama. */
+.screen--board,
+.screen--credits {
+  z-index: 25;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background: rgba(6, 33, 79, 0.82);
+}
+.board-screen,
+.credits {
+  width: min(720px, 100%);
+  max-height: calc(100vh - 64px);
+  overflow: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.board-screen__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.board-screen__title {
+  margin: 0;
+  font-size: 26px;
+}
+.board-screen__back {
+  background: rgba(232, 240, 250, 0.12);
+  color: var(--hud-text);
+  padding: 10px 16px;
+}
+.board-screen__back:hover {
+  background: rgba(232, 240, 250, 0.2);
+}
+.board-screen__filters {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tabs__tab {
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--hud-border);
+  background: rgba(232, 240, 250, 0.05);
+  color: var(--hud-text);
+  cursor: pointer;
+}
+.tabs__tab:hover {
+  border-color: var(--blue-300);
+}
+.tabs__tab.is-active {
+  border-color: var(--accent);
+  background: rgba(255, 138, 0, 0.18);
+}
+.board--large .board__row {
+  padding: 10px 12px;
+  font-size: 17px;
+}
+.board--dated .board__row {
+  grid-template-columns: 28px 1fr auto auto;
+}
+.board__date {
+  color: var(--hud-muted);
+  font-size: 13px;
+}
+.board-screen__note,
+.credits__note {
+  margin: 0;
+  color: var(--hud-muted);
+  font-size: 13px;
+}
+
+.credits__intro {
+  margin: 0;
+  line-height: 1.5;
+}
+.credits__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 6px;
+}
+.credits__item {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(232, 240, 250, 0.05);
+  font-size: 14px;
+}
+.credits__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.credits__count {
+  color: var(--hud-muted);
+  font-variant-numeric: tabular-nums;
+}

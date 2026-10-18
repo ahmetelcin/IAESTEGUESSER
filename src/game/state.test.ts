@@ -25,6 +25,20 @@ describe('state machine', () => {
     expect(sm.current).toBe('menu');
   });
 
+  it('opens the leaderboard and credits from the menu and comes back', () => {
+    const sm = createStateMachine('menu');
+    sm.transition('leaderboard');
+    sm.transition('menu');
+    sm.transition('credits');
+    sm.transition('menu');
+    expect(sm.current).toBe('menu');
+  });
+
+  it('does not start a game straight from the leaderboard or credits', () => {
+    expect(() => createStateMachine('leaderboard').transition('loading')).toThrow();
+    expect(() => createStateMachine('credits').transition('round')).toThrow();
+  });
+
   it('rejects invalid transitions and keeps the state', () => {
     const sm = createStateMachine('loading');
     expect(() => sm.transition('result')).toThrow();

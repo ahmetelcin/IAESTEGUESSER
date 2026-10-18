@@ -116,15 +116,21 @@
   font-size: 20px;
   padding: 14px;
 }
-.menu__board {
-  width: min(360px, 100%);
-  padding: 20px;
-  max-height: calc(100vh - 80px);
-  overflow: auto;
+.menu__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
-.menu__board-title {
-  margin: 0 0 12px;
-  font-size: 15px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+.menu__link {
+  flex: 1;
+  background: rgba(6, 22, 52, 0.72);
+  border: 1px solid var(--hud-border);
+  color: var(--hud-text);
+  font-size: 14px;
+  padding: 12px 14px;
+  backdrop-filter: blur(8px);
+}
+.menu__link:hover {
+  border-color: var(--blue-300);
+  background: rgba(27, 95, 170, 0.6);
 }

@@ -3,8 +3,14 @@
   flex-direction: column;
   background: var(--blue-900);
 }
-.result__map {
+.result__map-wrap {
+  position: relative;
   flex: 0 0 70%;
+  min-height: 0;
+}
+.result__map {
+  position: absolute;
+  inset: 0;
 }
 .result__line {
   stroke: var(--blue-900);
@@ -16,8 +22,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 16px;
+  gap: 6px;
+  padding: 10px 16px;
+  min-height: 0;
   background: linear-gradient(180deg, var(--blue-700), var(--blue-900));
   border-top: 1px solid var(--hud-border);
 }
@@ -27,7 +34,8 @@
   gap: 8px;
 }
 .result__score {
-  font-size: 44px;
+  font-size: 42px;
+  line-height: 1;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   color: var(--accent);
@@ -70,4 +78,15 @@
 .result__next {
   margin-top: 6px;
   min-width: 220px;
+}
+.result__credit {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 500; /* above Leaflet panes */
+  margin: 0;
+  padding: 2px 8px;
+  font-size: 12px;
+  color: #333;
+  background: rgba(255, 255, 255, 0.8);
 }

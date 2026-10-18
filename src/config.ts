@@ -1,4 +1,6 @@
 export const MAPILLARY_TOKEN: string = import.meta.env.VITE_MAPILLARY_TOKEN ?? '';
+/** 4 digits from .env; the admin panel stays locked without it. */
+export const ADMIN_PIN: string | undefined = import.meta.env.VITE_ADMIN_PIN;
 
 // Esri World Street Map — keyless. (CARTO basemaps now require an API key.)
 export const TILE_URL =
