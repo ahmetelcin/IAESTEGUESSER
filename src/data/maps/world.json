@@ -6,7 +6,8 @@
     "lat": 52.526042932089,
     "lng": 13.399762820508,
     "city": "Berlin",
-    "country": "Almanya"
+    "country": "Almanya",
+    "creator": "eserte"
   },
   {
     "id": "berlin-2",
@@ -15,7 +16,8 @@
     "lat": 52.513875320334,
     "lng": 13.404372375944,
     "city": "Berlin",
-    "country": "Almanya"
+    "country": "Almanya",
+    "creator": "eserte"
   },
   {
     "id": "berlin-3",
@@ -24,7 +26,8 @@
     "lat": 52.518472966041,
     "lng": 13.403863432028,
     "city": "Berlin",
-    "country": "Almanya"
+    "country": "Almanya",
+    "creator": "eserte"
   },
   {
     "id": "berlin-4",
@@ -33,7 +36,8 @@
     "lat": 52.512721870495,
     "lng": 13.411118529691,
     "city": "Berlin",
-    "country": "Almanya"
+    "country": "Almanya",
+    "creator": "eserte"
   },
   {
     "id": "munich-1",
@@ -42,7 +46,8 @@
     "lat": 48.142915980992,
     "lng": 11.570415026147,
     "city": "Münih",
-    "country": "Almanya"
+    "country": "Almanya",
+    "creator": "osmplus_org"
   },
   {
     "id": "munich-2",
@@ -51,7 +56,8 @@
     "lat": 48.135739766952,
     "lng": 11.577513958837,
     "city": "Münih",
-    "country": "Almanya"
+    "country": "Almanya",
+    "creator": "osmplus_org"
   },
   {
     "id": "munich-3",
@@ -60,7 +66,8 @@
     "lat": 48.129434724039,
     "lng": 11.57572594965,
     "city": "Münih",
-    "country": "Almanya"
+    "country": "Almanya",
+    "creator": "q5gads4"
   },
   {
     "id": "munich-4",
@@ -69,7 +76,8 @@
     "lat": 48.145178613263,
     "lng": 11.573667083334,
     "city": "Münih",
-    "country": "Almanya"
+    "country": "Almanya",
+    "creator": "q5gads4"
   },
   {
     "id": "vienna-1",
@@ -78,7 +86,8 @@
     "lat": 48.201103791029,
     "lng": 16.368686445758,
     "city": "Viyana",
-    "country": "Avusturya"
+    "country": "Avusturya",
+    "creator": "erias"
   },
   {
     "id": "vienna-2",
@@ -87,7 +96,8 @@
     "lat": 48.202995776445,
     "lng": 16.365902881911,
     "city": "Viyana",
-    "country": "Avusturya"
+    "country": "Avusturya",
+    "creator": "consens_verkehrsplanung"
   },
   {
     "id": "vienna-3",
@@ -96,7 +106,8 @@
     "lat": 48.2080236,
     "lng": 16.3667011,
     "city": "Viyana",
-    "country": "Avusturya"
+    "country": "Avusturya",
+    "creator": "bconnolly"
   },
   {
     "id": "zurich-1",
@@ -105,7 +116,8 @@
     "lat": 47.376093450284,
     "lng": 8.543417257211,
     "city": "Zürih",
-    "country": "İsviçre"
+    "country": "İsviçre",
+    "creator": "osmplus_org"
   },
   {
     "id": "zurich-2",
@@ -114,7 +126,8 @@
     "lat": 47.370416753309,
     "lng": 8.549420976253,
     "city": "Zürih",
-    "country": "İsviçre"
+    "country": "İsviçre",
+    "creator": "beat"
   },
   {
     "id": "zurich-3",
@@ -123,7 +136,8 @@
     "lat": 47.375896568082,
     "lng": 8.5340847157287,
     "city": "Zürih",
-    "country": "İsviçre"
+    "country": "İsviçre",
+    "creator": "fcignat"
   },
   {
     "id": "paris-1",
@@ -132,7 +146,8 @@
     "lat": 48.852550271053,
     "lng": 2.3475487441596,
     "city": "Paris",
-    "country": "Fransa"
+    "country": "Fransa",
+    "creator": "cartocite"
   },
   {
     "id": "paris-2",
@@ -141,7 +156,8 @@
     "lat": 48.856515646617,
     "lng": 2.3536408984521,
     "city": "Paris",
-    "country": "Fransa"
+    "country": "Fransa",
+    "creator": "GEO_VilledeParis"
   },
   {
     "id": "paris-3",
@@ -150,7 +166,8 @@
     "lat": 48.858344878761,
     "lng": 2.3480235568246,
     "city": "Paris",
-    "country": "Fransa"
+    "country": "Fransa",
+    "creator": "geovelo"
   },
   {
     "id": "paris-4",
@@ -159,7 +176,8 @@
     "lat": 48.864551007563,
     "lng": 2.3522577183153,
     "city": "Paris",
-    "country": "Fransa"
+    "country": "Fransa",
+    "creator": "Stefdegreef"
   },
   {
     "id": "lyon-1",
@@ -168,7 +186,8 @@
     "lat": 45.768130257721,
     "lng": 4.8377181209835,
     "city": "Lyon",
-    "country": "Fransa"
+    "country": "Fransa",
+    "creator": "po_gregoire"
   },
   {
     "id": "lyon-2",
@@ -177,7 +196,8 @@
     "lat": 45.768314667532,
     "lng": 4.8339830266461,
     "city": "Lyon",
-    "country": "Fransa"
+    "country": "Fransa",
+    "creator": "po_gregoire"
   },
   {
     "id": "lyon-3",
@@ -186,7 +206,8 @@
     "lat": 45.751442661644,
     "lng": 4.8292841950565,
     "city": "Lyon",
-    "country": "Fransa"
+    "country": "Fransa",
+    "creator": "simon_geovelo"
   },
   {
     "id": "lyon-4",
@@ -195,7 +216,8 @@
     "lat": 45.77173236766,
     "lng": 4.8407066625793,
     "city": "Lyon",
-    "country": "Fransa"
+    "country": "Fransa",
+    "creator": "geovelo"
   },
   {
     "id": "madrid-1",
@@ -204,7 +226,8 @@
     "lat": 40.414807932924,
     "lng": -3.6919822845098,
     "city": "Madrid",
-    "country": "İspanya"
+    "country": "İspanya",
+    "creator": "inspectorl3"
   },
   {
     "id": "madrid-2",
@@ -213,7 +236,8 @@
     "lat": 40.397876388889,
     "lng": -3.6865825,
     "city": "Madrid",
-    "country": "İspanya"
+    "country": "İspanya",
+    "creator": "borsalino"
   },
   {
     "id": "madrid-3",
@@ -222,7 +246,8 @@
     "lat": 40.40374400965,
     "lng": -3.7160830738588,
     "city": "Madrid",
-    "country": "İspanya"
+    "country": "İspanya",
+    "creator": "IvanSanchez"
   },
   {
     "id": "madrid-4",
@@ -231,7 +256,8 @@
     "lat": 40.427658131475,
     "lng": -3.6919898909086,
     "city": "Madrid",
-    "country": "İspanya"
+    "country": "İspanya",
+    "creator": "seraq"
   },
   {
     "id": "barcelona-1",
@@ -240,7 +266,8 @@
     "lat": 41.361890552474,
     "lng": 2.1685827116107,
     "city": "Barselona",
-    "country": "İspanya"
+    "country": "İspanya",
+    "creator": "AdgobaAlvac"
   },
   {
     "id": "barcelona-2",
@@ -249,7 +276,8 @@
     "lat": 41.367848747205,
     "lng": 2.1730436979342,
     "city": "Barselona",
-    "country": "İspanya"
+    "country": "İspanya",
+    "creator": "AdgobaAlvac"
   },
   {
     "id": "barcelona-3",
@@ -258,7 +286,8 @@
     "lat": 41.405716981699,
     "lng": 2.1697604827938,
     "city": "Barselona",
-    "country": "İspanya"
+    "country": "İspanya",
+    "creator": "frank984"
   },
   {
     "id": "barcelona-4",
@@ -267,7 +296,8 @@
     "lat": 41.409936986098,
     "lng": 2.1805474016316,
     "city": "Barselona",
-    "country": "İspanya"
+    "country": "İspanya",
+    "creator": "frank984"
   },
   {
     "id": "lisbon-1",
@@ -276,7 +306,8 @@
     "lat": 38.726642486061,
     "lng": -9.1407472169697,
     "city": "Lizbon",
-    "country": "Portekiz"
+    "country": "Portekiz",
+    "creator": "filohipo"
   },
   {
     "id": "lisbon-2",
@@ -285,7 +316,8 @@
     "lat": 38.730247572444,
     "lng": -9.1528150620103,
     "city": "Lizbon",
-    "country": "Portekiz"
+    "country": "Portekiz",
+    "creator": "skfd"
   },
   {
     "id": "lisbon-3",
@@ -294,7 +326,8 @@
     "lat": 38.726254673972,
     "lng": -9.1476659439721,
     "city": "Lizbon",
-    "country": "Portekiz"
+    "country": "Portekiz",
+    "creator": "skfd"
   },
   {
     "id": "lisbon-4",
@@ -303,7 +336,8 @@
     "lat": 38.729930246588,
     "lng": -9.1394056253733,
     "city": "Lizbon",
-    "country": "Portekiz"
+    "country": "Portekiz",
+    "creator": "filohipo"
   },
   {
     "id": "porto-1",
@@ -312,7 +346,8 @@
     "lat": 41.162348857123,
     "lng": -8.6274511654953,
     "city": "Porto",
-    "country": "Portekiz"
+    "country": "Portekiz",
+    "creator": "skfd"
   },
   {
     "id": "porto-2",
@@ -321,7 +356,8 @@
     "lat": 41.163930389414,
     "lng": -8.6353043051366,
     "city": "Porto",
-    "country": "Portekiz"
+    "country": "Portekiz",
+    "creator": "sanjorgepinho"
   },
   {
     "id": "porto-3",
@@ -330,7 +366,8 @@
     "lat": 41.161962494756,
     "lng": -8.6210680221255,
     "city": "Porto",
-    "country": "Portekiz"
+    "country": "Portekiz",
+    "creator": "skfd"
   },
   {
     "id": "porto-4",
@@ -339,7 +376,8 @@
     "lat": 41.159243938615,
     "lng": -8.6303370530352,
     "city": "Porto",
-    "country": "Portekiz"
+    "country": "Portekiz",
+    "creator": "sanjorgepinho"
   },
   {
     "id": "london-1",
@@ -348,7 +386,8 @@
     "lat": 51.511819285441,
     "lng": -0.13219321214322,
     "city": "Londra",
-    "country": "Birleşik Krallık"
+    "country": "Birleşik Krallık",
+    "creator": "cernbyln"
   },
   {
     "id": "london-2",
@@ -357,7 +396,8 @@
     "lat": 51.507642379189,
     "lng": -0.12330177757429,
     "city": "Londra",
-    "country": "Birleşik Krallık"
+    "country": "Birleşik Krallık",
+    "creator": "peterleth"
   },
   {
     "id": "london-3",
@@ -366,7 +406,8 @@
     "lat": 51.50088303317,
     "lng": -0.11995519777509,
     "city": "Londra",
-    "country": "Birleşik Krallık"
+    "country": "Birleşik Krallık",
+    "creator": "NatchaponJ"
   },
   {
     "id": "london-4",
@@ -375,7 +416,8 @@
     "lat": 51.514134483066,
     "lng": -0.12263166166886,
     "city": "Londra",
-    "country": "Birleşik Krallık"
+    "country": "Birleşik Krallık",
+    "creator": "Stefdegreef"
   },
   {
     "id": "dublin-1",
@@ -384,7 +426,8 @@
     "lat": 53.344454581823,
     "lng": -6.2591920222583,
     "city": "Dublin",
-    "country": "İrlanda"
+    "country": "İrlanda",
+    "creator": "graharg"
   },
   {
     "id": "dublin-2",
@@ -393,7 +436,8 @@
     "lat": 53.343647337675,
     "lng": -6.2551021684791,
     "city": "Dublin",
-    "country": "İrlanda"
+    "country": "İrlanda",
+    "creator": "graharg"
   },
   {
     "id": "dublin-3",
@@ -402,7 +446,8 @@
     "lat": 53.3498993,
     "lng": -6.2721845,
     "city": "Dublin",
-    "country": "İrlanda"
+    "country": "İrlanda",
+    "creator": "graharg"
   },
   {
     "id": "dublin-4",
@@ -411,7 +456,8 @@
     "lat": 53.344239598224,
     "lng": -6.2742704062151,
     "city": "Dublin",
-    "country": "İrlanda"
+    "country": "İrlanda",
+    "creator": "nyan11"
   },
   {
     "id": "amsterdam-1",
@@ -420,7 +466,8 @@
     "lat": 52.372652861677,
     "lng": 4.893496915592,
     "city": "Amsterdam",
-    "country": "Hollanda"
+    "country": "Hollanda",
+    "creator": "Stefdegreef"
   },
   {
     "id": "amsterdam-2",
@@ -429,7 +476,8 @@
     "lat": 52.375260284248,
     "lng": 4.9097126508605,
     "city": "Amsterdam",
-    "country": "Hollanda"
+    "country": "Hollanda",
+    "creator": "mapconcierge"
   },
   {
     "id": "amsterdam-3",
@@ -438,7 +486,8 @@
     "lat": 52.368735238497,
     "lng": 4.9045077035735,
     "city": "Amsterdam",
-    "country": "Hollanda"
+    "country": "Hollanda",
+    "creator": "ottor"
   },
   {
     "id": "amsterdam-4",
@@ -447,7 +496,8 @@
     "lat": 52.356550641701,
     "lng": 4.9058764889428,
     "city": "Amsterdam",
-    "country": "Hollanda"
+    "country": "Hollanda",
+    "creator": "ottor"
   },
   {
     "id": "brussels-1",
@@ -456,7 +506,8 @@
     "lat": 50.850681249641,
     "lng": 4.3532825118011,
     "city": "Brüksel",
-    "country": "Belçika"
+    "country": "Belçika",
+    "creator": "Stefdegreef"
   },
   {
     "id": "brussels-2",
@@ -465,7 +516,8 @@
     "lat": 50.845739226278,
     "lng": 4.3505319915095,
     "city": "Brüksel",
-    "country": "Belçika"
+    "country": "Belçika",
+    "creator": "RaphaelPasLoin"
   },
   {
     "id": "brussels-3",
@@ -474,7 +526,8 @@
     "lat": 50.844608828202,
     "lng": 4.3447769553149,
     "city": "Brüksel",
-    "country": "Belçika"
+    "country": "Belçika",
+    "creator": "RaphaelPasLoin"
   },
   {
     "id": "brussels-4",
@@ -483,7 +536,8 @@
     "lat": 50.843940808085,
     "lng": 4.3572525494386,
     "city": "Brüksel",
-    "country": "Belçika"
+    "country": "Belçika",
+    "creator": "thierry1030"
   },
   {
     "id": "luxembourg-1",
@@ -492,7 +546,8 @@
     "lat": 49.622493325241,
     "lng": 6.1326761017591,
     "city": "Lüksemburg",
-    "country": "Lüksemburg"
+    "country": "Lüksemburg",
+    "creator": "padididejurbise"
   },
   {
     "id": "luxembourg-2",
@@ -501,7 +556,8 @@
     "lat": 49.617128224763,
     "lng": 6.0851160545146,
     "city": "Lüksemburg",
-    "country": "Lüksemburg"
+    "country": "Lüksemburg",
+    "creator": "pivert"
   },
   {
     "id": "luxembourg-3",
@@ -510,7 +566,8 @@
     "lat": 49.627640930472,
     "lng": 6.1331340333534,
     "city": "Lüksemburg",
-    "country": "Lüksemburg"
+    "country": "Lüksemburg",
+    "creator": "padididejurbise"
   },
   {
     "id": "luxembourg-4",
@@ -519,7 +576,8 @@
     "lat": 49.615684514132,
     "lng": 6.0967743839855,
     "city": "Lüksemburg",
-    "country": "Lüksemburg"
+    "country": "Lüksemburg",
+    "creator": "pivert"
   },
   {
     "id": "copenhagen-1",
@@ -528,7 +586,8 @@
     "lat": 55.681044820933,
     "lng": 12.568874413178,
     "city": "Kopenhag",
-    "country": "Danimarka"
+    "country": "Danimarka",
+    "creator": "peterleth"
   },
   {
     "id": "copenhagen-2",
@@ -537,7 +596,8 @@
     "lat": 55.671251577018,
     "lng": 12.574639137462,
     "city": "Kopenhag",
-    "country": "Danimarka"
+    "country": "Danimarka",
+    "creator": "graharg"
   },
   {
     "id": "copenhagen-3",
@@ -546,7 +606,8 @@
     "lat": 55.677840355278,
     "lng": 12.56703622561,
     "city": "Kopenhag",
-    "country": "Danimarka"
+    "country": "Danimarka",
+    "creator": "peterleth"
   },
   {
     "id": "copenhagen-4",
@@ -555,7 +616,8 @@
     "lat": 55.668746356481,
     "lng": 12.572762723846,
     "city": "Kopenhag",
-    "country": "Danimarka"
+    "country": "Danimarka",
+    "creator": "pierreserpe"
   },
   {
     "id": "oslo-1",
@@ -564,7 +626,8 @@
     "lat": 59.906767653221,
     "lng": 10.745986555962,
     "city": "Oslo",
-    "country": "Norveç"
+    "country": "Norveç",
+    "creator": "Johand"
   },
   {
     "id": "oslo-2",
@@ -573,7 +636,8 @@
     "lat": 59.913686355061,
     "lng": 10.756253314029,
     "city": "Oslo",
-    "country": "Norveç"
+    "country": "Norveç",
+    "creator": "BYM_OlaJuulHolm"
   },
   {
     "id": "oslo-3",
@@ -582,7 +646,8 @@
     "lat": 59.919794684271,
     "lng": 10.745790147182,
     "city": "Oslo",
-    "country": "Norveç"
+    "country": "Norveç",
+    "creator": "BYM_OlaJuulHolm"
   },
   {
     "id": "oslo-4",
@@ -591,7 +656,8 @@
     "lat": 59.909037033624,
     "lng": 10.744580386656,
     "city": "Oslo",
-    "country": "Norveç"
+    "country": "Norveç",
+    "creator": "BYM_OlaJuulHolm"
   },
   {
     "id": "stockholm-1",
@@ -600,7 +666,8 @@
     "lat": 59.322414122037,
     "lng": 18.06927351218,
     "city": "Stockholm",
-    "country": "İsveç"
+    "country": "İsveç",
+    "creator": "cyklistbloggen"
   },
   {
     "id": "stockholm-2",
@@ -609,7 +676,8 @@
     "lat": 59.32439564072,
     "lng": 18.075654581685,
     "city": "Stockholm",
-    "country": "İsveç"
+    "country": "İsveç",
+    "creator": "bruno360"
   },
   {
     "id": "stockholm-3",
@@ -618,7 +686,8 @@
     "lat": 59.328783500693,
     "lng": 18.060924262752,
     "city": "Stockholm",
-    "country": "İsveç"
+    "country": "İsveç",
+    "creator": "bruno360"
   },
   {
     "id": "stockholm-4",
@@ -627,7 +696,8 @@
     "lat": 59.3293,
     "lng": 18.0686,
     "city": "Stockholm",
-    "country": "İsveç"
+    "country": "İsveç",
+    "creator": "pentestymly489c"
   },
   {
     "id": "helsinki-1",
@@ -636,7 +706,8 @@
     "lat": 60.162391652962,
     "lng": 24.931163204108,
     "city": "Helsinki",
-    "country": "Finlandiya"
+    "country": "Finlandiya",
+    "creator": "richlv"
   },
   {
     "id": "helsinki-2",
@@ -645,7 +716,8 @@
     "lat": 60.165635960605,
     "lng": 24.933013646646,
     "city": "Helsinki",
-    "country": "Finlandiya"
+    "country": "Finlandiya",
+    "creator": "arista"
   },
   {
     "id": "helsinki-3",
@@ -654,7 +726,8 @@
     "lat": 60.173913066072,
     "lng": 24.946256675546,
     "city": "Helsinki",
-    "country": "Finlandiya"
+    "country": "Finlandiya",
+    "creator": "johanfvh"
   },
   {
     "id": "helsinki-4",
@@ -663,7 +736,8 @@
     "lat": 60.171168843403,
     "lng": 24.939715831648,
     "city": "Helsinki",
-    "country": "Finlandiya"
+    "country": "Finlandiya",
+    "creator": "fvhmapper"
   },
   {
     "id": "tallinn-1",
@@ -672,7 +746,8 @@
     "lat": 59.441938304115,
     "lng": 24.772817188691,
     "city": "Tallinn",
-    "country": "Estonya"
+    "country": "Estonya",
+    "creator": "ESTmapper1001"
   },
   {
     "id": "tallinn-2",
@@ -681,7 +756,8 @@
     "lat": 59.441340023092,
     "lng": 24.747463800056,
     "city": "Tallinn",
-    "country": "Estonya"
+    "country": "Estonya",
+    "creator": "vlivyur"
   },
   {
     "id": "tallinn-3",
@@ -690,7 +766,8 @@
     "lat": 59.417292614653,
     "lng": 24.764168591129,
     "city": "Tallinn",
-    "country": "Estonya"
+    "country": "Estonya",
+    "creator": "svimik"
   },
   {
     "id": "tallinn-4",
@@ -699,7 +776,8 @@
     "lat": 59.423206631935,
     "lng": 24.741044464992,
     "city": "Tallinn",
-    "country": "Estonya"
+    "country": "Estonya",
+    "creator": "vlivyur"
   },
   {
     "id": "riga-1",
@@ -708,7 +786,8 @@
     "lat": 56.94791610617,
     "lng": 24.106799150557,
     "city": "Riga",
-    "country": "Letonya"
+    "country": "Letonya",
+    "creator": "ursus"
   },
   {
     "id": "riga-2",
@@ -717,7 +796,8 @@
     "lat": 56.957491938275,
     "lng": 24.109643523092,
     "city": "Riga",
-    "country": "Letonya"
+    "country": "Letonya",
+    "creator": "richlv"
   },
   {
     "id": "riga-3",
@@ -726,7 +806,8 @@
     "lat": 56.954961676955,
     "lng": 24.110001066765,
     "city": "Riga",
-    "country": "Letonya"
+    "country": "Letonya",
+    "creator": "richlv"
   },
   {
     "id": "riga-4",
@@ -735,7 +816,8 @@
     "lat": 56.94314955637,
     "lng": 24.112380858356,
     "city": "Riga",
-    "country": "Letonya"
+    "country": "Letonya",
+    "creator": "AmOosm"
   },
   {
     "id": "vilnius-1",
@@ -744,7 +826,8 @@
     "lat": 54.69458500458,
     "lng": 25.283853254768,
     "city": "Vilnius",
-    "country": "Litvanya"
+    "country": "Litvanya",
+    "creator": "kedas"
   },
   {
     "id": "vilnius-2",
@@ -753,7 +836,8 @@
     "lat": 54.692118087686,
     "lng": 25.280221485848,
     "city": "Vilnius",
-    "country": "Litvanya"
+    "country": "Litvanya",
+    "creator": "vms"
   },
   {
     "id": "vilnius-3",
@@ -762,7 +846,8 @@
     "lat": 54.691910165509,
     "lng": 25.272399261214,
     "city": "Vilnius",
-    "country": "Litvanya"
+    "country": "Litvanya",
+    "creator": "vms"
   },
   {
     "id": "vilnius-4",
@@ -771,7 +856,8 @@
     "lat": 54.695191672815,
     "lng": 25.279580208115,
     "city": "Vilnius",
-    "country": "Litvanya"
+    "country": "Litvanya",
+    "creator": "vms"
   },
   {
     "id": "warsaw-1",
@@ -780,7 +866,8 @@
     "lat": 52.236782446701,
     "lng": 21.018068441532,
     "city": "Varşova",
-    "country": "Polonya"
+    "country": "Polonya",
+    "creator": "awizonosz"
   },
   {
     "id": "warsaw-2",
@@ -789,7 +876,8 @@
     "lat": 52.223015939079,
     "lng": 21.004583851525,
     "city": "Varşova",
-    "country": "Polonya"
+    "country": "Polonya",
+    "creator": "awizonosz"
   },
   {
     "id": "warsaw-3",
@@ -798,7 +886,8 @@
     "lat": 52.234434111111,
     "lng": 21.004687444444,
     "city": "Varşova",
-    "country": "Polonya"
+    "country": "Polonya",
+    "creator": "awizonosz"
   },
   {
     "id": "warsaw-4",
@@ -807,7 +896,8 @@
     "lat": 52.222572725341,
     "lng": 21.019700597737,
     "city": "Varşova",
-    "country": "Polonya"
+    "country": "Polonya",
+    "creator": "awizonosz"
   },
   {
     "id": "krakow-1",
@@ -816,7 +906,8 @@
     "lat": 50.064535902021,
     "lng": 19.944576714972,
     "city": "Krakov",
-    "country": "Polonya"
+    "country": "Polonya",
+    "creator": "awizonosz"
   },
   {
     "id": "krakow-2",
@@ -825,7 +916,8 @@
     "lat": 50.068869758979,
     "lng": 19.95014714996,
     "city": "Krakov",
-    "country": "Polonya"
+    "country": "Polonya",
+    "creator": "awizonosz"
   },
   {
     "id": "krakow-3",
@@ -834,7 +926,8 @@
     "lat": 50.07249544472,
     "lng": 19.945345058247,
     "city": "Krakov",
-    "country": "Polonya"
+    "country": "Polonya",
+    "creator": "kubahaha"
   },
   {
     "id": "krakow-4",
@@ -843,7 +936,8 @@
     "lat": 50.057974719634,
     "lng": 19.947017648489,
     "city": "Krakov",
-    "country": "Polonya"
+    "country": "Polonya",
+    "creator": "awizonosz"
   },
   {
     "id": "prague-1",
@@ -852,7 +946,8 @@
     "lat": 50.080134050271,
     "lng": 14.433120595298,
     "city": "Prag",
-    "country": "Çekya"
+    "country": "Çekya",
+    "creator": "Bahai_Praha"
   },
   {
     "id": "prague-2",
@@ -861,7 +956,8 @@
     "lat": 50.073520137619,
     "lng": 14.442375375725,
     "city": "Prag",
-    "country": "Çekya"
+    "country": "Çekya",
+    "creator": "jeffreymartin"
   },
   {
     "id": "prague-3",
@@ -870,7 +966,8 @@
     "lat": 50.075966137901,
     "lng": 14.435852264686,
     "city": "Prag",
-    "country": "Çekya"
+    "country": "Çekya",
+    "creator": "jeffreymartin"
   },
   {
     "id": "prague-4",
@@ -879,7 +976,8 @@
     "lat": 50.070808705438,
     "lng": 14.438399346728,
     "city": "Prag",
-    "country": "Çekya"
+    "country": "Çekya",
+    "creator": "jeffreymartin"
   },
   {
     "id": "bratislava-1",
@@ -888,7 +986,8 @@
     "lat": 48.159220938745,
     "lng": 17.118856470636,
     "city": "Bratislava",
-    "country": "Slovakya"
+    "country": "Slovakya",
+    "creator": "ZdenekzDigisolu"
   },
   {
     "id": "bratislava-2",
@@ -897,7 +996,8 @@
     "lat": 48.16249096266,
     "lng": 17.121211335186,
     "city": "Bratislava",
-    "country": "Slovakya"
+    "country": "Slovakya",
+    "creator": "ZdenekzDigisolu"
   },
   {
     "id": "bratislava-3",
@@ -906,7 +1006,8 @@
     "lat": 48.1431556,
     "lng": 17.0852,
     "city": "Bratislava",
-    "country": "Slovakya"
+    "country": "Slovakya",
+    "creator": "kayle"
   },
   {
     "id": "bratislava-4",
@@ -915,7 +1016,8 @@
     "lat": 48.1547864965,
     "lng": 17.125675330774,
     "city": "Bratislava",
-    "country": "Slovakya"
+    "country": "Slovakya",
+    "creator": "ZdenekzDigisolu"
   },
   {
     "id": "budapest-1",
@@ -924,7 +1026,8 @@
     "lat": 47.491844792921,
     "lng": 19.040302042015,
     "city": "Budapeşte",
-    "country": "Macaristan"
+    "country": "Macaristan",
+    "creator": "grozsa11"
   },
   {
     "id": "budapest-2",
@@ -933,7 +1036,8 @@
     "lat": 47.498432751033,
     "lng": 19.03318012023,
     "city": "Budapeşte",
-    "country": "Macaristan"
+    "country": "Macaristan",
+    "creator": "grozsa11"
   },
   {
     "id": "budapest-3",
@@ -942,7 +1046,8 @@
     "lat": 47.498131813185,
     "lng": 19.039448307863,
     "city": "Budapeşte",
-    "country": "Macaristan"
+    "country": "Macaristan",
+    "creator": "grozsa11"
   },
   {
     "id": "budapest-4",
@@ -951,7 +1056,8 @@
     "lat": 47.492968259012,
     "lng": 19.032553988072,
     "city": "Budapeşte",
-    "country": "Macaristan"
+    "country": "Macaristan",
+    "creator": "grozsa11"
   },
   {
     "id": "ljubljana-1",
@@ -960,7 +1066,8 @@
     "lat": 46.069888351642,
     "lng": 14.489334256615,
     "city": "Ljubljana",
-    "country": "Slovenya"
+    "country": "Slovenya",
+    "creator": "javiersanp"
   },
   {
     "id": "ljubljana-2",
@@ -969,7 +1076,8 @@
     "lat": 46.052035030211,
     "lng": 14.51148025827,
     "city": "Ljubljana",
-    "country": "Slovenya"
+    "country": "Slovenya",
+    "creator": "javiersanp"
   },
   {
     "id": "zagreb-1",
@@ -978,7 +1086,8 @@
     "lat": 45.807521159682,
     "lng": 15.99542413518,
     "city": "Zagreb",
-    "country": "Hırvatistan"
+    "country": "Hırvatistan",
+    "creator": "tomislavzen12"
   },
   {
     "id": "zagreb-2",
@@ -987,7 +1096,8 @@
     "lat": 45.803590519991,
     "lng": 15.99229224597,
     "city": "Zagreb",
-    "country": "Hırvatistan"
+    "country": "Hırvatistan",
+    "creator": "mapconcierge"
   },
   {
     "id": "zagreb-3",
@@ -996,7 +1106,8 @@
     "lat": 45.796117489505,
     "lng": 15.992152452067,
     "city": "Zagreb",
-    "country": "Hırvatistan"
+    "country": "Hırvatistan",
+    "creator": "geoprem"
   },
   {
     "id": "zagreb-4",
@@ -1005,7 +1116,8 @@
     "lat": 45.816718888889,
     "lng": 15.977354722222,
     "city": "Zagreb",
-    "country": "Hırvatistan"
+    "country": "Hırvatistan",
+    "creator": "stefnicadk"
   },
   {
     "id": "belgrade-1",
@@ -1014,7 +1126,8 @@
     "lat": 44.794485456172,
     "lng": 20.461300483124,
     "city": "Belgrad",
-    "country": "Sırbistan"
+    "country": "Sırbistan",
+    "creator": "borovac"
   },
   {
     "id": "belgrade-2",
@@ -1023,7 +1136,8 @@
     "lat": 44.775039832275,
     "lng": 20.437461920858,
     "city": "Belgrad",
-    "country": "Sırbistan"
+    "country": "Sırbistan",
+    "creator": "brackone"
   },
   {
     "id": "belgrade-3",
@@ -1032,7 +1146,8 @@
     "lat": 44.79139741162,
     "lng": 20.452914533871,
     "city": "Belgrad",
-    "country": "Sırbistan"
+    "country": "Sırbistan",
+    "creator": "brackone"
   },
   {
     "id": "belgrade-4",
@@ -1041,7 +1156,8 @@
     "lat": 44.784679276947,
     "lng": 20.462948885606,
     "city": "Belgrad",
-    "country": "Sırbistan"
+    "country": "Sırbistan",
+    "creator": "brackone"
   },
   {
     "id": "sarajevo-1",
@@ -1050,7 +1166,8 @@
     "lat": 43.851119406541,
     "lng": 18.395326730731,
     "city": "Saraybosna",
-    "country": "Bosna-Hersek"
+    "country": "Bosna-Hersek",
+    "creator": "rutmapprivate"
   },
   {
     "id": "sarajevo-2",
@@ -1059,7 +1176,8 @@
     "lat": 43.855730860136,
     "lng": 18.3998763401,
     "city": "Saraybosna",
-    "country": "Bosna-Hersek"
+    "country": "Bosna-Hersek",
+    "creator": "Bosnia360"
   },
   {
     "id": "sarajevo-3",
@@ -1068,7 +1186,8 @@
     "lat": 43.85764892398,
     "lng": 18.41369036,
     "city": "Saraybosna",
-    "country": "Bosna-Hersek"
+    "country": "Bosna-Hersek",
+    "creator": "rutmapprivate"
   },
   {
     "id": "sarajevo-4",
@@ -1077,7 +1196,8 @@
     "lat": 43.858294491956,
     "lng": 18.402021757906,
     "city": "Saraybosna",
-    "country": "Bosna-Hersek"
+    "country": "Bosna-Hersek",
+    "creator": "rutmapprivate"
   },
   {
     "id": "bucharest-1",
@@ -1086,7 +1206,8 @@
     "lat": 44.404053864472,
     "lng": 26.097099389245,
     "city": "Bükreş",
-    "country": "Romanya"
+    "country": "Romanya",
+    "creator": "SIMS"
   },
   {
     "id": "bucharest-2",
@@ -1095,7 +1216,8 @@
     "lat": 44.434657975196,
     "lng": 26.128439684539,
     "city": "Bükreş",
-    "country": "Romanya"
+    "country": "Romanya",
+    "creator": "SIMS"
   },
   {
     "id": "bucharest-3",
@@ -1104,7 +1226,8 @@
     "lat": 44.400958160451,
     "lng": 26.097386993275,
     "city": "Bükreş",
-    "country": "Romanya"
+    "country": "Romanya",
+    "creator": "SIMS"
   },
   {
     "id": "bucharest-4",
@@ -1113,7 +1236,8 @@
     "lat": 44.439998415043,
     "lng": 26.091636779883,
     "city": "Bükreş",
-    "country": "Romanya"
+    "country": "Romanya",
+    "creator": "Pill0r360"
   },
   {
     "id": "athens-1",
@@ -1122,7 +1246,8 @@
     "lat": 37.983137654428,
     "lng": 23.729071607844,
     "city": "Atina",
-    "country": "Yunanistan"
+    "country": "Yunanistan",
+    "creator": "costasl"
   },
   {
     "id": "athens-2",
@@ -1131,7 +1256,8 @@
     "lat": 37.981728410628,
     "lng": 23.726144776489,
     "city": "Atina",
-    "country": "Yunanistan"
+    "country": "Yunanistan",
+    "creator": "VRvisit"
   },
   {
     "id": "athens-3",
@@ -1140,7 +1266,8 @@
     "lat": 37.988398655292,
     "lng": 23.729043386532,
     "city": "Atina",
-    "country": "Yunanistan"
+    "country": "Yunanistan",
+    "creator": "cedionysis"
   },
   {
     "id": "athens-4",
@@ -1149,7 +1276,8 @@
     "lat": 37.991804430095,
     "lng": 23.723423890175,
     "city": "Atina",
-    "country": "Yunanistan"
+    "country": "Yunanistan",
+    "creator": "zaf3kala"
   },
   {
     "id": "valletta-1",
@@ -1158,7 +1286,8 @@
     "lat": 35.893969241543,
     "lng": 14.510348802614,
     "city": "Valletta",
-    "country": "Malta"
+    "country": "Malta",
+    "creator": "richlv"
   },
   {
     "id": "valletta-2",
@@ -1167,7 +1296,8 @@
     "lat": 35.898454368269,
     "lng": 14.516051721728,
     "city": "Valletta",
-    "country": "Malta"
+    "country": "Malta",
+    "creator": "richlv"
   },
   {
     "id": "valletta-3",
@@ -1176,7 +1306,8 @@
     "lat": 35.898095608749,
     "lng": 14.509127693416,
     "city": "Valletta",
-    "country": "Malta"
+    "country": "Malta",
+    "creator": "richlv"
   },
   {
     "id": "valletta-4",
@@ -1185,7 +1316,8 @@
     "lat": 35.900664665918,
     "lng": 14.519084971866,
     "city": "Valletta",
-    "country": "Malta"
+    "country": "Malta",
+    "creator": "richlv"
   },
   {
     "id": "kyiv-1",
@@ -1194,7 +1326,8 @@
     "lat": 50.456868410883,
     "lng": 30.529524488731,
     "city": "Kiev",
-    "country": "Ukrayna"
+    "country": "Ukrayna",
+    "creator": "velmyshanovnyi"
   },
   {
     "id": "kyiv-2",
@@ -1203,7 +1336,8 @@
     "lat": 50.442632885745,
     "lng": 30.51878999074,
     "city": "Kiev",
-    "country": "Ukrayna"
+    "country": "Ukrayna",
+    "creator": "velmyshanovnyi"
   },
   {
     "id": "kyiv-3",
@@ -1212,7 +1346,8 @@
     "lat": 50.450778458835,
     "lng": 30.525442454091,
     "city": "Kiev",
-    "country": "Ukrayna"
+    "country": "Ukrayna",
+    "creator": "velmyshanovnyi"
   },
   {
     "id": "kyiv-4",
@@ -1221,7 +1356,8 @@
     "lat": 50.454262252303,
     "lng": 30.52944975054,
     "city": "Kiev",
-    "country": "Ukrayna"
+    "country": "Ukrayna",
+    "creator": "velmyshanovnyi"
   },
   {
     "id": "istanbul-1",
@@ -1230,7 +1366,8 @@
     "lat": 41.007058888889,
     "lng": 28.978196944444,
     "city": "İstanbul",
-    "country": "Türkiye"
+    "country": "Türkiye",
+    "creator": "kuskoo"
   },
   {
     "id": "istanbul-2",
@@ -1239,7 +1376,8 @@
     "lat": 41.021287847486,
     "lng": 28.974387767567,
     "city": "İstanbul",
-    "country": "Türkiye"
+    "country": "Türkiye",
+    "creator": "mapconcierge"
   },
   {
     "id": "istanbul-3",
@@ -1248,7 +1386,8 @@
     "lat": 41.007040967299,
     "lng": 28.972163725791,
     "city": "İstanbul",
-    "country": "Türkiye"
+    "country": "Türkiye",
+    "creator": "ademturkmen"
   },
   {
     "id": "tokyo-1",
@@ -1257,7 +1396,8 @@
     "lat": 35.675450764724,
     "lng": 139.75991452445,
     "city": "Tokyo",
-    "country": "Japonya"
+    "country": "Japonya",
+    "creator": "irvinfly"
   },
   {
     "id": "tokyo-2",
@@ -1266,7 +1406,8 @@
     "lat": 35.679447313246,
     "lng": 139.76574423074,
     "city": "Tokyo",
-    "country": "Japonya"
+    "country": "Japonya",
+    "creator": "mura"
   },
   {
     "id": "tokyo-3",
@@ -1275,7 +1416,8 @@
     "lat": 35.688088960991,
     "lng": 139.77116290643,
     "city": "Tokyo",
-    "country": "Japonya"
+    "country": "Japonya",
+    "creator": "mapconcierge"
   },
   {
     "id": "tokyo-4",
@@ -1284,7 +1426,8 @@
     "lat": 35.673868542303,
     "lng": 139.76654947786,
     "city": "Tokyo",
-    "country": "Japonya"
+    "country": "Japonya",
+    "creator": "mura"
   },
   {
     "id": "seoul-1",
@@ -1293,7 +1436,8 @@
     "lat": 37.566596290168,
     "lng": 126.97733242039,
     "city": "Seul",
-    "country": "Güney Kore"
+    "country": "Güney Kore",
+    "creator": "mapconcierge"
   },
   {
     "id": "seoul-2",
@@ -1302,7 +1446,8 @@
     "lat": 37.561822700068,
     "lng": 126.98299895549,
     "city": "Seul",
-    "country": "Güney Kore"
+    "country": "Güney Kore",
+    "creator": "lisbethw1130"
   },
   {
     "id": "seoul-3",
@@ -1311,7 +1456,8 @@
     "lat": 37.568397064143,
     "lng": 126.98530259087,
     "city": "Seul",
-    "country": "Güney Kore"
+    "country": "Güney Kore",
+    "creator": "lisbethw1130"
   },
   {
     "id": "seoul-4",
@@ -1320,7 +1466,8 @@
     "lat": 37.568255546752,
     "lng": 126.97960216389,
     "city": "Seul",
-    "country": "Güney Kore"
+    "country": "Güney Kore",
+    "creator": "mapconcierge"
   },
   {
     "id": "macau-1",
@@ -1329,7 +1476,8 @@
     "lat": 22.204262167644,
     "lng": 113.53868435258,
     "city": "Makao",
-    "country": "Makao"
+    "country": "Makao",
+    "creator": "joaocsampayo"
   },
   {
     "id": "macau-2",
@@ -1338,7 +1486,8 @@
     "lat": 22.194540168376,
     "lng": 113.54280513853,
     "city": "Makao",
-    "country": "Makao"
+    "country": "Makao",
+    "creator": "joaocsampayo"
   },
   {
     "id": "macau-3",
@@ -1347,7 +1496,8 @@
     "lat": 22.191191,
     "lng": 113.537911,
     "city": "Makao",
-    "country": "Makao"
+    "country": "Makao",
+    "creator": "joaocsampayo"
   },
   {
     "id": "macau-4",
@@ -1356,7 +1506,8 @@
     "lat": 22.192125481226,
     "lng": 113.54881411447,
     "city": "Makao",
-    "country": "Makao"
+    "country": "Makao",
+    "creator": "joaocsampayo"
   },
   {
     "id": "mumbai-1",
@@ -1365,7 +1516,8 @@
     "lat": 19.086666666667,
     "lng": 72.88898,
     "city": "Mumbai",
-    "country": "Hindistan"
+    "country": "Hindistan",
+    "creator": "tranzitnotes"
   },
   {
     "id": "mumbai-2",
@@ -1374,7 +1526,8 @@
     "lat": 19.058777596285,
     "lng": 72.854223034079,
     "city": "Mumbai",
-    "country": "Hindistan"
+    "country": "Hindistan",
+    "creator": "IBI"
   },
   {
     "id": "mumbai-3",
@@ -1383,7 +1536,8 @@
     "lat": 19.101608078617,
     "lng": 72.854558787561,
     "city": "Mumbai",
-    "country": "Hindistan"
+    "country": "Hindistan",
+    "creator": "tranzitnotes"
   },
   {
     "id": "dubai-1",
@@ -1392,7 +1546,8 @@
     "lat": 25.197174895009,
     "lng": 55.266653976609,
     "city": "Dubai",
-    "country": "BAE"
+    "country": "BAE",
+    "creator": "wassaf"
   },
   {
     "id": "dubai-2",
@@ -1401,7 +1556,8 @@
     "lat": 25.210048090458,
     "lng": 55.271985255839,
     "city": "Dubai",
-    "country": "BAE"
+    "country": "BAE",
+    "creator": "wassaf"
   },
   {
     "id": "dubai-3",
@@ -1410,7 +1566,8 @@
     "lat": 25.206418650586,
     "lng": 55.272680714932,
     "city": "Dubai",
-    "country": "BAE"
+    "country": "BAE",
+    "creator": "wassaf"
   },
   {
     "id": "dubai-4",
@@ -1419,7 +1576,8 @@
     "lat": 25.198521872377,
     "lng": 55.272304729586,
     "city": "Dubai",
-    "country": "BAE"
+    "country": "BAE",
+    "creator": "wassaf"
   },
   {
     "id": "doha-1",
@@ -1428,7 +1586,8 @@
     "lat": 25.301776367029,
     "lng": 51.506148668244,
     "city": "Doha",
-    "country": "Katar"
+    "country": "Katar",
+    "creator": "rinesh"
   },
   {
     "id": "doha-2",
@@ -1437,7 +1596,8 @@
     "lat": 25.283862160582,
     "lng": 51.556072961048,
     "city": "Doha",
-    "country": "Katar"
+    "country": "Katar",
+    "creator": "rinesh"
   },
   {
     "id": "amman-1",
@@ -1446,7 +1606,8 @@
     "lat": 31.966295697858,
     "lng": 35.887321888887,
     "city": "Amman",
-    "country": "Ürdün"
+    "country": "Ürdün",
+    "creator": "KBW_Smart_Solutions"
   },
   {
     "id": "amman-2",
@@ -1455,7 +1616,8 @@
     "lat": 31.970340173735,
     "lng": 35.920610552472,
     "city": "Amman",
-    "country": "Ürdün"
+    "country": "Ürdün",
+    "creator": "KBW_Smart_Solutions"
   },
   {
     "id": "amman-3",
@@ -1464,7 +1626,8 @@
     "lat": 31.954664487972,
     "lng": 35.903577987427,
     "city": "Amman",
-    "country": "Ürdün"
+    "country": "Ürdün",
+    "creator": "Amer12345"
   },
   {
     "id": "amman-4",
@@ -1473,7 +1636,8 @@
     "lat": 31.957928920997,
     "lng": 35.900613086578,
     "city": "Amman",
-    "country": "Ürdün"
+    "country": "Ürdün",
+    "creator": "Amer12345"
   },
   {
     "id": "beirut-1",
@@ -1482,7 +1646,8 @@
     "lat": 33.890062255951,
     "lng": 35.506478652563,
     "city": "Beyrut",
-    "country": "Lübnan"
+    "country": "Lübnan",
+    "creator": "chadifa"
   },
   {
     "id": "beirut-2",
@@ -1491,7 +1656,8 @@
     "lat": 33.894183977673,
     "lng": 35.508972956441,
     "city": "Beyrut",
-    "country": "Lübnan"
+    "country": "Lübnan",
+    "creator": "aubmsfea"
   },
   {
     "id": "beirut-3",
@@ -1500,7 +1666,8 @@
     "lat": 33.88668523971,
     "lng": 35.508514877994,
     "city": "Beyrut",
-    "country": "Lübnan"
+    "country": "Lübnan",
+    "creator": "sandroeid"
   },
   {
     "id": "beirut-4",
@@ -1509,7 +1676,8 @@
     "lat": 33.901783333333,
     "lng": 35.502513888889,
     "city": "Beyrut",
-    "country": "Lübnan"
+    "country": "Lübnan",
+    "creator": "aubmsfea"
   },
   {
     "id": "nairobi-1",
@@ -1518,7 +1686,8 @@
     "lat": -1.3157053233318,
     "lng": 36.814322073251,
     "city": "Nairobi",
-    "country": "Kenya"
+    "country": "Kenya",
+    "creator": "bmitto"
   },
   {
     "id": "nairobi-2",
@@ -1527,7 +1696,8 @@
     "lat": -1.269592829916,
     "lng": 36.816297020714,
     "city": "Nairobi",
-    "country": "Kenya"
+    "country": "Kenya",
+    "creator": "rskorzus"
   },
   {
     "id": "nairobi-3",
@@ -1536,7 +1706,8 @@
     "lat": -1.2725194208357,
     "lng": 36.80382513321,
     "city": "Nairobi",
-    "country": "Kenya"
+    "country": "Kenya",
+    "creator": "mapconcierge"
   },
   {
     "id": "nairobi-4",
@@ -1545,7 +1716,8 @@
     "lat": -1.293455657894,
     "lng": 36.803271417327,
     "city": "Nairobi",
-    "country": "Kenya"
+    "country": "Kenya",
+    "creator": "bmitto"
   },
   {
     "id": "mexico-city-1",
@@ -1554,7 +1726,8 @@
     "lat": 19.458051881825,
     "lng": -99.152903680795,
     "city": "Meksiko",
-    "country": "Meksika"
+    "country": "Meksika",
+    "creator": "nicovargas"
   },
   {
     "id": "panama-city-1",
@@ -1563,7 +1736,8 @@
     "lat": 8.9777909,
     "lng": -79.5240205,
     "city": "Panama",
-    "country": "Panama"
+    "country": "Panama",
+    "creator": "kaart_4"
   },
   {
     "id": "panama-city-2",
@@ -1572,7 +1746,8 @@
     "lat": 8.9824272929235,
     "lng": -79.518072973564,
     "city": "Panama",
-    "country": "Panama"
+    "country": "Panama",
+    "creator": "kaart_2"
   },
   {
     "id": "panama-city-3",
@@ -1581,7 +1756,8 @@
     "lat": 8.9751675170202,
     "lng": -79.519481964122,
     "city": "Panama",
-    "country": "Panama"
+    "country": "Panama",
+    "creator": "kaart_1"
   },
   {
     "id": "panama-city-4",
@@ -1590,7 +1766,8 @@
     "lat": 8.9826119467015,
     "lng": -79.52100965659,
     "city": "Panama",
-    "country": "Panama"
+    "country": "Panama",
+    "creator": "kaart_2"
   },
   {
     "id": "bogota-1",
@@ -1599,7 +1776,8 @@
     "lat": 4.712688464829,
     "lng": -74.065219426987,
     "city": "Bogota",
-    "country": "Kolombiya"
+    "country": "Kolombiya",
+    "creator": "angoca"
   },
   {
     "id": "bogota-2",
@@ -1608,7 +1786,8 @@
     "lat": 4.7096475480244,
     "lng": -74.07035742818,
     "city": "Bogota",
-    "country": "Kolombiya"
+    "country": "Kolombiya",
+    "creator": "rbolivar"
   },
   {
     "id": "bogota-3",
@@ -1617,7 +1796,8 @@
     "lat": 4.7065028945311,
     "lng": -74.076347829586,
     "city": "Bogota",
-    "country": "Kolombiya"
+    "country": "Kolombiya",
+    "creator": "rbolivar"
   },
   {
     "id": "bogota-4",
@@ -1626,7 +1806,8 @@
     "lat": 4.7189293577659,
     "lng": -74.065176199944,
     "city": "Bogota",
-    "country": "Kolombiya"
+    "country": "Kolombiya",
+    "creator": "rbolivar"
   },
   {
     "id": "quito-1",
@@ -1635,7 +1816,8 @@
     "lat": -0.16993734658737,
     "lng": -78.481167641992,
     "city": "Quito",
-    "country": "Ekvador"
+    "country": "Ekvador",
+    "creator": "kaart_2"
   },
   {
     "id": "quito-2",
@@ -1644,7 +1826,8 @@
     "lat": -0.18676077770803,
     "lng": -78.479474912165,
     "city": "Quito",
-    "country": "Ekvador"
+    "country": "Ekvador",
+    "creator": "kaart_2"
   },
   {
     "id": "quito-3",
@@ -1653,7 +1836,8 @@
     "lat": -0.18102884382107,
     "lng": -78.475207659844,
     "city": "Quito",
-    "country": "Ekvador"
+    "country": "Ekvador",
+    "creator": "kaart_2"
   },
   {
     "id": "quito-4",
@@ -1662,7 +1846,8 @@
     "lat": -0.17513386107547,
     "lng": -78.454556203835,
     "city": "Quito",
-    "country": "Ekvador"
+    "country": "Ekvador",
+    "creator": "kaart_2"
   },
   {
     "id": "lima-1",
@@ -1671,7 +1856,8 @@
     "lat": -12.04629105377,
     "lng": -77.043235914241,
     "city": "Lima",
-    "country": "Peru"
+    "country": "Peru",
+    "creator": "kaart_360"
   },
   {
     "id": "lima-2",
@@ -1680,7 +1866,8 @@
     "lat": -12.047592827706,
     "lng": -77.040997570215,
     "city": "Lima",
-    "country": "Peru"
+    "country": "Peru",
+    "creator": "kaart_2"
   },
   {
     "id": "lima-3",
@@ -1689,7 +1876,8 @@
     "lat": -12.052566732021,
     "lng": -77.044563311116,
     "city": "Lima",
-    "country": "Peru"
+    "country": "Peru",
+    "creator": "sarahantos"
   },
   {
     "id": "lima-4",
@@ -1698,7 +1886,8 @@
     "lat": -12.052536499618,
     "lng": -77.038535166823,
     "city": "Lima",
-    "country": "Peru"
+    "country": "Peru",
+    "creator": "kaart_2"
   },
   {
     "id": "buenos-aires-1",
@@ -1707,7 +1896,8 @@
     "lat": -34.595754786234,
     "lng": -58.387715543611,
     "city": "Buenos Aires",
-    "country": "Arjantin"
+    "country": "Arjantin",
+    "creator": "kaart_360"
   },
   {
     "id": "buenos-aires-2",
@@ -1716,7 +1906,8 @@
     "lat": -34.598080046096,
     "lng": -58.379834686294,
     "city": "Buenos Aires",
-    "country": "Arjantin"
+    "country": "Arjantin",
+    "creator": "kaart_360"
   },
   {
     "id": "buenos-aires-3",
@@ -1725,7 +1916,8 @@
     "lat": -34.609115344845,
     "lng": -58.388904787543,
     "city": "Buenos Aires",
-    "country": "Arjantin"
+    "country": "Arjantin",
+    "creator": "kaart_360"
   },
   {
     "id": "buenos-aires-4",
@@ -1734,7 +1926,8 @@
     "lat": -34.60418997519,
     "lng": -58.389289860404,
     "city": "Buenos Aires",
-    "country": "Arjantin"
+    "country": "Arjantin",
+    "creator": "kaart_360"
   },
   {
     "id": "sao-paulo-1",
@@ -1743,7 +1936,8 @@
     "lat": -23.550602283874,
     "lng": -46.634266246371,
     "city": "São Paulo",
-    "country": "Brezilya"
+    "country": "Brezilya",
+    "creator": "gabinete_falzoni"
   },
   {
     "id": "sao-paulo-2",
@@ -1752,7 +1946,8 @@
     "lat": -23.544660693414,
     "lng": -46.633928589003,
     "city": "São Paulo",
-    "country": "Brezilya"
+    "country": "Brezilya",
+    "creator": "gabinete_falzoni"
   },
   {
     "id": "sao-paulo-3",
@@ -1761,7 +1956,8 @@
     "lat": -23.548516178342,
     "lng": -46.62622851814,
     "city": "São Paulo",
-    "country": "Brezilya"
+    "country": "Brezilya",
+    "creator": "gabinete_falzoni"
   },
   {
     "id": "sao-paulo-4",
@@ -1770,7 +1966,8 @@
     "lat": -23.546297988149,
     "lng": -46.640971796996,
     "city": "São Paulo",
-    "country": "Brezilya"
+    "country": "Brezilya",
+    "creator": "gabinete_falzoni"
   },
   {
     "id": "rio-1",
@@ -1779,7 +1976,8 @@
     "lat": -22.895230833333,
     "lng": -43.179975833333,
     "city": "Rio de Janeiro",
-    "country": "Brezilya"
+    "country": "Brezilya",
+    "creator": "sanzio"
   },
   {
     "id": "toronto-1",
@@ -1788,7 +1986,8 @@
     "lat": 43.645799159655,
     "lng": -79.383828080529,
     "city": "Toronto",
-    "country": "Kanada"
+    "country": "Kanada",
+    "creator": "tallcoleman"
   },
   {
     "id": "toronto-2",
@@ -1797,7 +1996,8 @@
     "lat": 43.659914397488,
     "lng": -79.390755918861,
     "city": "Toronto",
-    "country": "Kanada"
+    "country": "Kanada",
+    "creator": "tallcoleman"
   },
   {
     "id": "toronto-3",
@@ -1806,7 +2006,8 @@
     "lat": 43.649092405871,
     "lng": -79.39115427146,
     "city": "Toronto",
-    "country": "Kanada"
+    "country": "Kanada",
+    "creator": "tallcoleman"
   },
   {
     "id": "toronto-4",
@@ -1815,7 +2016,8 @@
     "lat": 43.646340169713,
     "lng": -79.375235546706,
     "city": "Toronto",
-    "country": "Kanada"
+    "country": "Kanada",
+    "creator": "tallcoleman"
   },
   {
     "id": "montreal-1",
@@ -1824,7 +2026,8 @@
     "lat": 45.505714189472,
     "lng": -73.560403500226,
     "city": "Montreal",
-    "country": "Kanada"
+    "country": "Kanada",
+    "creator": "VdM"
   },
   {
     "id": "montreal-2",
@@ -1833,7 +2036,8 @@
     "lat": 45.500067082051,
     "lng": -73.561647432023,
     "city": "Montreal",
-    "country": "Kanada"
+    "country": "Kanada",
+    "creator": "VdM"
   },
   {
     "id": "montreal-3",
@@ -1842,7 +2046,8 @@
     "lat": 45.503334025373,
     "lng": -73.567103996353,
     "city": "Montreal",
-    "country": "Kanada"
+    "country": "Kanada",
+    "creator": "VdM"
   },
   {
     "id": "montreal-4",
@@ -1851,7 +2056,8 @@
     "lat": 45.50114439251,
     "lng": -73.566184669523,
     "city": "Montreal",
-    "country": "Kanada"
+    "country": "Kanada",
+    "creator": "VdM"
   },
   {
     "id": "new-york-1",
@@ -1860,7 +2066,8 @@
     "lat": 40.713265634367,
     "lng": -73.999029692783,
     "city": "New York",
-    "country": "ABD"
+    "country": "ABD",
+    "creator": "BetaNYC_Noel"
   },
   {
     "id": "new-york-2",
@@ -1869,7 +2076,8 @@
     "lat": 40.716799723539,
     "lng": -74.004069563208,
     "city": "New York",
-    "country": "ABD"
+    "country": "ABD",
+    "creator": "BetaNYC_Noel"
   },
   {
     "id": "new-york-3",
@@ -1878,7 +2086,8 @@
     "lat": 40.712737785682,
     "lng": -74.004013694442,
     "city": "New York",
-    "country": "ABD"
+    "country": "ABD",
+    "creator": "betanyc"
   },
   {
     "id": "new-york-4",
@@ -1887,7 +2096,8 @@
     "lat": 40.720192539058,
     "lng": -73.998135474533,
     "city": "New York",
-    "country": "ABD"
+    "country": "ABD",
+    "creator": "BetaNYC_Noel"
   },
   {
     "id": "chicago-1",
@@ -1896,7 +2106,8 @@
     "lat": 41.879254400843,
     "lng": -87.640341303463,
     "city": "Chicago",
-    "country": "ABD"
+    "country": "ABD",
+    "creator": "nthp_gis"
   },
   {
     "id": "chicago-2",
@@ -1905,7 +2116,8 @@
     "lat": 41.876225416176,
     "lng": -87.617474971357,
     "city": "Chicago",
-    "country": "ABD"
+    "country": "ABD",
+    "creator": "mapillary01730"
   },
   {
     "id": "chicago-3",
@@ -1914,7 +2126,8 @@
     "lat": 41.873033526169,
     "lng": -87.616989283367,
     "city": "Chicago",
-    "country": "ABD"
+    "country": "ABD",
+    "creator": "epicspongee"
   },
   {
     "id": "chicago-4",
@@ -1923,7 +2136,8 @@
     "lat": 41.879696264449,
     "lng": -87.625493613594,
     "city": "Chicago",
-    "country": "ABD"
+    "country": "ABD",
+    "creator": "nthp_gis"
   },
   {
     "id": "san-francisco-1",
@@ -1932,7 +2146,8 @@
     "lat": 37.774190395417,
     "lng": -122.41419478679,
     "city": "San Francisco",
-    "country": "ABD"
+    "country": "ABD",
+    "creator": "WavyPanels"
   },
   {
     "id": "san-francisco-2",
@@ -1941,7 +2156,8 @@
     "lat": 37.779487191449,
     "lng": -122.4254193175,
     "city": "San Francisco",
-    "country": "ABD"
+    "country": "ABD",
+    "creator": "pixelpete"
   },
   {
     "id": "san-francisco-3",
@@ -1950,7 +2166,8 @@
     "lat": 37.774289882728,
     "lng": -122.42049694819,
     "city": "San Francisco",
-    "country": "ABD"
+    "country": "ABD",
+    "creator": "marker_geo1"
   },
   {
     "id": "san-francisco-4",
@@ -1959,6 +2176,7 @@
     "lat": 37.776842290959,
     "lng": -122.42134537168,
     "city": "San Francisco",
-    "country": "ABD"
+    "country": "ABD",
+    "creator": "networklanman"
   }
 ]

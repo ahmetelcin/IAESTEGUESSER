@@ -94,9 +94,9 @@ const TURKEY: City[] = [
   c('ankara', 'Ankara', 'Türkiye', 39.9334, 32.8597),
   c('antalya', 'Antalya', 'Türkiye', 36.8969, 30.7133),
   c('izmir', 'İzmir', 'Türkiye', 38.4237, 27.1428),
-  c('bursa', 'Bursa', 'Türkiye', 40.1885, 29.061),
+  c('bursa', 'Bursa', 'Türkiye', 40.1955, 29.03),
   c('mersin', 'Mersin', 'Türkiye', 36.8121, 34.6415),
-  c('edirne', 'Edirne', 'Türkiye', 41.6818, 26.5623),
+  c('edirne', 'Edirne', 'Türkiye', 41.6771, 26.5557),
   c('denizli', 'Denizli', 'Türkiye', 37.7765, 29.0864),
   c('izmit', 'İzmit', 'Türkiye', 40.7654, 29.9408),
   c('sakarya', 'Sakarya', 'Türkiye', 40.7569, 30.3783),
@@ -109,6 +109,31 @@ const TURKEY: City[] = [
   c('sivas', 'Sivas', 'Türkiye', 39.7477, 37.0179),
   c('ordu', 'Ordu', 'Türkiye', 40.9839, 37.8764),
   c('karabuk', 'Karabük', 'Türkiye', 41.2061, 32.6204),
+  // Regular photos only in most of these (no 360° coverage in Oct 2026).
+  c('eskisehir', 'Eskişehir', 'Türkiye', 39.7767, 30.5206),
+  c('konya', 'Konya', 'Türkiye', 37.8746, 32.4932),
+  c('kayseri', 'Kayseri', 'Türkiye', 38.7205, 35.4826),
+  c('gaziantep', 'Gaziantep', 'Türkiye', 37.0662, 37.3833),
+  c('adana', 'Adana', 'Türkiye', 37.0, 35.3213),
+  c('trabzon', 'Trabzon', 'Türkiye', 41.0015, 39.7178),
+  c('samsun', 'Samsun', 'Türkiye', 41.2867, 36.33),
+  c('diyarbakir', 'Diyarbakır', 'Türkiye', 37.9144, 40.2306),
+  c('erzurum', 'Erzurum', 'Türkiye', 39.9055, 41.2658),
+  c('canakkale', 'Çanakkale', 'Türkiye', 40.1553, 26.4142),
+  c('van', 'Van', 'Türkiye', 38.5012, 43.373),
+  c('sanliurfa', 'Şanlıurfa', 'Türkiye', 37.1591, 38.7969),
+  c('mardin', 'Mardin', 'Türkiye', 37.3212, 40.7245),
+  c('antakya', 'Antakya', 'Türkiye', 36.2021, 36.1603),
+  c('aydin', 'Aydın', 'Türkiye', 37.856, 27.8416),
+  c('balikesir', 'Balıkesir', 'Türkiye', 39.6484, 27.8826),
+  c('kutahya', 'Kütahya', 'Türkiye', 39.4242, 29.9833),
+  c('afyon', 'Afyonkarahisar', 'Türkiye', 38.7507, 30.5567),
+  c('isparta', 'Isparta', 'Türkiye', 37.7648, 30.5566),
+  c('bolu', 'Bolu', 'Türkiye', 40.7395, 31.6116),
+  c('rize', 'Rize', 'Türkiye', 41.0201, 40.5234),
+  c('nevsehir', 'Nevşehir', 'Türkiye', 38.6244, 34.7239),
+  c('bodrum', 'Bodrum', 'Türkiye', 37.0344, 27.4305),
+  c('alanya', 'Alanya', 'Türkiye', 36.5438, 31.9998),
 ];
 
 export const CITY_LISTS = {
@@ -118,28 +143,25 @@ export const CITY_LISTS = {
 } satisfies Record<string, City[]>;
 
 /**
- * City maps: every round is inside one city. The whole area is scanned and spots are
- * picked as far apart as possible (at least `spacingM`), up to `count`.
+ * Cities that get many spots spread across town instead of a few around the center
+ * (the club's university cities). Still one city: a game asks it at most once, but
+ * every visit can land somewhere else. Keyed by city id.
  */
-export interface CityMap {
-  city: string;
-  country: string;
-  lat: number;
-  lng: number;
+export interface CitySpots {
   /** Half-size of the scanned square, degrees. */
   radius: number;
   count: number;
   spacingM: number;
 }
 
-export const CITY_MAPS = {
-  edirne: { city: 'Edirne', country: 'Türkiye', lat: 41.6771, lng: 26.5557, radius: 0.04, count: 20, spacingM: 300 },
-  bursa: { city: 'Bursa', country: 'Türkiye', lat: 40.1955, lng: 29.03, radius: 0.07, count: 30, spacingM: 500 },
-} satisfies Record<string, CityMap>;
+export const CITY_SPOTS: Record<string, CitySpots> = {
+  edirne: { radius: 0.04, count: 20, spacingM: 300 },
+  bursa: { radius: 0.07, count: 30, spacingM: 500 },
+};
 
 /**
  * Maps that also accept regular (non-360°) photos. 360° coverage in Türkiye is thin, so
  * these maps take flat images too, preferring panoramas when a place has both.
  * World and Europe stay panorama-only.
  */
-export const FLAT_ALLOWED: ReadonlySet<string> = new Set(['turkey', 'edirne', 'bursa']);
+export const FLAT_ALLOWED: ReadonlySet<string> = new Set(['turkey']);

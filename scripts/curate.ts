@@ -1,14 +1,16 @@
 /**
  * Pulls Mapillary images for every city in scripts/cities.ts and writes
  * src/data/maps/<map>.json. World/Europe take 360° panoramas only; the maps in
- * FLAT_ALLOWED (Türkiye, city maps) also take regular photos, preferring panoramas.
+ * FLAT_ALLOWED (Türkiye) also take regular photos, preferring panoramas.
  *
  *   npm run curate                       all maps
  *   npm run curate -- europe turkey      only these maps
  *   npm run curate -- --only berlin,oslo re-fetch these cities, keep the rest of the files
  *   npm run curate -- --per-city 5       panoramas per city (default 4)
  *   npm run curate -- --fresh            ignore the resume cache
- *   npm run curate -- edirne bursa       city maps: spots spread across one city
+ *   npm run curate -- --creators         only fill in missing photographer names
+ *
+ * Cities in CITY_SPOTS (Edirne, Bursa) get many spots spread across town.
  *
  * Reads VITE_MAPILLARY_TOKEN from .env.
  *
@@ -16,12 +18,11 @@
  * even for small boxes, so each city is searched as a grid of small cells, and any cell
  * that fails is split into four smaller ones (down to ~50 m).
  */
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { CITY_LISTS, CITY_MAPS, FLAT_ALLOWED, type City, type CityMap } from './cities';
+import { CITY_LISTS, CITY_SPOTS, FLAT_ALLOWED, type City, type CitySpots } from './cities';
 
 type ListMapId = keyof typeof CITY_LISTS;
-type CityMapId = keyof typeof CITY_MAPS;
 
 interface ApiImage {
   id: string;
@@ -48,6 +49,8 @@ interface Location {
   lng: number;
   city: string;
   country: string;
+  /** Mapillary username, for the attribution on the result screen and the credits page. */
+  creator?: string;
 }
 
 const MIN_CAPTURED_AT = Date.UTC(2018, 0, 1);
@@ -79,18 +82,20 @@ const flag = (name: string) => {
 };
 const only = flag('--only')?.split(',').map((s) => s.trim()).filter(Boolean);
 const perCity = Number(flag('--per-city') ?? 4);
-const fresh = args.includes('--fresh');
-if (fresh) args.splice(args.indexOf('--fresh'), 1);
-const requested = args.length ? args : [...Object.keys(CITY_LISTS), ...Object.keys(CITY_MAPS)];
-for (const m of requested) {
-  if (!(m in CITY_LISTS) && !(m in CITY_MAPS)) {
-    const all = [...Object.keys(CITY_LISTS), ...Object.keys(CITY_MAPS)];
-    console.error(`Unknown map "${m}". Use: ${all.join(', ')}`);
+const boolFlag = (name: string) => {
+  const i = args.indexOf(name);
+  if (i >= 0) args.splice(i, 1);
+  return i >= 0;
+};
+const fresh = boolFlag('--fresh');
+const creatorsOnly = boolFlag('--creators');
+const maps = (args.length ? args : Object.keys(CITY_LISTS)) as ListMapId[];
+for (const m of maps) {
+  if (!(m in CITY_LISTS)) {
+    console.error(`Unknown map "${m}". Use: ${Object.keys(CITY_LISTS).join(', ')}`);
     process.exit(1);
   }
 }
-const maps = requested.filter((m): m is ListMapId => m in CITY_LISTS);
-const cityMaps = requested.filter((m): m is CityMapId => m in CITY_MAPS);
 
 function loadToken(): string {
   try {
@@ -281,22 +286,16 @@ async function curateCity(city: City, want: number, panoOnly: boolean) {
   return { picks, sequences: bySequence.size, ...stats };
 }
 
-// ── City maps ───────────────────────────────────────────────────────────
+// ── Spread spots (CITY_SPOTS) ───────────────────────────────────────────
 const SPOT_CELL = 0.01;
-const MAX_REQUESTS_PER_CITY_MAP = 600;
+const MAX_REQUESTS_SPREAD = 600;
 
 /** Scans the whole square around the city, then spreads picks by farthest-point sampling. */
-async function curateCityMap(id: CityMapId, cfg: CityMap): Promise<Location[]> {
-  const stats: CityStats = {
-    requests: 0,
-    failures: 0,
-    cap: MAX_REQUESTS_PER_CITY_MAP,
-    limit: 200,
-    panoOnly: !FLAT_ALLOWED.has(id),
-  };
+async function curateSpread(city: City, cfg: CitySpots, panoOnly: boolean) {
+  const stats: CityStats = { requests: 0, failures: 0, cap: MAX_REQUESTS_SPREAD, limit: 200, panoOnly };
   const cells: [number, number][] = [];
-  for (let lat = cfg.lat - cfg.radius; lat < cfg.lat + cfg.radius; lat += SPOT_CELL)
-    for (let lng = cfg.lng - cfg.radius; lng < cfg.lng + cfg.radius; lng += SPOT_CELL) cells.push([lng, lat]);
+  for (let lat = city.lat - cfg.radius; lat < city.lat + cfg.radius; lat += SPOT_CELL)
+    for (let lng = city.lng - cfg.radius; lng < city.lng + cfg.radius; lng += SPOT_CELL) cells.push([lng, lat]);
 
   const byId = new Map<string, Candidate>();
   for (let i = 0; i < cells.length; i += 6) {
@@ -323,26 +322,57 @@ async function curateCityMap(id: CityMapId, cfg: CityMap): Promise<Location[]> {
       for (let i = 0; i < all.length; i++) minDist[i] = Math.min(minDist[i], distanceM(all[i], next));
     }
   }
-  console.log(
-    `${picks.length >= 5 ? '✓' : '✗'} ${cfg.city.padEnd(16)} ${picks.length} spots, ${picks.filter((p) => p.isPano).length} 360°  (images ${all.length}, requests ${stats.requests}, refused ${stats.failures})`,
+  return { picks, sequences: new Set(all.map((c) => c.sequence)).size, ...stats };
+}
+
+// ── Photographers ───────────────────────────────────────────────────────
+/** Mapillary username of an image's creator (null if the API won't say). */
+async function fetchCreator(imageId: string): Promise<string | null> {
+  const url = `https://graph.mapillary.com/${imageId}?access_token=${token}&fields=creator`;
+  for (let attempt = 0; attempt <= MAX_RATE_LIMIT_RETRIES; attempt++) {
+    const res = await limited(() => fetch(url, { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) }).catch(() => null));
+    if (res?.ok) {
+      const body = (await res.json()) as { creator?: { username?: string } };
+      return body.creator?.username ?? null;
+    }
+    if (res && res.status !== 429 && res.status < 500) return null;
+    if (res?.status === 429) rateLimited++;
+    await new Promise((r) => setTimeout(r, 2000 * 2 ** attempt));
+  }
+  return null;
+}
+
+async function addCreators(locations: Location[]): Promise<number> {
+  const missing = locations.filter((l) => !l.creator);
+  await Promise.all(
+    missing.map(async (l) => {
+      const name = await fetchCreator(l.imageId);
+      if (name) l.creator = name;
+    }),
   );
-  return picks.map((p, i) => {
-    const spotId = `${id}-${String(i + 1).padStart(2, '0')}`;
-    return { id: spotId, cityId: spotId, imageId: p.imageId, lat: p.lat, lng: p.lng, city: cfg.city, country: cfg.country };
-  });
+  return missing.filter((l) => l.creator).length;
+}
+
+/** --creators: fills in photographer names in the existing map files, nothing else. */
+async function fillCreators() {
+  const dir = resolve('src/data/maps');
+  for (const file of readdirSync(dir).filter((f) => f.endsWith('.json'))) {
+    const path = resolve(dir, file);
+    const locations = JSON.parse(readFileSync(path, 'utf8')) as Location[];
+    const added = await addCreators(locations);
+    writeFileSync(path, JSON.stringify(locations, null, 2) + '\n');
+    const still = locations.filter((l) => !l.creator).length;
+    console.log(`${file}: +${added} photographers${still ? `, ${still} still unknown` : ''}`);
+  }
 }
 
 // ── Main ────────────────────────────────────────────────────────────────
 async function main() {
+  if (creatorsOnly) return fillCreators();
   const panoMaps = maps.filter((m) => !FLAT_ALLOWED.has(m));
   const flatMaps = maps.filter((m) => FLAT_ALLOWED.has(m));
   if (panoMaps.length) await curateLists(panoMaps, true);
   if (flatMaps.length) await curateLists(flatMaps, false);
-  for (const id of cityMaps) {
-    const locations = await curateCityMap(id, CITY_MAPS[id]);
-    writeFileSync(resolve(`src/data/maps/${id}.json`), JSON.stringify(locations, null, 2) + '\n');
-    console.log(`${id}: ${locations.length} spots`);
-  }
 }
 
 async function curateLists(maps: ListMapId[], panoOnly: boolean) {
@@ -372,28 +402,29 @@ async function curateLists(maps: ListMapId[], panoOnly: boolean) {
   await Promise.all(
     Array.from({ length: PARALLEL_CITIES }, async () => {
       for (let c = queue.shift(); c; c = queue.shift()) {
+        const spots = CITY_SPOTS[c.id];
         let r: Awaited<ReturnType<typeof curateCity>>;
+        let locations: Location[];
         try {
-          r = await curateCity(c, perCity, panoOnly);
-        } catch (err) {
-          failed.push(c.city);
-          console.log(`! ${c.city.padEnd(16)} error: ${err instanceof Error ? err.message : err}`);
-          continue;
-        }
-        found.set(
-          key(c.id),
-          r.picks.map((p, i) => ({
-            id: `${c.id}-${i + 1}`,
+          r = spots ? await curateSpread(c, spots, panoOnly) : await curateCity(c, perCity, panoOnly);
+          locations = r.picks.map((p, i) => ({
+            id: `${c.id}-${spots ? String(i + 1).padStart(2, '0') : i + 1}`,
             cityId: c.id,
             imageId: p.imageId,
             lat: p.lat,
             lng: p.lng,
             city: c.city,
             country: c.country,
-          })),
-        );
+          }));
+          await addCreators(locations);
+        } catch (err) {
+          failed.push(c.city);
+          console.log(`! ${c.city.padEnd(16)} error: ${err instanceof Error ? err.message : err}`);
+          continue;
+        }
+        found.set(key(c.id), locations);
         if (!only) writeFileSync(CACHE_FILE, JSON.stringify({ ...cache, ...Object.fromEntries(found) }));
-        const mark = r.picks.length === 0 ? '✗' : r.picks.length < perCity ? '~' : '✓';
+        const mark = r.picks.length === 0 ? '✗' : r.picks.length < (spots ? 5 : perCity) ? '~' : '✓';
         console.log(
           `${mark} ${c.city.padEnd(16)} ${r.picks.length} images, ${r.picks.filter((p) => p.isPano).length} 360°  (sequences ${r.sequences}, requests ${r.requests}, refused ${r.failures})`,
         );
