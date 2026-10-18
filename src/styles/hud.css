@@ -1,0 +1,135 @@
+.screen--round {
+  z-index: 0;
+}
+.round__viewer {
+  position: absolute;
+  inset: 0;
+}
+
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+.hud > * {
+  pointer-events: auto;
+}
+
+.hud-panel {
+  background: var(--hud-bg);
+  border: 1px solid var(--hud-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow);
+}
+
+/* Status bar — top right */
+.status-bar {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+}
+.status-bar__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 20px;
+  min-width: 84px;
+}
+.status-bar__item + .status-bar__item {
+  border-left: 1px solid var(--hud-border);
+}
+.status-bar__label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--hud-muted);
+}
+.status-bar__value {
+  font-size: 20px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Mini map — bottom right */
+.minimap {
+  --w: 260px;
+  --h: 180px;
+  position: absolute;
+  right: 16px;
+  bottom: 28px; /* clear the Mapillary attribution strip */
+  width: var(--w);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0.8;
+  transition: width 0.2s ease, opacity 0.2s ease;
+}
+.minimap.is-expanded {
+  opacity: 1;
+}
+.minimap.size-s.is-expanded {
+  --w: 380px;
+  --h: 270px;
+}
+.minimap.size-m.is-expanded {
+  --w: 540px;
+  --h: 380px;
+}
+.minimap.size-l.is-expanded {
+  --w: 780px;
+  --h: 540px;
+}
+.minimap__map {
+  width: 100%;
+  height: var(--h);
+  border-radius: var(--radius);
+  border: 2px solid var(--hud-border);
+  box-shadow: var(--shadow);
+  cursor: crosshair;
+  transition: height 0.2s ease;
+}
+.minimap__map.leaflet-container {
+  cursor: crosshair;
+  background: #d4dadc;
+}
+.minimap__toolbar {
+  display: flex;
+  gap: 4px;
+  align-self: flex-start;
+  visibility: hidden;
+}
+.minimap.is-expanded .minimap__toolbar {
+  visibility: visible;
+}
+.minimap__tool {
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--hud-border);
+  background: var(--hud-bg);
+  color: var(--hud-text);
+  cursor: pointer;
+}
+.minimap__tool:hover {
+  background: var(--blue-500);
+}
+.minimap__tool.is-active {
+  background: var(--blue-700);
+  border-color: var(--blue-300);
+}
+.minimap__pin-toggle {
+  filter: grayscale(1);
+}
+.minimap__pin-toggle.is-active {
+  filter: none;
+}
+.minimap__guess {
+  width: 100%;
+}

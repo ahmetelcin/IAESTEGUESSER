@@ -1,0 +1,21 @@
+:root {
+  /* IAESTE blue scale */
+  --blue-900: #06214f;
+  --blue-700: #0b3d91;
+  --blue-500: #1b5faa;
+  --blue-300: #6f9fd8;
+  --blue-100: #e8f0fa;
+  /* single accent */
+  --accent: #ff8a00;
+  --accent-strong: #e67a00;
+
+  --hud-bg: rgba(6, 22, 52, 0.72);
+  --hud-border: rgba(232, 240, 250, 0.14);
+  --hud-text: #f4f8fd;
+  --hud-muted: rgba(232, 240, 250, 0.62);
+  --danger: #ff4d4f;
+
+  --radius: 10px;
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  --font: 'Segoe UI', system-ui, -apple-system, Roboto, 'Helvetica Neue', Arial, sans-serif;
+}

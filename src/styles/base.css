@@ -1,0 +1,136 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--blue-900);
+  color: var(--hud-text);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+}
+
+/* The round screen (panorama) stays mounted underneath; overlays toggle by state. */
+.screen--loading,
+.screen--result {
+  display: none;
+}
+#app[data-state='loading'] .screen--loading,
+#app[data-state='result'] .screen--result {
+  display: flex;
+}
+#app:not([data-state='round']) .hud {
+  visibility: hidden;
+}
+
+.btn {
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border: 0;
+  border-radius: var(--radius);
+  padding: 12px 22px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s, opacity 0.15s;
+}
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.btn--primary {
+  background: var(--accent);
+  color: #1a1000;
+}
+.btn--primary:hover:not(:disabled) {
+  background: var(--accent-strong);
+}
+.btn:disabled {
+  background: rgba(120, 130, 150, 0.55);
+  color: rgba(255, 255, 255, 0.6);
+  cursor: not-allowed;
+}
+.btn:focus-visible {
+  outline: 2px solid var(--blue-100);
+  outline-offset: 2px;
+}
+
+/* Loading overlay */
+.screen--loading {
+  z-index: 30;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: radial-gradient(circle at center, rgba(11, 61, 145, 0.85), rgba(6, 33, 79, 0.97));
+}
+.loading__spinner {
+  width: 46px;
+  height: 46px;
+  border: 4px solid rgba(232, 240, 250, 0.2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+.loading__text {
+  margin: 0;
+  font-size: 18px;
+  color: var(--hud-muted);
+  text-align: center;
+  max-width: 520px;
+  padding: 0 16px;
+}
+.loading__text.is-error {
+  color: var(--hud-text);
+  font-weight: 600;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Map pins */
+.pin {
+  background: none;
+  border: 0;
+}
+.pin__dot {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+}
+.pin--guess .pin__dot {
+  background: var(--blue-500);
+}
+.pin--actual .pin__dot {
+  background: var(--accent);
+  animation: pin-pop 0.35s ease-out;
+}
+@keyframes pin-pop {
+  from {
+    transform: scale(0);
+  }
+  70% {
+    transform: scale(1.3);
+  }
+  to {
+    transform: scale(1);
+  }
+}
