@@ -7,14 +7,19 @@ import './styles/controls.css';
 import './styles/result.css';
 import './styles/menu.css';
 import './styles/summary.css';
+import './styles/admin.css';
 
-import { MAPILLARY_TOKEN, MAX_LOAD_ATTEMPTS, ROUNDS_PER_GAME, ROUND_SECONDS } from './config';
+import { ATTRACT_TIMEOUT_MS, MAPILLARY_TOKEN, MAX_LOAD_ATTEMPTS } from './config';
 import { MAPS, MAP_INFO, type Location } from './data/maps';
 import type { LatLng } from './game/geo';
+import { createIdleWatcher } from './game/idle';
+import { MODE_RULES, type Mode } from './game/modes';
 import { createSession, type Session } from './game/session';
 import { createStateMachine } from './game/state';
 import { createTimer } from './game/timer';
 import { createLeaderboard } from './services/leaderboard';
+import { createSettings } from './services/settings';
+import { createAdminPanel } from './ui/screens/admin';
 import { createLoadingScreen } from './ui/screens/loading';
 import { createMenuScreen, type MenuChoice } from './ui/screens/menu';
 import { createResultScreen } from './ui/screens/result';
@@ -41,14 +46,21 @@ if (!MAPILLARY_TOKEN) {
 
 function start() {
   const leaderboard = createLeaderboard();
+  const settings = createSettings();
   let session: Session | null = null;
   let playerName = '';
+  let mode: Mode = 'moving';
   let menuLocation: Location | null = null;
 
   const round = createRoundScreen(app, MAPILLARY_TOKEN, guess);
   const result = createResultScreen(app, next);
   const summary = createSummaryScreen(app, newPlayer);
   const menu = createMenuScreen(app, play);
+  const admin = createAdminPanel(app, {
+    settings,
+    leaderboard,
+    onChange: () => menu.setBoard(leaderboard.today()),
+  });
 
   const timer = createTimer({
     onTick: (s) => round.statusBar.setTime(s),
@@ -60,7 +72,7 @@ function start() {
     menu.show(leaderboard.today());
     const pool = MAPS.world;
     menuLocation = pool[Math.floor(Math.random() * pool.length)];
-    round.panorama.setNavigation(false);
+    round.panorama.setRules({ move: false, pan: false, zoom: false });
     round.panorama
       .show(menuLocation.imageId)
       .then(() => {
@@ -71,11 +83,14 @@ function start() {
 
   function play(choice: MenuChoice) {
     if (state.current !== 'menu') return;
+    const { rounds } = settings.get();
     playerName = choice.name;
+    mode = choice.mode;
+    round.setRules(MODE_RULES[mode]);
     round.miniMap.setHome(MAP_INFO[choice.mapId].center, MAP_INFO[choice.mapId].zoom);
     session = createSession({
       pool: MAPS[choice.mapId],
-      rounds: ROUNDS_PER_GAME,
+      rounds,
       mapId: choice.mapId,
       exclude: menuLocation?.id,
     });
@@ -88,11 +103,14 @@ function start() {
     for (let attempt = 1; attempt <= MAX_LOAD_ATTEMPTS; attempt++) {
       try {
         await round.load(s.current);
+        // The game may have been abandoned (attract mode) while this was loading.
+        if (session !== s) return;
         round.statusBar.update({ round: s.roundNumber, totalRounds: s.totalRounds, score: s.totalScore });
         state.transition('round');
-        timer.start(ROUND_SECONDS);
+        timer.start(settings.get().roundSeconds);
         return;
       } catch (err) {
+        if (session !== s) return;
         console.warn(`Panorama failed to load (${s.current.id}, ${s.current.imageId})`, err);
         if (!s.replaceCurrent()) break;
       }
@@ -131,7 +149,13 @@ function start() {
   }
 
   function showSummary(s: Session) {
-    const rank = leaderboard.add({ name: playerName, score: s.totalScore, mapId: s.mapId });
+    const rank = leaderboard.add({
+      name: playerName,
+      score: s.totalScore,
+      mapId: s.mapId,
+      mode,
+      rounds: s.totalRounds,
+    });
     const board = leaderboard.today();
     state.transition('summary');
     summary.show({
@@ -151,7 +175,34 @@ function start() {
     enterMenu();
   }
 
+  // ── Attract mode: an abandoned game goes back to the rotating menu ──
+  const idle = createIdleWatcher(ATTRACT_TIMEOUT_MS, () => {
+    if (admin.isOpen) return idle.poke();
+    timer.stop();
+    session = null; // an unfinished game is dropped, not scored
+    if (state.current !== 'menu') state.transition('menu');
+    // Also refreshes an idle menu: clears a half-typed name, shows a new place.
+    enterMenu();
+    idle.poke();
+  });
+  for (const type of ['pointerdown', 'pointermove', 'keydown', 'wheel', 'touchstart'] as const) {
+    window.addEventListener(type, () => idle.poke(), { passive: true, capture: true });
+  }
+  idle.poke();
+
+  // ── Keyboard ──
   window.addEventListener('keydown', (e) => {
+    // Staff shortcut works everywhere, even while typing a name.
+    if (e.ctrlKey && e.shiftKey && e.code === 'KeyA') {
+      e.preventDefault();
+      admin.toggle();
+      return;
+    }
+    if (admin.isOpen) {
+      if (e.code === 'Escape') admin.close();
+      return;
+    }
+
     const t = e.target as HTMLElement | null;
     if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
     if (e.ctrlKey || e.metaKey || e.altKey) return;
@@ -177,5 +228,12 @@ function start() {
     if (e.code === 'Space' && (e.target as HTMLElement | null)?.tagName === 'BUTTON') e.preventDefault();
   });
 
+  // Fallback for browsers that reserve Ctrl+Shift+A (Chrome's tab search): open with #admin.
+  const openAdminFromHash = () => {
+    if (location.hash === '#admin' && !admin.isOpen) admin.open();
+  };
+  window.addEventListener('hashchange', openAdminFromHash);
+
   enterMenu();
+  openAdminFromHash();
 }

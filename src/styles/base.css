@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+/* Components set display: grid/flex; the hidden attribute must still win. */
+[hidden] {
+  display: none !important;
+}
+
 html,
 body,
 #app {

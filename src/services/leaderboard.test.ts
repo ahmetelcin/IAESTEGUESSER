@@ -1,5 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { STORAGE_KEY, createLeaderboard, dayKey, type StorageLike } from './leaderboard';
+import {
+  STORAGE_KEY,
+  createLeaderboard,
+  dayKey,
+  leaderboardCsv,
+  type LeaderboardEntry,
+  type StorageLike,
+} from './leaderboard';
 
 function memoryStorage(): StorageLike & { data: Map<string, string> } {
   const data = new Map<string, string>();
@@ -116,5 +123,37 @@ describe('leaderboard', () => {
 describe('dayKey', () => {
   it('uses the local calendar date', () => {
     expect(dayKey(new Date(2026, 0, 5, 23, 59))).toBe('2026-01-05');
+  });
+});
+
+describe('leaderboardCsv', () => {
+  const entry = (over: Partial<LeaderboardEntry>): LeaderboardEntry => ({
+    name: 'Ada',
+    score: 12345,
+    mapId: 'world',
+    day: '2026-10-19',
+    ts: new Date(2026, 9, 19, 14, 5).getTime(),
+    ...over,
+  });
+
+  it('starts with a BOM and a Turkish header, semicolon separated', () => {
+    const lines = leaderboardCsv([entry({ mode: 'nmpz', rounds: 5 })]).split('\r\n');
+    expect(lines[0].charCodeAt(0)).toBe(0xfeff);
+    expect(lines[0].slice(1)).toBe('Tarih;Saat;Ad;Puan;Harita;Mod;Tur');
+    expect(lines[1]).toBe('2026-10-19;14:05;Ada;12345;world;nmpz;5');
+  });
+
+  it('quotes fields with separators or quotes', () => {
+    const line = leaderboardCsv([entry({ name: 'A;"B"' })]).split('\r\n')[1];
+    expect(line).toContain(';"A;""B""";');
+  });
+
+  it('neutralises spreadsheet formulas in names', () => {
+    const line = leaderboardCsv([entry({ name: '=HYPERLINK("x")' })]).split('\r\n')[1];
+    expect(line).toContain(`;"'=HYPERLINK(""x"")";`);
+  });
+
+  it('leaves unknown mode and rounds empty for old entries', () => {
+    expect(leaderboardCsv([entry({})]).split('\r\n')[1]).toBe('2026-10-19;14:05;Ada;12345;world;;');
   });
 });

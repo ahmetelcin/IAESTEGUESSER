@@ -1,4 +1,5 @@
 import type { Location } from '../../data/maps';
+import { MODE_RULES, type ModeRules } from '../../game/modes';
 import { createPanorama, type Panorama } from '../../services/mapillary';
 import { el } from '../dom';
 import { createControls } from '../hud/controls';
@@ -19,6 +20,9 @@ export interface RoundScreen {
   preload(location: Location): void;
   resetView(): void;
   zoom(direction: 1 | -1): void;
+  /** Rules for the current game's mode; applied on every `load`. */
+  setRules(rules: ModeRules): void;
+  readonly rules: ModeRules;
 }
 
 export function createRoundScreen(
@@ -35,11 +39,15 @@ export function createRoundScreen(
   const panorama = createPanorama(viewerEl, token);
   let startImageId: string | null = null;
   let preloading: { imageId: string; done: Promise<void> } | null = null;
+  let rules: ModeRules = MODE_RULES.moving;
 
   const resetView = () => {
+    if (!rules.move && !rules.pan) return;
     if (startImageId) void panorama.reset(startImageId).catch(() => {});
   };
-  const zoom = (direction: 1 | -1) => void panorama.zoomBy(direction * ZOOM_STEP);
+  const zoom = (direction: 1 | -1) => {
+    if (rules.zoom) void panorama.zoomBy(direction * ZOOM_STEP);
+  };
 
   const controls = createControls(hud, {
     onReset: resetView,
@@ -58,7 +66,8 @@ export function createRoundScreen(
     async load(location) {
       miniMap.reset();
       panorama.setAutoRotate(false);
-      panorama.setNavigation(true);
+      panorama.setRules(rules);
+      controls.setRules(rules);
       const pending = preloading?.imageId === location.imageId ? preloading.done : null;
       preloading = null;
       await (pending ?? panorama.show(location.imageId));
@@ -71,5 +80,11 @@ export function createRoundScreen(
     },
     resetView,
     zoom,
+    setRules(next) {
+      rules = next;
+    },
+    get rules() {
+      return rules;
+    },
   };
 }

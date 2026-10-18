@@ -1,7 +1,10 @@
+import type { ModeRules } from '../../game/modes';
 import { el } from '../dom';
 
 export interface Controls {
   setBearing(degrees: number): void;
+  /** Hides buttons the current mode doesn't allow. */
+  setRules(rules: ModeRules): void;
 }
 
 export function createControls(
@@ -26,16 +29,20 @@ export function createControls(
   };
 
   const stack = el('div', 'controls__stack');
-  stack.append(
-    button('controls__reset', '⟲', 'Başlangıca dön (R)', actions.onReset),
-    button('controls__zoom', '+', 'Yakınlaştır (+)', actions.onZoomIn),
-    button('controls__zoom', '−', 'Uzaklaştır (−)', actions.onZoomOut),
-  );
+  const resetBtn = button('controls__reset', '⟲', 'Başlangıca dön (R)', actions.onReset);
+  const zoomIn = button('controls__zoom', '+', 'Yakınlaştır (+)', actions.onZoomIn);
+  const zoomOut = button('controls__zoom', '−', 'Uzaklaştır (−)', actions.onZoomOut);
+  stack.append(resetBtn, zoomIn, zoomOut);
 
   root.append(compass, stack);
   parent.append(root);
 
   return {
+    setRules({ move, pan, zoom }) {
+      // Reset is useful after walking or turning; NMPZ allows neither.
+      resetBtn.hidden = !move && !pan;
+      zoomIn.hidden = zoomOut.hidden = !zoom;
+    },
     setBearing(degrees) {
       // Rotate the dial opposite to the view so "K" (north) keeps pointing north.
       dial.style.transform = `rotate(${-degrees}deg)`;

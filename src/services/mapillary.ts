@@ -1,5 +1,6 @@
 import { TransitionMode, Viewer } from 'mapillary-js';
 import 'mapillary-js/dist/mapillary.css';
+import type { ModeRules } from '../game/modes';
 
 const MAX_ZOOM = 3;
 /** Full turns per second for the menu background rotation. */
@@ -14,8 +15,8 @@ export interface Panorama {
   zoomBy(delta: number): Promise<void>;
   onBearing(listener: (degrees: number) => void): void;
   setAutoRotate(on: boolean): void;
-  /** Shows or hides the movement arrows (hidden behind the menu). */
-  setNavigation(on: boolean): void;
+  /** Applies a mode: movement arrows/keys, drag to look around, scroll/pinch zoom. */
+  setRules(rules: ModeRules): void;
   resize(): void;
 }
 
@@ -35,6 +36,17 @@ export function createPanorama(container: HTMLElement, accessToken: string): Pan
       keyboard: { keyZoom: false, keyPlay: false, keySequenceNavigation: false },
     },
   });
+
+  // Anti-cheat: the attribution stays visible (Mapillary requires it), but its links open
+  // the image page on mapillary.com, which shows the location. Block every way to follow them.
+  const blockLinks = (e: Event) => {
+    if ((e.target as Element | null)?.closest?.('a')) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+  for (const type of ['click', 'auxclick', 'contextmenu'] as const) container.addEventListener(type, blockLinks, true);
+  container.addEventListener('contextmenu', (e) => e.preventDefault());
 
   let currentId: string | null = null;
   viewer.on('image', (e) => {
@@ -98,9 +110,15 @@ export function createPanorama(container: HTMLElement, accessToken: string): Pan
       cancelAnimationFrame(rotateFrame);
       if (on) void rotateLoop();
     },
-    setNavigation(on) {
-      if (on) viewer.activateComponent('direction');
-      else viewer.deactivateComponent('direction');
+    setRules({ move, pan, zoom }) {
+      const toggle = (name: Parameters<Viewer['activateComponent']>[0], on: boolean) =>
+        on ? viewer.activateComponent(name) : viewer.deactivateComponent(name);
+      toggle('direction', move);
+      toggle('keyboard', move);
+      // Prefetching neighbouring images only matters when the player can walk to them.
+      toggle('cache', move);
+      // The pointer component handles both drag-to-look and scroll/pinch zoom.
+      toggle('pointer', pan || zoom);
     },
     resize() {
       viewer.resize();

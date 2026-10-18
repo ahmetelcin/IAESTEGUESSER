@@ -1,11 +1,11 @@
 import { ROUNDS_PER_GAME } from '../../config';
 import { MAP_INFO, isPlayable } from '../../data/maps';
+import type { Mode } from '../../game/modes';
 import type { MapId } from '../../game/scoring';
 import type { LeaderboardEntry } from '../../services/leaderboard';
 import { el } from '../dom';
 import { renderLeaderboard } from '../leaderboardList';
 
-export type Mode = 'moving' | 'no-move' | 'nmpz';
 
 export interface MenuChoice {
   name: string;
@@ -14,7 +14,10 @@ export interface MenuChoice {
 }
 
 export interface MenuScreen {
+  /** Fresh menu for a new player (clears the name). */
   show(entries: LeaderboardEntry[]): void;
+  /** Updates only the leaderboard, keeping whatever is being typed. */
+  setBoard(entries: LeaderboardEntry[]): void;
 }
 
 interface Option<T extends string> {
@@ -32,8 +35,8 @@ const MAP_OPTIONS: Option<MapId>[] = (Object.keys(MAP_INFO) as MapId[]).map((val
 
 const MODE_OPTIONS: Option<Mode>[] = [
   { value: 'moving', label: 'Hareketli', hint: 'Sokaklarda gezin' },
-  { value: 'no-move', label: 'Hareketsiz', hint: 'Yerinde dön', soon: true },
-  { value: 'nmpz', label: 'NMPZ', hint: 'Hareket, dönme, zoom yok', soon: true },
+  { value: 'no-move', label: 'Hareketsiz', hint: 'Yerinde dön' },
+  { value: 'nmpz', label: 'NMPZ', hint: 'Hareket, dönme, zoom yok' },
 ];
 
 export const NAME_MAX_LENGTH = 16;
@@ -126,6 +129,9 @@ export function createMenuScreen(root: HTMLElement, onPlay: (choice: MenuChoice)
   });
 
   return {
+    setBoard(entries) {
+      renderLeaderboard(list, entries);
+    },
     show(entries) {
       renderLeaderboard(list, entries);
       nameInput.value = '';
