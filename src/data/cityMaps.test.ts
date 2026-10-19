@@ -1,5 +1,15 @@
 import { describe, expect, it } from 'vitest';
-import { deriveCityMap } from './cityMaps';
+import { deriveCityMap, placeName } from './cityMaps';
+
+describe('placeName', () => {
+  it('shows the district with the city when there is one', () => {
+    expect(placeName({ city: 'Edirne', country: 'Türkiye', district: 'Kaleiçi' })).toBe('Kaleiçi, Edirne');
+  });
+
+  it('falls back to city and country', () => {
+    expect(placeName({ city: 'Edirne', country: 'Türkiye' })).toBe('Edirne, Türkiye');
+  });
+});
 
 const loc = (id: string, cityId: string) => ({ id, cityId, imageId: `img-${id}`, lat: 0, lng: 0, city: cityId, country: 'Türkiye' });
 

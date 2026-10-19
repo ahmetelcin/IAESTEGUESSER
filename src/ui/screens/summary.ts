@@ -1,5 +1,6 @@
 import L from 'leaflet';
 import { TILE_ATTRIBUTION, TILE_URL } from '../../config';
+import { placeName } from '../../data/cityMaps';
 import { fitLongitudes, shortestPathTarget } from '../../game/geo';
 import { MAX_SCORE, formatDistance } from '../../game/scoring';
 import type { RoundResult } from '../../game/session';
@@ -22,6 +23,8 @@ export interface SummaryData {
 
 export interface SummaryScreen {
   show(data: SummaryData): void;
+  /** Shared-leaderboard answer arrived: replace the local rank and board. */
+  updateBoard(data: Pick<SummaryData, 'rank' | 'board' | 'me'>): void;
 }
 
 const COUNT_MS = 1500;
@@ -71,7 +74,14 @@ export function createSummaryScreen(root: HTMLElement, onNewPlayer: () => void):
   map.attributionControl.setPrefix(false);
   const layers = L.layerGroup().addTo(map);
 
+  function renderBoard({ rank, board: entries, me }: Pick<SummaryData, 'rank' | 'board' | 'me'>) {
+    if (rank === null) rankEl.textContent = 'Bu oyun sıralamaya girmez (sadece 5 turluk oyunlar sıralanır).';
+    else rankEl.innerHTML = `Günün sıralamasında <strong>${rank}.</strong> sıradasın`;
+    renderLeaderboard(board, entries, { highlight: me, empty: 'Bugün bu tabloda henüz skor yok.' });
+  }
+
   return {
+    updateBoard: renderBoard,
     show({ name, results, totalScore, rank, boardLabel, board: entries, me }) {
       layers.clearLayers();
       map.invalidateSize({ pan: false });
@@ -121,8 +131,6 @@ export function createSummaryScreen(root: HTMLElement, onNewPlayer: () => void):
       requestAnimationFrame(() => {
         barFill.style.width = `${(totalScore / max) * 100}%`;
       });
-      if (rank === null) rankEl.textContent = 'Bu oyun sıralamaya girmez (sadece 5 turluk oyunlar sıralanır).';
-      else rankEl.innerHTML = `Günün sıralamasında <strong>${rank}.</strong> sıradasın`;
       boardTitle.textContent = `Günün liderleri — ${boardLabel}`;
 
       body.replaceChildren();
@@ -130,14 +138,14 @@ export function createSummaryScreen(root: HTMLElement, onNewPlayer: () => void):
         const tr = el('tr');
         tr.append(
           el('td', '', String(i + 1)),
-          el('td', '', `${r.location.city}, ${r.location.country}`),
+          el('td', '', placeName(r.location)),
           el('td', '', r.km === null ? '—' : formatDistance(r.km)),
           el('td', 'summary__pts', scoreFormat.format(r.score)),
         );
         body.append(tr);
       });
 
-      renderLeaderboard(board, entries, { highlight: me, empty: 'Bugün bu tabloda henüz skor yok.' });
+      renderBoard({ rank, board: entries, me });
       newBtn.focus({ preventScroll: true });
     },
   };

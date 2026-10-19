@@ -9,8 +9,10 @@
  *   npm run curate -- --per-city 5       panoramas per city (default 4)
  *   npm run curate -- --fresh            ignore the resume cache
  *   npm run curate -- --creators         only fill in missing photographer names
+ *   npm run curate -- --districts        only (re)write district names of city spots
  *
- * Cities in CITY_SPOTS (Edirne, Bursa) get many spots spread across town.
+ * Cities in CITY_SPOTS (İstanbul, Edirne, Bursa) get many spots spread across town, each
+ * with a district name from OpenStreetMap Nominatim (asked once, cached, 1 request/s).
  *
  * Reads VITE_MAPILLARY_TOKEN from .env.
  *
@@ -21,6 +23,7 @@
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { CITY_LISTS, CITY_SPOTS, FLAT_ALLOWED, type City, type CitySpots } from './cities';
+import { districtFromAddress, type NominatimAddress } from './districts';
 
 type ListMapId = keyof typeof CITY_LISTS;
 
@@ -51,6 +54,8 @@ interface Location {
   country: string;
   /** Mapillary username, for the attribution on the result screen and the credits page. */
   creator?: string;
+  /** İlçe or mahalle of a CITY_SPOTS spot. */
+  district?: string;
 }
 
 const MIN_CAPTURED_AT = Date.UTC(2018, 0, 1);
@@ -89,6 +94,7 @@ const boolFlag = (name: string) => {
 };
 const fresh = boolFlag('--fresh');
 const creatorsOnly = boolFlag('--creators');
+const districtsOnly = boolFlag('--districts');
 const maps = (args.length ? args : Object.keys(CITY_LISTS)) as ListMapId[];
 for (const m of maps) {
   if (!(m in CITY_LISTS)) {
@@ -367,9 +373,87 @@ async function fillCreators() {
   }
 }
 
+// ── Districts (Nominatim) ───────────────────────────────────────────────
+/** Nominatim usage policy: at most 1 request/s, an identifying User-Agent, cache results. */
+const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/reverse';
+const NOMINATIM_USER_AGENT = 'StajyerNerede/0.1 (IAESTE club stand game; one-off curate script)';
+const NOMINATIM_GAP_MS = 1100;
+/** Raw addresses by coordinate, so no spot is ever asked twice. Kept out of git. */
+const DISTRICT_CACHE_FILE = resolve('scripts/.district-cache.json');
+const districtCache: Record<string, NominatimAddress | null> = existsSync(DISTRICT_CACHE_FILE)
+  ? JSON.parse(readFileSync(DISTRICT_CACHE_FILE, 'utf8'))
+  : {};
+let nominatimQueue: Promise<unknown> = Promise.resolve();
+const coordKey = (l: { lat: number; lng: number }) => `${l.lat.toFixed(6)},${l.lng.toFixed(6)}`;
+
+/** null = Nominatim found nothing there; undefined = request failed (not cached, retried next run). */
+function reverseGeocode(l: { lat: number; lng: number }): Promise<NominatimAddress | null | undefined> {
+  const key = coordKey(l);
+  if (key in districtCache) return Promise.resolve(districtCache[key]);
+  // Requests run one after another, NOMINATIM_GAP_MS apart, across all callers.
+  const run = nominatimQueue.then(async () => {
+    const url = new URL(NOMINATIM_URL);
+    url.searchParams.set('format', 'jsonv2');
+    url.searchParams.set('lat', String(l.lat));
+    url.searchParams.set('lon', String(l.lng));
+    url.searchParams.set('zoom', '16');
+    url.searchParams.set('accept-language', 'tr');
+    try {
+      const res = await fetch(url, {
+        headers: { 'User-Agent': NOMINATIM_USER_AGENT },
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      });
+      if (!res.ok) return undefined;
+      const body = (await res.json()) as { address?: NominatimAddress };
+      districtCache[key] = body.address ?? null;
+      writeFileSync(DISTRICT_CACHE_FILE, JSON.stringify(districtCache, null, 1));
+      return districtCache[key];
+    } catch {
+      return undefined;
+    } finally {
+      await new Promise((r) => setTimeout(r, NOMINATIM_GAP_MS));
+    }
+  });
+  nominatimQueue = run;
+  return run;
+}
+
+/** Sets `district` on CITY_SPOTS spots (others are left alone). Returns how many have one. */
+async function addDistricts(locations: Location[]): Promise<number> {
+  let named = 0;
+  for (const l of locations) {
+    const spots = CITY_SPOTS[l.cityId];
+    if (!spots) continue;
+    const district = districtFromAddress(await reverseGeocode(l), spots.districtLevel, l.city);
+    if (district) {
+      l.district = district;
+      named++;
+    } else delete l.district;
+  }
+  return named;
+}
+
+/** --districts: (re)writes district names in the maps that hold city spots, nothing else. */
+async function fillDistricts() {
+  for (const m of maps.filter((m) => FLAT_ALLOWED.has(m))) {
+    const path = resolve(`src/data/maps/${m}.json`);
+    const locations = JSON.parse(readFileSync(path, 'utf8')) as Location[];
+    const spots = locations.filter((l) => CITY_SPOTS[l.cityId]);
+    const uncached = spots.filter((l) => !(coordKey(l) in districtCache)).length;
+    if (uncached) console.log(`${m}: asking Nominatim about ${uncached} spots (~${Math.ceil((uncached * NOMINATIM_GAP_MS) / 1000)} s)…`);
+    const named = await addDistricts(locations);
+    writeFileSync(path, JSON.stringify(locations, null, 2) + '\n');
+    console.log(
+      `${m}: ${named}/${spots.length} city spots have a district` +
+        (named < spots.length ? ' (the rest show the city name; rerun to retry failed requests)' : ''),
+    );
+  }
+}
+
 // ── Main ────────────────────────────────────────────────────────────────
 async function main() {
   if (creatorsOnly) return fillCreators();
+  if (districtsOnly) return fillDistricts();
   const panoMaps = maps.filter((m) => !FLAT_ALLOWED.has(m));
   const flatMaps = maps.filter((m) => FLAT_ALLOWED.has(m));
   if (panoMaps.length) await curateLists(panoMaps, true);
@@ -420,6 +504,7 @@ async function curateLists(maps: ListMapId[], panoOnly: boolean) {
             country: c.country,
           }));
           await addCreators(locations);
+          if (spots) await addDistricts(locations);
         } catch (err) {
           failed.push(c.city);
           console.log(`! ${c.city.padEnd(16)} error: ${err instanceof Error ? err.message : err}`);

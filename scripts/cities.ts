@@ -6,6 +6,8 @@
  * Mapillary has little 360° coverage in much of Türkiye (Ankara, Antalya, Konya, … had none
  * in Oct 2026), so the Türkiye list only holds cities where panoramas were found.
  */
+import type { DistrictLevel } from './districts';
+
 export interface City {
   id: string;
   city: string;
@@ -154,12 +156,15 @@ export interface CitySpots {
   cell?: number;
   count: number;
   spacingM: number;
+  /** District shown after the guess: ilçe (town) or mahalle (suburb). See scripts/districts.ts. */
+  districtLevel: DistrictLevel;
 }
 
 export const CITY_SPOTS: Record<string, CitySpots> = {
-  edirne: { radius: 0.04, count: 20, spacingM: 300 },
-  bursa: { radius: 0.07, count: 30, spacingM: 500 },
-  istanbul: { radius: 0.18, cell: 0.03, count: 40, spacingM: 1000 },
+  // Edirne is one ilçe (Merkez), and Bursa's 30 spots share three ilçeler: use mahalleler.
+  edirne: { radius: 0.04, count: 20, spacingM: 300, districtLevel: 'suburb' },
+  bursa: { radius: 0.07, count: 30, spacingM: 500, districtLevel: 'suburb' },
+  istanbul: { radius: 0.18, cell: 0.03, count: 40, spacingM: 1000, districtLevel: 'town' },
 };
 
 /**

@@ -15,6 +15,8 @@ export interface Location {
   country: string;
   /** Mapillary username; shown after the guess and on the credits page. */
   creator?: string;
+  /** İlçe or mahalle of a city spot (from OpenStreetMap at curate time); shown after the guess. */
+  district?: string;
 }
 
 export interface MapInfo {

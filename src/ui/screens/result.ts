@@ -1,5 +1,6 @@
 import L from 'leaflet';
 import { TILE_ATTRIBUTION, TILE_URL } from '../../config';
+import { placeName } from '../../data/cityMaps';
 import { shortestPathTarget, type LatLng } from '../../game/geo';
 import { MAX_SCORE, formatDistance } from '../../game/scoring';
 import type { RoundResult } from '../../game/session';
@@ -99,7 +100,7 @@ export function createResultScreen(root: HTMLElement, onNext: () => void): Resul
       });
       if (km === null) distanceEl.textContent = 'Süre doldu — tahmin yapılmadı';
       else distanceEl.innerHTML = `Tahminin <strong>${formatDistance(km)}</strong> uzakta`;
-      placeEl.textContent = `${location.city}, ${location.country}`;
+      placeEl.textContent = placeName(location);
       creditEl.textContent = `Görüntü: ${location.creator ?? 'Mapillary katkıcısı'} · Mapillary · CC BY-SA`;
       nextBtn.textContent = isLastRound ? 'SONUÇLARI GÖR' : 'SONRAKİ TUR';
       nextBtn.focus({ preventScroll: true });

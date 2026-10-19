@@ -5,3 +5,4 @@ dist
 *.log
 dist-stand
 scripts/.curate-cache.json
+scripts/.district-cache.json
