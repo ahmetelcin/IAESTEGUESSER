@@ -1,7 +1,9 @@
-# Online (phone) version. See DEPLOY.md.
+# Netlify only hosts the shared leaderboard API (netlify/functions). The game itself is
+# on GitHub Pages (.github/workflows/pages.yml): Netlify's free plan adds a badge to
+# every page. The site root just redirects there. See DEPLOY.md.
 [build]
-  command = "npm run build"
-  publish = "dist"
+  command = "echo 'API only: the game is deployed to GitHub Pages'"
+  publish = "netlify/site"
 
 [build.environment]
   NODE_VERSION = "22"

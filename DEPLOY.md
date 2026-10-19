@@ -30,14 +30,12 @@ Bu dizeyi **hiçbir dosyaya yazma**; sadece Netlify panosuna gireceksin.
 
 1. Projeyi GitHub'a yükle (`.env` zaten git dışında).
 2. https://app.netlify.com → **Add new site → Import from Git** → repoyu seç.
-   Derleme ayarları `netlify.toml`'dan gelir (`npm run build`, `dist`).
+   Ayarlar `netlify.toml`'dan gelir: oyun derlenmez, sadece API fonksiyonu ve Pages'e
+   yönlendiren kök sayfa yayınlanır.
 3. **Site configuration → Environment variables**:
 
    | Ad | Değer | Not |
    |---|---|---|
-   | `VITE_MAPILLARY_TOKEN` | Mapillary token | derlemeye girer (istemci token'ı, zaten herkese açık) |
-   | `VITE_ADMIN_PIN` | 4 hane | isteğe bağlı |
-   | `VITE_PUBLIC_URL` | `https://<site>.netlify.app` | menüdeki QR |
    | `MONGODB_URI` | Atlas bağlantı dizesi | **sadece sunucu**, scope: *Functions* |
    | `MONGODB_DB` | `stajyer-nerede` | isteğe bağlı |
 
@@ -49,8 +47,8 @@ Bu dizeyi **hiçbir dosyaya yazma**; sadece Netlify panosuna gireceksin.
 Stant bilgisayarındaki `.env`'e ekle:
 
 ```
-VITE_PUBLIC_URL=https://<site>.netlify.app
-VITE_SCORES_API=https://<site>.netlify.app/api
+VITE_PUBLIC_URL=https://ahmetelcin.github.io/IAESTEGUESSER/
+VITE_SCORES_API=https://iaesteguesser.netlify.app/api
 ```
 
 Sonra `npm run build:stand`. Menüde QR kodu görünür, skorlar ortak tabloya gider.

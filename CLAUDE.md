@@ -57,7 +57,13 @@ GeoGuessr'ın marka adı, logosu, renk paleti ve görselleri kullanılmayacak; s
 - **Token:** `.env` → `VITE_MAPILLARY_TOKEN`. `.env` git'e girmez, `.env.example` olur.
 - **Admin PIN:** `.env` → `VITE_ADMIN_PIN` (4 hane). Derlemeye gömülür; stantta caydırıcıdır, gerçek güvenlik değildir. 5 hatalı denemede 30 sn kilit.
 - **Stant derlemesi:** `vite-plugin-singlefile` ile tek HTML (`npm run build:stand`), çift tıkla çalışmalı.
-- **Liderlik tablosu:** localStorage (try/catch). Faz 5'e kadar sunucu yok. Faz 5'te ortak tablo eklenir (aşağıya bak); localStorage yedek olarak kalır.
+- **Liderlik tablosu:** localStorage (try/catch) + ortak tablo (Faz 5). Skor önce localStorage'a yazılır; `services/remoteBoard.ts` giden kutusuyla sunucuya gönderir. Doğrulama kuralları istemci ve sunucuda ortak: `services/scoreRules.ts`.
+- **Yayın (Faz 5):**
+  - Oyun **GitHub Pages**'te (https://ahmetelcin.github.io/IAESTEGUESSER/), `main`'e her push'ta `.github/workflows/pages.yml` derler. Token GitHub Secrets'ta.
+  - **Netlify** sadece skor API'si (`netlify/functions/scores.ts`, `/api/scores`); kök sayfa Pages'e yönlendirir. Oyun Netlify'da sunulmaz: ücretsiz planda her sayfaya gizlenemeyen bir rozet ekliyor.
+  - `MONGODB_URI` sadece Netlify env'de (secret). Adımlar `DEPLOY.md`'de.
+  - Stant `.env`: `VITE_PUBLIC_URL` (menüdeki QR), `VITE_SCORES_API` (tam API adresi; boşsa sadece yerel skor).
+- **Derleme modları:** `npm run build` = online (telefon) sürümü, attract mode kapalı. `build:stand` ve `dev`'de attract mode açık.
 - **Puanlama:** haversine mesafe; `5000 * exp(-km / ölçek)`. Ölçek haritaya göre: Dünya 2000, Avrupa 800, Türkiye 250, İstanbul 5, Edirne 1,5, Bursa 3 (km). 150 m altı tam puan.
 - **Testler:** Vitest — mesafe, puanlama, liderlik tablosu, state geçişleri.
 
@@ -117,6 +123,7 @@ Her fazın sonunda dur, kısaca özetle, onay bekle. Onaysız sonraki faza geçm
   - Nominatim kullanım kurallarına uy: en fazla 1 istek/sn, tanımlayıcı `User-Agent`, sonuçları önbelleğe al (aynı nokta tekrar sorgulanmasın).
   - Oyun sonu tablosunda ve tur sonucunda İstanbul, Edirne ve Bursa noktalarında (özellikle şehir haritalarında) "Edirne, Türkiye" yerine semt gösterilsin (ör. "Kaleiçi, Edirne"). Semt bulunamazsa şehir adına düşülsün.
 - Ses efektleri (kapatılabilir), geçiş animasyonları, kulüp logosu için yer.
+- **Durum (Ekim 2026): tamamlandı.** Sesler WebAudio ile üretilir (dosya yok). Logo: `src/assets/club-logo.{svg,png,webp}` konunca menüde görünür. Semt seviyesi şehir başına `CITY_SPOTS[...].districtLevel` (İstanbul ilçe, Edirne/Bursa mahalle); `npm run curate -- turkey --districts` yeniden yazar.
 
 ## Kurallar
 - Token'ı koda gömme, commit'leme.
