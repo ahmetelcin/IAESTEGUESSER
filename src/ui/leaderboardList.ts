@@ -7,7 +7,13 @@ const dateFormat = new Intl.DateTimeFormat('tr-TR', { day: '2-digit', month: '2-
 export function renderLeaderboard(
   list: HTMLOListElement,
   entries: LeaderboardEntry[],
-  options: { highlight?: LeaderboardEntry; showDate?: boolean; empty?: string } = {},
+  options: {
+    highlight?: LeaderboardEntry;
+    showDate?: boolean;
+    empty?: string;
+    /** Small label after the name, e.g. map and mode on a combined board. */
+    tag?: (e: LeaderboardEntry) => string;
+  } = {},
 ): void {
   list.replaceChildren();
   list.classList.toggle('board--dated', !!options.showDate);
@@ -18,7 +24,10 @@ export function renderLeaderboard(
   entries.forEach((e, i) => {
     const row = el('li', 'board__row');
     if (options.highlight && e.ts === options.highlight.ts && e.name === options.highlight.name) row.classList.add('is-me');
-    row.append(el('span', 'board__rank', String(i + 1)), el('span', 'board__name', e.name));
+    const name = el('span', 'board__name', e.name);
+    const tag = options.tag?.(e);
+    if (tag) name.append(el('span', 'board__tag', tag));
+    row.append(el('span', 'board__rank', String(i + 1)), name);
     if (options.showDate) row.append(el('span', 'board__date', dateFormat.format(e.ts)));
     row.append(el('span', 'board__score', scoreFormat.format(e.score)));
     list.append(row);

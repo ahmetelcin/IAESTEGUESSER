@@ -3,6 +3,7 @@
  *
  *   POST /api/scores   add a finished game  → { rank }   (rank null = not a ranked game)
  *   GET  /api/scores?mapId=&mode=&period=today|all&day=YYYY-MM-DD&limit=  → { entries }
+ *        (mapId / mode may be "all" to combine every map / mode)
  *
  * Storage is MongoDB Atlas. The connection string lives only in the Netlify environment
  * (MONGODB_URI); it never reaches the browser or git. Validation rules are shared with the
@@ -11,21 +12,13 @@
 import type { Config, Context } from '@netlify/functions';
 import { createHash } from 'node:crypto';
 import { MongoClient, type Collection, type Db } from 'mongodb';
-import {
-  MAP_IDS,
-  MODES,
-  RANKED_ROUNDS,
-  isDay,
-  validateSubmission,
-  type ScoreSubmission,
-} from '../../src/services/scoreRules';
+import { RANKED_ROUNDS, parseBoardQuery, validateSubmission, type ScoreSubmission } from '../../src/services/scoreRules';
 
 export const config: Config = { path: '/api/scores' };
 
 /** Submissions per IP per minute. */
 const RATE_LIMIT = 10;
 const RATE_WINDOW_MS = 60_000;
-const MAX_LIMIT = 20;
 const MAX_BODY_BYTES = 2048;
 
 interface StoredScore extends ScoreSubmission {
@@ -83,24 +76,14 @@ export default async (req: Request, context: Context): Promise<Response> => {
 };
 
 async function list(url: URL): Promise<Response> {
-  const p = url.searchParams;
-  const mapId = p.get('mapId');
-  const mode = p.get('mode');
-  const period = p.get('period') ?? 'today';
-  const day = p.get('day');
-  const limit = Math.min(MAX_LIMIT, Math.max(1, Number(p.get('limit')) || 10));
-  if (!MAP_IDS.includes(mapId as never) || !MODES.includes(mode as never)) return reply({ error: 'filter' }, 400);
-  if (period !== 'today' && period !== 'all') return reply({ error: 'period' }, 400);
-  if (period === 'today' && !isDay(day)) return reply({ error: 'day' }, 400);
+  const q = parseBoardQuery(url.searchParams);
+  if (!q.ok) return reply({ error: q.error }, 400);
 
   const scores = (await db()).collection<StoredScore>('scores');
   const entries = await scores
-    .find(
-      { mapId, mode, rounds: RANKED_ROUNDS, ...(period === 'today' ? { day: day! } : {}) } as never,
-      { projection: { _id: 0, receivedAt: 0 } },
-    )
+    .find(q.filter, { projection: { _id: 0, receivedAt: 0 } })
     .sort({ score: -1, ts: 1 })
-    .limit(limit)
+    .limit(q.limit)
     .toArray();
   return reply({ entries }, 200, { 'Cache-Control': 'no-store' });
 }

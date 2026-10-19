@@ -13,6 +13,12 @@ export const NAME_MAX_LENGTH = 16;
 export const RANKED_ROUNDS = 5;
 export const MAX_ROUND_SCORE = 5000;
 export const MAX_ROUNDS = 10;
+/** Leaderboard tab that combines every map or every mode. */
+export const ALL = 'all';
+export type BoardMap = MapId | typeof ALL;
+export type BoardMode = Mode | typeof ALL;
+export const MAX_BOARD_LIMIT = 20;
+
 /** Queued offline scores may arrive this many days late. */
 const MAX_DAYS_LATE = 7;
 
@@ -42,6 +48,28 @@ export const isDay = (v: unknown): v is string => typeof v === 'string' && DAY_R
 /** Whole days between two YYYY-MM-DD strings (b − a). */
 function daysBetween(a: string, b: string): number {
   return Math.round((Date.parse(b) - Date.parse(a)) / 86_400_000);
+}
+
+export type BoardQuery =
+  | { ok: true; filter: { rounds: number; mapId?: MapId; mode?: Mode; day?: string }; limit: number }
+  | { ok: false; error: string };
+
+/** GET /api/scores parameters → database filter (ranked games only; "all" drops that condition). */
+export function parseBoardQuery(p: URLSearchParams): BoardQuery {
+  const mapId = p.get('mapId');
+  const mode = p.get('mode');
+  const period = p.get('period') ?? 'today';
+  const day = p.get('day');
+  if (mapId !== ALL && !MAP_IDS.includes(mapId as MapId)) return { ok: false, error: 'mapId' };
+  if (mode !== ALL && !MODES.includes(mode as Mode)) return { ok: false, error: 'mode' };
+  if (period !== 'today' && period !== 'all') return { ok: false, error: 'period' };
+  if (period === 'today' && !isDay(day)) return { ok: false, error: 'day' };
+  const filter: { rounds: number; mapId?: MapId; mode?: Mode; day?: string } = { rounds: RANKED_ROUNDS };
+  if (mapId !== ALL) filter.mapId = mapId as MapId;
+  if (mode !== ALL) filter.mode = mode as Mode;
+  if (period === 'today') filter.day = day!;
+  const limit = Math.min(MAX_BOARD_LIMIT, Math.max(1, Number(p.get('limit')) || 10));
+  return { ok: true, filter, limit };
 }
 
 export function validateSubmission(input: unknown, now: Date = new Date()): Validation {

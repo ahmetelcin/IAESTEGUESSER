@@ -1,7 +1,14 @@
 import { MAP_INFO } from '../../data/maps';
 import { MODE_LABELS, type Mode } from '../../game/modes';
 import type { MapId } from '../../game/scoring';
-import { RANKED_ROUNDS, type BoardFilter, type Leaderboard, type Period } from '../../services/leaderboard';
+import { ALL, type BoardMap, type BoardMode } from '../../services/scoreRules';
+import {
+  RANKED_ROUNDS,
+  type BoardFilter,
+  type Leaderboard,
+  type LeaderboardEntry,
+  type Period,
+} from '../../services/leaderboard';
 import type { RemoteBoard } from '../../services/remoteBoard';
 import { el } from '../dom';
 import { renderLeaderboard } from '../leaderboardList';
@@ -62,14 +69,14 @@ export function createLeaderboardScreen(
   };
 
   const period = tabs<Period>('Dönem', [['today', 'Bugün'], ['all', 'Tüm zamanlar']], (v) => set({ period: v }));
-  const map = tabs<MapId>(
+  const map = tabs<BoardMap>(
     'Harita',
-    (Object.keys(MAP_INFO) as MapId[]).map((id) => [id, MAP_INFO[id].label]),
+    [[ALL, 'Tümü'], ...(Object.keys(MAP_INFO) as MapId[]).map((id): [MapId, string] => [id, MAP_INFO[id].label])],
     (v) => set({ mapId: v }),
   );
-  const mode = tabs<Mode>(
+  const mode = tabs<BoardMode>(
     'Mod',
-    (Object.keys(MODE_LABELS) as Mode[]).map((m) => [m, MODE_LABELS[m]]),
+    [[ALL, 'Tümü'], ...(Object.keys(MODE_LABELS) as Mode[]).map((m): [Mode, string] => [m, MODE_LABELS[m]])],
     (v) => set({ mode: v }),
   );
   const filters = el('div', 'board-screen__filters');
@@ -88,7 +95,17 @@ export function createLeaderboardScreen(
     period.select(filter.period);
     map.select(filter.mapId);
     mode.select(filter.mode);
+    // On a combined board, say which map / mode each game was.
+    const { mapId: m, mode: md } = filter;
+    const tag =
+      m === ALL || md === ALL
+        ? (e: LeaderboardEntry) =>
+            [m === ALL ? MAP_INFO[e.mapId].label : '', md === ALL && e.mode ? MODE_LABELS[e.mode] : '']
+              .filter(Boolean)
+              .join(' · ')
+        : undefined;
     const options = {
+      tag,
       showDate: filter.period === 'all',
       empty: filter.period === 'today' ? 'Bugün bu tabloda henüz skor yok.' : 'Bu tabloda henüz skor yok.',
     };

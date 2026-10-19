@@ -1,6 +1,6 @@
 import type { Mode } from '../game/modes';
 import type { MapId } from '../game/scoring';
-import { MAP_IDS, MODES, RANKED_ROUNDS } from './scoreRules';
+import { ALL, MAP_IDS, MODES, RANKED_ROUNDS, type BoardMap, type BoardMode } from './scoreRules';
 import { defaultStorage, readJson, writeJson, type StorageLike } from './storage';
 
 export type { StorageLike };
@@ -27,8 +27,9 @@ export interface LeaderboardEntry {
 export type Period = 'today' | 'all';
 
 export interface BoardFilter {
-  mode: Mode;
-  mapId: MapId;
+  /** 'all' combines every mode / map (the leaderboard screen's "Tümü" tab). */
+  mode: BoardMode;
+  mapId: BoardMap;
   period: Period;
 }
 
@@ -52,7 +53,12 @@ export const byRank = (a: LeaderboardEntry, b: LeaderboardEntry) => b.score - a.
 
 /** Whether an entry belongs on a board (ranked length, same mode and map, and day for "today"). */
 export function onBoard(e: LeaderboardEntry, { mode, mapId, period }: BoardFilter, today: string): boolean {
-  return e.rounds === RANKED_ROUNDS && e.mode === mode && e.mapId === mapId && (period === 'all' || e.day === today);
+  return (
+    e.rounds === RANKED_ROUNDS &&
+    (mode === ALL || e.mode === mode) &&
+    (mapId === ALL || e.mapId === mapId) &&
+    (period === 'all' || e.day === today)
+  );
 }
 
 /**

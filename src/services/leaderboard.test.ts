@@ -88,6 +88,17 @@ describe('leaderboard', () => {
     expect(names(lb.board({ ...TODAY_WORLD, mapId: 'turkey' }, DAY1))).toEqual(['Turkiye']);
   });
 
+  it('"all" combines every map and/or mode, still only 5-round games', () => {
+    const lb = createLeaderboard(storage);
+    lb.add(game('Dunya', 1), DAY1);
+    lb.add(game('Nmpz', 2, { mode: 'nmpz' }), DAY1);
+    lb.add(game('Turkiye', 3, { mapId: 'turkey' }), DAY1);
+    lb.add(game('Kisa', 4, { mapId: 'europe', rounds: 3 }), DAY1);
+    expect(names(lb.board({ ...TODAY_WORLD, mapId: 'all', mode: 'all' }, DAY1))).toEqual(['Turkiye', 'Nmpz', 'Dunya']);
+    expect(names(lb.board({ ...TODAY_WORLD, mapId: 'all' }, DAY1))).toEqual(['Turkiye', 'Dunya']);
+    expect(names(lb.board({ ...TODAY_WORLD, mode: 'all' }, DAY1))).toEqual(['Nmpz', 'Dunya']);
+  });
+
   it('today vs all time', () => {
     const lb = createLeaderboard(storage);
     lb.add(game('Dun', 20000), DAY1);

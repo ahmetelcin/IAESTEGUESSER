@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { cleanName, validateSubmission } from './scoreRules';
+import { cleanName, parseBoardQuery, validateSubmission } from './scoreRules';
 
 const now = new Date('2026-10-19T12:00:00Z');
 const valid = {
@@ -58,6 +58,31 @@ describe('validateSubmission', () => {
   it('rejects non-objects', () => {
     expect(validateSubmission(null, now).ok).toBe(false);
     expect(validateSubmission('x', now).ok).toBe(false);
+  });
+});
+
+describe('parseBoardQuery', () => {
+  const q = (s: string) => parseBoardQuery(new URLSearchParams(s));
+
+  it('builds a filter for one map and mode, today', () => {
+    expect(q('mapId=world&mode=nmpz&period=today&day=2026-10-19&limit=5')).toEqual({
+      ok: true,
+      filter: { rounds: 5, mapId: 'world', mode: 'nmpz', day: '2026-10-19' },
+      limit: 5,
+    });
+  });
+
+  it('drops the map and/or mode condition for "all"', () => {
+    expect(q('mapId=all&mode=all&period=all')).toEqual({ ok: true, filter: { rounds: 5 }, limit: 10 });
+    expect(q('mapId=all&mode=moving&period=all')).toMatchObject({ filter: { rounds: 5, mode: 'moving' } });
+  });
+
+  it('caps the limit and rejects bad input', () => {
+    expect(q('mapId=all&mode=all&period=all&limit=500')).toMatchObject({ limit: 20 });
+    expect(q('mapId=mars&mode=all&period=all').ok).toBe(false);
+    expect(q('mapId=all&mode=fast&period=all').ok).toBe(false);
+    expect(q('mapId=all&mode=all&period=week').ok).toBe(false);
+    expect(q('mapId=all&mode=all&period=today').ok).toBe(false); // today needs a day
   });
 });
 
