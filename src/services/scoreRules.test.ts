@@ -1,0 +1,68 @@
+import { describe, expect, it } from 'vitest';
+import { cleanName, validateSubmission } from './scoreRules';
+
+const now = new Date('2026-10-19T12:00:00Z');
+const valid = {
+  id: 'abc12345-0000',
+  name: '  Ayşe   Y. ',
+  score: 18_250,
+  mapId: 'turkey',
+  mode: 'nmpz',
+  rounds: 5,
+  day: '2026-10-19',
+  ts: now.getTime(),
+};
+const check = (changes: Record<string, unknown>) => validateSubmission({ ...valid, ...changes }, now);
+
+describe('validateSubmission', () => {
+  it('accepts a normal game and tidies the name', () => {
+    const r = validateSubmission(valid, now);
+    expect(r.ok && r.value.name).toBe('Ayşe Y.');
+  });
+
+  it('keeps scores within 0–25 000 and the game length', () => {
+    expect(check({ score: 25_000 }).ok).toBe(true);
+    expect(check({ score: 25_001 }).ok).toBe(false);
+    expect(check({ score: -1 }).ok).toBe(false);
+    expect(check({ score: 12.5 }).ok).toBe(false);
+    expect(check({ rounds: 2, score: 10_001 }).ok).toBe(false);
+    expect(check({ rounds: 10, score: 25_000 }).ok).toBe(true);
+  });
+
+  it('rejects empty or too long names', () => {
+    expect(check({ name: '   ' }).ok).toBe(false);
+    expect(check({ name: 'x'.repeat(17) }).ok).toBe(false);
+    expect(check({ name: 42 }).ok).toBe(false);
+  });
+
+  it('rejects unknown maps, modes and odd round counts', () => {
+    expect(check({ mapId: 'mars' }).ok).toBe(false);
+    expect(check({ mode: 'fast' }).ok).toBe(false);
+    expect(check({ rounds: 0 }).ok).toBe(false);
+    expect(check({ rounds: 11 }).ok).toBe(false);
+  });
+
+  it('needs a sane id', () => {
+    expect(check({ id: 'short' }).ok).toBe(false);
+    expect(check({ id: 'has spaces in it' }).ok).toBe(false);
+  });
+
+  it('accepts days a little ahead (time zones) or late (offline queue), nothing further', () => {
+    expect(check({ day: '2026-10-20' }).ok).toBe(true);
+    expect(check({ day: '2026-10-12' }).ok).toBe(true);
+    expect(check({ day: '2026-10-11' }).ok).toBe(false);
+    expect(check({ day: '2026-10-21' }).ok).toBe(false);
+    expect(check({ day: '19.10.2026' }).ok).toBe(false);
+  });
+
+  it('rejects non-objects', () => {
+    expect(validateSubmission(null, now).ok).toBe(false);
+    expect(validateSubmission('x', now).ok).toBe(false);
+  });
+});
+
+describe('cleanName', () => {
+  it('strips control characters and collapses spaces', () => {
+    expect(cleanName('a\u0000b \t  c\n')).toBe('ab c');
+  });
+});

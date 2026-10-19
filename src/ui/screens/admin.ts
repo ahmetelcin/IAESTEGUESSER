@@ -1,3 +1,4 @@
+import { SCORES_API } from '../../config';
 import { SETTINGS_LIMITS, type Settings, type SettingsStore } from '../../services/settings';
 import { dayKey, leaderboardCsv, type Leaderboard } from '../../services/leaderboard';
 import type { PinGate } from '../../services/pin';
@@ -67,7 +68,17 @@ export function createAdminPanel(
   confirmYes.type = 'button';
   const confirmNo = el('button', 'btn admin__btn', 'VAZGEÇ');
   confirmNo.type = 'button';
-  confirmRow.append(el('span', '', 'Tüm skorlar kalıcı olarak silinsin mi?'), confirmYes, confirmNo);
+  confirmRow.append(
+    el(
+      'span',
+      '',
+      SCORES_API
+        ? 'Bu bilgisayardaki tüm skorlar kalıcı olarak silinsin mi? (Ortak tablo etkilenmez.)'
+        : 'Tüm skorlar kalıcı olarak silinsin mi?',
+    ),
+    confirmYes,
+    confirmNo,
+  );
   const scoreRow = el('div', 'admin__row');
   scoreRow.append(csvBtn, clearBtn);
   scores.append(el('h3', 'admin__subtitle', 'Skorlar'), count, scoreRow, confirmRow);

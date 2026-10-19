@@ -5,11 +5,12 @@ export interface Controls {
   setBearing(degrees: number): void;
   /** Hides buttons the current mode doesn't allow. */
   setRules(rules: ModeRules): void;
+  setSound(enabled: boolean): void;
 }
 
 export function createControls(
   parent: HTMLElement,
-  actions: { onReset: () => void; onZoomIn: () => void; onZoomOut: () => void },
+  actions: { onReset: () => void; onZoomIn: () => void; onZoomOut: () => void; onSound: () => void },
 ): Controls {
   const root = el('div', 'controls');
 
@@ -32,7 +33,8 @@ export function createControls(
   const resetBtn = button('controls__reset', '⟲', 'Başlangıca dön (R)', actions.onReset);
   const zoomIn = button('controls__zoom', '+', 'Yakınlaştır (+)', actions.onZoomIn);
   const zoomOut = button('controls__zoom', '−', 'Uzaklaştır (−)', actions.onZoomOut);
-  stack.append(resetBtn, zoomIn, zoomOut);
+  const soundBtn = button('controls__sound', '🔊', 'Ses', actions.onSound);
+  stack.append(resetBtn, zoomIn, zoomOut, soundBtn);
 
   root.append(compass, stack);
   parent.append(root);
@@ -42,6 +44,10 @@ export function createControls(
       // Reset is useful after walking or turning; NMPZ allows neither.
       resetBtn.hidden = !move && !pan;
       zoomIn.hidden = zoomOut.hidden = !zoom;
+    },
+    setSound(enabled) {
+      soundBtn.textContent = enabled ? '🔊' : '🔇';
+      soundBtn.title = enabled ? 'Sesi kapat' : 'Sesi aç';
     },
     setBearing(degrees) {
       // Rotate the dial opposite to the view so "K" (north) keeps pointing north.

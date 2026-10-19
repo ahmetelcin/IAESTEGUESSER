@@ -22,9 +22,14 @@ export interface MiniMap {
   toggle(): void;
 }
 
+/**
+ * Guess map. Mouse: bottom-right corner, grows on hover. Touch / narrow screens
+ * (styles/mobile.css): a HARİTA button that opens it as a bottom sheet.
+ */
 export function createMiniMap(
   parent: HTMLElement,
   onGuess: () => void,
+  onPin: () => void = () => {},
 ): MiniMap {
   const root = el('div', 'minimap size-m');
   const toolbar = el('div', 'minimap__toolbar');
@@ -43,8 +48,14 @@ export function createMiniMap(
   const pinBtn = el('button', 'minimap__tool minimap__pin-toggle', '📌');
   pinBtn.type = 'button';
   pinBtn.title = 'Sabitle';
-  toolbar.append(...sizeBtns.map((s) => s.b), pinBtn);
-  root.append(toolbar, mapEl, guessBtn);
+  // Touch layout only (hidden by CSS otherwise).
+  const closeBtn = el('button', 'minimap__tool minimap__close', '✕');
+  closeBtn.type = 'button';
+  closeBtn.title = 'Haritayı kapat';
+  const openBtn = el('button', 'btn btn--primary minimap__open', '🗺 HARİTA');
+  openBtn.type = 'button';
+  toolbar.append(...sizeBtns.map((s) => s.b), pinBtn, closeBtn);
+  root.append(toolbar, mapEl, guessBtn, openBtn);
   parent.append(root);
 
   const map = L.map(mapEl, {
@@ -82,8 +93,18 @@ export function createMiniMap(
     if (pinned) return;
     collapseTimer = window.setTimeout(() => root.classList.remove('is-expanded'), COLLAPSE_DELAY_MS);
   };
-  root.addEventListener('mouseenter', expand);
-  root.addEventListener('mouseleave', collapse);
+  // Hover only for a real mouse: a tap must not open (and then never close) the map.
+  root.addEventListener('pointerenter', (e) => {
+    if (e.pointerType === 'mouse') expand();
+  });
+  root.addEventListener('pointerleave', (e) => {
+    if (e.pointerType === 'mouse') collapse();
+  });
+  openBtn.addEventListener('click', expand);
+  closeBtn.addEventListener('click', () => {
+    window.clearTimeout(collapseTimer);
+    root.classList.remove('is-expanded');
+  });
 
   pinBtn.addEventListener('click', () => {
     pinned = !pinned;
@@ -99,6 +120,8 @@ export function createMiniMap(
     if (marker) marker.setLatLng(e.latlng);
     else marker = L.marker(e.latlng, { icon: guessIcon, keyboard: false }).addTo(map);
     guessBtn.disabled = false;
+    root.classList.add('has-guess');
+    onPin();
   });
 
   guessBtn.addEventListener('click', () => {
@@ -122,6 +145,7 @@ export function createMiniMap(
       marker = null;
       guess = null;
       guessBtn.disabled = true;
+      root.classList.remove('has-guess');
       map.setView(home.center, home.zoom, { animate: false });
       if (!pinned) root.classList.remove('is-expanded');
     },

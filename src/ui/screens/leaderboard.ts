@@ -2,6 +2,7 @@ import { MAP_INFO } from '../../data/maps';
 import { MODE_LABELS, type Mode } from '../../game/modes';
 import type { MapId } from '../../game/scoring';
 import { RANKED_ROUNDS, type BoardFilter, type Leaderboard, type Period } from '../../services/leaderboard';
+import type { RemoteBoard } from '../../services/remoteBoard';
 import { el } from '../dom';
 import { renderLeaderboard } from '../leaderboardList';
 
@@ -42,6 +43,7 @@ function tabs<T extends string>(label: string, options: [T, string][], onPick: (
 export function createLeaderboardScreen(
   root: HTMLElement,
   leaderboard: Leaderboard,
+  remote: RemoteBoard | null,
   onBack: () => void,
 ): LeaderboardScreen {
   const screen = el('section', 'screen screen--board');
@@ -75,18 +77,38 @@ export function createLeaderboardScreen(
 
   const list = el('ol', 'board board--large');
   const note = el('p', 'board-screen__note', `Sıralamaya sadece ${RANKED_ROUNDS} turluk oyunlar girer.`);
+  const source = el('p', 'board-screen__note board-screen__source');
 
-  panel.append(header, filters, list, note);
+  panel.append(header, filters, list, note, source);
   screen.append(panel);
   root.append(screen);
 
+  let request = 0;
   function render() {
     period.select(filter.period);
     map.select(filter.mapId);
     mode.select(filter.mode);
-    renderLeaderboard(list, leaderboard.board(filter, new Date(), LIST_LENGTH), {
+    const options = {
       showDate: filter.period === 'all',
       empty: filter.period === 'today' ? 'Bugün bu tabloda henüz skor yok.' : 'Bu tabloda henüz skor yok.',
+    };
+    // This device's scores right away; the shared table replaces them when it answers.
+    renderLeaderboard(list, leaderboard.board(filter, new Date(), LIST_LENGTH), options);
+    if (!remote) {
+      source.textContent = '';
+      return;
+    }
+    source.textContent = 'Ortak tablo yükleniyor…';
+    const mine = ++request;
+    const asked = filter;
+    void remote.board(asked, LIST_LENGTH).then((entries) => {
+      if (mine !== request) return; // a newer tab was picked meanwhile
+      if (entries) {
+        renderLeaderboard(list, entries, options);
+        source.textContent = 'Ortak tablo: stant ve telefonlar.';
+      } else {
+        source.textContent = 'Ortak tabloya ulaşılamadı — bu cihazdaki skorlar gösteriliyor.';
+      }
     });
   }
 

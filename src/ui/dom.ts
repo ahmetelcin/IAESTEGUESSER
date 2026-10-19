@@ -25,4 +25,12 @@ export function animateNumber(
   requestAnimationFrame(step);
 }
 
+/**
+ * Focusing a text field on a phone pops up the keyboard over the game; only do it
+ * with a mouse (the stand).
+ */
+export function canAutoFocus(): boolean {
+  return typeof matchMedia === 'function' && matchMedia('(hover: hover) and (pointer: fine)').matches;
+}
+
 export const scoreFormat = new Intl.NumberFormat('tr-TR', { maximumFractionDigits: 0 });

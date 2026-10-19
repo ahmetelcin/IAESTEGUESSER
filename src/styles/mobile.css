@@ -1,0 +1,211 @@
+/* Touch-only buttons; the touch layout below shows them. */
+.minimap__open,
+.minimap__close {
+  display: none;
+}
+
+/* ── Phone / touch layout ────────────────────────────────────────────────
+   Touch screens and narrow windows. The mini map becomes a HARİTA button that
+   opens a bottom sheet; screens stack vertically and scroll. */
+@media (hover: none) and (pointer: coarse), (max-width: 700px) {
+  html,
+  body,
+  #app {
+    height: 100dvh;
+  }
+
+  /* HUD */
+  .status-bar {
+    top: max(8px, env(safe-area-inset-top));
+    right: 8px;
+  }
+  .status-bar__item {
+    padding: 4px 10px;
+    min-width: 0;
+  }
+  .status-bar__label {
+    font-size: 9px;
+  }
+  .status-bar__value {
+    font-size: 16px;
+  }
+  .controls {
+    top: max(8px, env(safe-area-inset-top));
+    left: 8px;
+    gap: 6px;
+  }
+  .compass {
+    width: 48px;
+    height: 48px;
+  }
+  .compass__dial {
+    width: 40px;
+    height: 40px;
+    transform-origin: center;
+  }
+  .controls__btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Mini map → bottom sheet */
+  .minimap,
+  .minimap.is-expanded {
+    --h: 55dvh;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    opacity: 1;
+    gap: 0;
+    transition: none;
+  }
+  .minimap:not(.is-expanded) {
+    left: auto;
+    right: 12px;
+    bottom: calc(28px + env(safe-area-inset-bottom));
+  }
+  .minimap:not(.is-expanded) > :not(.minimap__open) {
+    display: none;
+  }
+  .minimap__open {
+    display: block;
+    font-size: 16px;
+    padding: 14px 20px;
+    box-shadow: var(--shadow);
+  }
+  .minimap.has-guess .minimap__open::after {
+    content: ' · 📍';
+  }
+  .minimap.is-expanded .minimap__open {
+    display: none;
+  }
+  .minimap.is-expanded {
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+    background: var(--hud-bg);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid var(--hud-border);
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.4);
+    animation: sheet-up 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .minimap .minimap__toolbar {
+    align-self: stretch;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+  }
+  /* Size buttons and pinning mean nothing on a phone. */
+  .minimap__toolbar > :not(.minimap__close) {
+    display: none;
+  }
+  .minimap__close {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 32px;
+    font-size: 16px;
+  }
+  .minimap__map {
+    height: var(--h);
+  }
+  .minimap__guess {
+    margin-top: 8px;
+    padding: 14px;
+    font-size: 17px;
+  }
+
+  /* Menu: scrolls, no QR (you are already on the phone). */
+  .screen--menu {
+    padding: max(16px, env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+    justify-content: flex-start;
+    overflow-y: auto;
+    background: linear-gradient(180deg, rgba(6, 33, 79, 0.92), rgba(6, 33, 79, 0.8));
+  }
+  .menu__main {
+    gap: 16px;
+    margin: auto 0;
+  }
+  .menu__title {
+    font-size: 38px;
+  }
+  .menu__tagline {
+    font-size: 15px;
+  }
+  .menu__form {
+    padding: 16px;
+    gap: 14px;
+  }
+  .segmented {
+    gap: 6px;
+  }
+  .segmented__opt {
+    padding: 8px;
+  }
+  .segmented__hint {
+    font-size: 11px;
+  }
+  .menu__input {
+    font-size: 18px; /* ≥16px: iOS doesn't zoom into the field */
+  }
+  .menu__qr {
+    display: none;
+  }
+
+  /* Result: smaller map, scrollable panel */
+  .result__map-wrap {
+    flex-basis: 50%;
+  }
+  .result__panel {
+    justify-content: flex-start;
+    overflow-y: auto;
+    padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+  }
+  .result__score {
+    font-size: 36px;
+  }
+  .result__next {
+    width: 100%;
+    padding: 14px;
+  }
+
+  /* Summary: map on top, panel below */
+  .screen--summary {
+    grid-template-columns: 1fr;
+    grid-template-rows: 36dvh minmax(0, 1fr);
+  }
+  .summary__panel {
+    padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
+    border-left: 0;
+    border-top: 1px solid var(--hud-border);
+  }
+  .summary__total {
+    font-size: 40px;
+  }
+  .summary__table {
+    font-size: 14px;
+  }
+  .summary__table td,
+  .summary__table th {
+    padding: 6px 4px;
+  }
+
+  /* Leaderboard / credits */
+  .screen--board,
+  .screen--credits {
+    padding: 12px;
+  }
+  .board-screen,
+  .credits {
+    max-height: calc(100dvh - 24px);
+    padding: 16px;
+  }
+  .board-screen__title {
+    font-size: 22px;
+  }
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+}

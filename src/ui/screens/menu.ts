@@ -1,8 +1,18 @@
-import { ROUNDS_PER_GAME } from '../../config';
+import { PUBLIC_URL, ROUNDS_PER_GAME } from '../../config';
 import { CITY_MAP_IDS, MAP_INFO, isPlayable } from '../../data/maps';
 import type { Mode } from '../../game/modes';
 import type { MapId } from '../../game/scoring';
-import { el } from '../dom';
+import { NAME_MAX_LENGTH } from '../../services/scoreRules';
+import { canAutoFocus, el } from '../dom';
+import { qrSvg } from '../qr';
+
+/**
+ * Club logo slot: drop src/assets/club-logo.svg (or .png/.webp) in and rebuild.
+ * It is inlined into the stand build like everything else.
+ */
+const LOGO_URL = Object.values(
+  import.meta.glob<string>('../../assets/club-logo.{svg,png,webp}', { eager: true, query: '?url', import: 'default' }),
+)[0];
 
 export interface MenuChoice {
   name: string;
@@ -17,6 +27,7 @@ export interface MenuScreen {
   resume(): void;
   /** Currently picked map and mode (the leaderboard opens on them). */
   readonly picks: { mapId: MapId; mode: Mode };
+  setSound(enabled: boolean): void;
 }
 
 interface Option<T extends string> {
@@ -39,8 +50,6 @@ const MODE_OPTIONS: Option<Mode>[] = [
   { value: 'no-move', label: 'Hareketsiz', hint: 'Yerinde dön' },
   { value: 'nmpz', label: 'NMPZ', hint: 'Hareket, dönme, zoom yok' },
 ];
-
-export const NAME_MAX_LENGTH = 16;
 
 function segmented<T extends string>(title: string, options: Option<T>[], onChange: (v: T) => void) {
   const group = el('fieldset', 'menu__group');
@@ -73,12 +82,23 @@ function segmented<T extends string>(title: string, options: Option<T>[], onChan
 
 export function createMenuScreen(
   root: HTMLElement,
-  actions: { onPlay: (choice: MenuChoice) => void; onLeaderboard: () => void; onCredits: () => void },
+  actions: {
+    onPlay: (choice: MenuChoice) => void;
+    onLeaderboard: () => void;
+    onCredits: () => void;
+    onSound: () => void;
+  },
 ): MenuScreen {
   const screen = el('section', 'screen screen--menu');
   const main = el('div', 'menu__main');
 
   const brand = el('header', 'menu__brand');
+  if (LOGO_URL) {
+    const logo = el('img', 'menu__logo');
+    logo.src = LOGO_URL;
+    logo.alt = 'Kulüp logosu';
+    brand.append(logo);
+  }
   brand.append(
     el('span', 'menu__kicker', 'IAESTE'),
     el('h1', 'menu__title', 'Stajyer Nerede?'),
@@ -116,10 +136,29 @@ export function createMenuScreen(
     b.addEventListener('click', onClick);
     return b;
   };
-  links.append(link('🏆 LİDERLİK TABLOSU', actions.onLeaderboard), link('📷 GÖRÜNTÜ KAYNAKLARI', actions.onCredits));
+  const soundBtn = link('🔊', actions.onSound);
+  soundBtn.classList.add('menu__sound');
+  links.append(
+    link('🏆 LİDERLİK TABLOSU', actions.onLeaderboard),
+    link('📷 GÖRÜNTÜ KAYNAKLARI', actions.onCredits),
+    soundBtn,
+  );
   main.append(brand, form, links);
 
   screen.append(main);
+
+  // Stand only (hidden on phones by CSS): scan to play the online version.
+  if (PUBLIC_URL) {
+    const qr = el('aside', 'hud-panel menu__qr');
+    const code = el('div', 'menu__qr-code');
+    code.innerHTML = qrSvg(PUBLIC_URL);
+    qr.append(
+      code,
+      el('strong', 'menu__qr-title', 'Telefonundan oyna'),
+      el('span', 'menu__qr-url', PUBLIC_URL.replace(/^https?:\/\//, '').replace(/\/$/, '')),
+    );
+    screen.append(qr);
+  }
   root.append(screen);
 
   const cleanName = () => nameInput.value.trim().replace(/\s+/g, ' ');
@@ -140,14 +179,19 @@ export function createMenuScreen(
     get picks() {
       return { mapId, mode };
     },
+    setSound(enabled) {
+      soundBtn.textContent = enabled ? '🔊' : '🔇';
+      soundBtn.title = enabled ? 'Sesi kapat' : 'Sesi aç';
+      soundBtn.setAttribute('aria-label', soundBtn.title);
+    },
     resume() {
-      requestAnimationFrame(() => nameInput.focus({ preventScroll: true }));
+      if (canAutoFocus()) requestAnimationFrame(() => nameInput.focus({ preventScroll: true }));
     },
     show() {
       nameInput.value = '';
       playBtn.disabled = true;
       // Wait a frame so the screen is visible before focusing.
-      requestAnimationFrame(() => nameInput.focus({ preventScroll: true }));
+      if (canAutoFocus()) requestAnimationFrame(() => nameInput.focus({ preventScroll: true }));
     },
   };
 }

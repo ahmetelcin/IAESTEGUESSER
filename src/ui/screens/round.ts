@@ -23,12 +23,14 @@ export interface RoundScreen {
   /** Rules for the current game's mode; applied on every `load`. */
   setRules(rules: ModeRules): void;
   readonly rules: ModeRules;
+  /** Sound button icon. */
+  setSound(enabled: boolean): void;
 }
 
 export function createRoundScreen(
   root: HTMLElement,
   token: string,
-  onGuess: () => void,
+  actions: { onGuess: () => void; onPin: () => void; onSound: () => void },
 ): RoundScreen {
   const screen = el('section', 'screen screen--round');
   const viewerEl = el('div', 'round__viewer');
@@ -53,11 +55,12 @@ export function createRoundScreen(
     onReset: resetView,
     onZoomIn: () => zoom(1),
     onZoomOut: () => zoom(-1),
+    onSound: actions.onSound,
   });
   panorama.onBearing((deg) => controls.setBearing(deg));
 
   const statusBar = createStatusBar(hud);
-  const miniMap = createMiniMap(hud, onGuess);
+  const miniMap = createMiniMap(hud, actions.onGuess, actions.onPin);
 
   return {
     panorama,
@@ -86,5 +89,6 @@ export function createRoundScreen(
     get rules() {
       return rules;
     },
+    setSound: controls.setSound,
   };
 }

@@ -1,0 +1,63 @@
+/* Screen transitions. Overlays go from display:none to visible, which restarts these. */
+#app[data-state='menu'] .screen--menu,
+#app[data-state='loading'] .screen--loading,
+#app[data-state='leaderboard'] .screen--board,
+#app[data-state='credits'] .screen--credits {
+  animation: fade-in 0.25s ease-out;
+}
+#app[data-state='result'] .screen--result {
+  animation: fade-in 0.2s ease-out;
+}
+#app[data-state='result'] .result__panel {
+  animation: rise-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+#app[data-state='summary'] .screen--summary {
+  animation: fade-in 0.3s ease-out;
+}
+#app[data-state='summary'] .summary__panel > * {
+  animation: rise-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+#app[data-state='summary'] .summary__panel > :nth-child(2) {
+  animation-delay: 0.05s;
+}
+#app[data-state='summary'] .summary__panel > :nth-child(n + 3) {
+  animation-delay: 0.1s;
+}
+/* HUD slides in when a round starts. */
+#app[data-state='round'] .status-bar {
+  animation: drop-in 0.3s ease-out;
+}
+#app[data-state='round'] .controls {
+  animation: fade-in 0.3s ease-out;
+}
+.menu__logo {
+  animation: fade-in 0.6s ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+  }
+}

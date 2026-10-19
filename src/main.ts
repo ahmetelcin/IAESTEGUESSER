@@ -9,8 +9,17 @@ import './styles/menu.css';
 import './styles/summary.css';
 import './styles/admin.css';
 import './styles/board.css';
+import './styles/motion.css';
+import './styles/mobile.css';
 
-import { ADMIN_PIN, ATTRACT_TIMEOUT_MS, MAPILLARY_TOKEN, MAX_LOAD_ATTEMPTS } from './config';
+import {
+  ADMIN_PIN,
+  ATTRACT_ENABLED,
+  ATTRACT_TIMEOUT_MS,
+  MAPILLARY_TOKEN,
+  MAX_LOAD_ATTEMPTS,
+  SCORES_API,
+} from './config';
 import { MAPS, MAP_INFO, type Location } from './data/maps';
 import type { LatLng } from './game/geo';
 import { createIdleWatcher } from './game/idle';
@@ -18,9 +27,11 @@ import { MODE_LABELS, MODE_RULES, type Mode } from './game/modes';
 import { createSession, type Session } from './game/session';
 import { createStateMachine } from './game/state';
 import { createTimer } from './game/timer';
-import { createLeaderboard } from './services/leaderboard';
+import { createLeaderboard, dayKey } from './services/leaderboard';
 import { createPinGate } from './services/pin';
+import { createRemoteBoard, newEntryId } from './services/remoteBoard';
 import { createSettings } from './services/settings';
+import { createSound } from './services/sound';
 import { createAdminPanel } from './ui/screens/admin';
 import { createCreditsScreen } from './ui/screens/credits';
 import { createLeaderboardScreen } from './ui/screens/leaderboard';
@@ -51,20 +62,32 @@ if (!MAPILLARY_TOKEN) {
 function start() {
   const leaderboard = createLeaderboard();
   const settings = createSettings();
+  const sound = createSound();
+  // Shared table (stand + phones); without an API address scores stay on this device.
+  const remote = SCORES_API ? createRemoteBoard({ apiBase: SCORES_API }) : null;
   let session: Session | null = null;
   let playerName = '';
   let mode: Mode = 'moving';
   let menuLocation: Location | null = null;
 
-  const round = createRoundScreen(app, MAPILLARY_TOKEN, guess);
+  const round = createRoundScreen(app, MAPILLARY_TOKEN, {
+    onGuess: guess,
+    onPin: () => sound.play('pin'),
+    onSound: () => sound.toggle(),
+  });
   const result = createResultScreen(app, next);
   const summary = createSummaryScreen(app, newPlayer);
   const menu = createMenuScreen(app, {
     onPlay: play,
     onLeaderboard: () => openSubScreen('leaderboard'),
     onCredits: () => openSubScreen('credits'),
+    onSound: () => sound.toggle(),
   });
-  const board = createLeaderboardScreen(app, leaderboard, backToMenu);
+  sound.onChange((on) => {
+    round.setSound(on);
+    menu.setSound(on);
+  });
+  const board = createLeaderboardScreen(app, leaderboard, remote, backToMenu);
   const credits = createCreditsScreen(app, backToMenu);
   const admin = createAdminPanel(app, {
     settings,
@@ -87,9 +110,15 @@ function start() {
   }
 
   const timer = createTimer({
-    onTick: (s) => round.statusBar.setTime(s),
+    onTick: (s) => {
+      round.statusBar.setTime(s);
+      if (s > 0 && s <= 10) sound.play('tick');
+    },
     // Time's up: submit the pin if there is one, otherwise the round scores 0.
-    onExpire: () => finishRound(round.miniMap.guess),
+    onExpire: () => {
+      if (!round.miniMap.guess) sound.play('timeout');
+      finishRound(round.miniMap.guess);
+    },
   });
 
   function enterMenu() {
@@ -151,6 +180,7 @@ function start() {
     if (state.current !== 'round' || !session) return;
     timer.stop();
     const r = session.submit(g);
+    if (g) sound.playScore(r.score);
     round.statusBar.update({
       round: session.roundNumber,
       totalRounds: session.totalRounds,
@@ -172,16 +202,18 @@ function start() {
     void loadRound();
   }
 
+  let summaryId = '';
   function showSummary(s: Session) {
-    const rank = leaderboard.add({
-      name: playerName,
-      score: s.totalScore,
-      mapId: s.mapId,
-      mode,
-      rounds: s.totalRounds,
-    });
-    const today = leaderboard.board({ mode, mapId: s.mapId, period: 'today' });
+    const id = newEntryId();
+    const now = new Date();
+    const game = { id, name: playerName, score: s.totalScore, mapId: s.mapId, mode, rounds: s.totalRounds };
+    // localStorage first: the stand keeps every score even without internet.
+    const rank = leaderboard.add(game, now);
+    const filter = { mode, mapId: s.mapId, period: 'today' } as const;
+    const today = leaderboard.board(filter, now);
+    summaryId = id;
     state.transition('summary');
+    sound.play('fanfare');
     summary.show({
       name: playerName,
       results: s.results,
@@ -191,29 +223,57 @@ function start() {
       board: today,
       me: rank !== null ? today[rank - 1] : undefined,
     });
+
+    // Never waited for: the summary shows the local result and is updated if the server answers.
+    if (!remote) return;
+    void (async () => {
+      const remoteRank = await remote.submit({ ...game, day: dayKey(now), ts: now.getTime() });
+      const shared = await remote.board(filter, 10);
+      if (summaryId !== id || state.current !== 'summary') return;
+      if (remoteRank === undefined && !shared) return;
+      const list = shared ?? today;
+      summary.updateBoard({
+        rank: remoteRank === undefined ? rank : remoteRank,
+        board: list,
+        me: list.find((e) => e.id === id) ?? (rank !== null ? today[rank - 1] : undefined),
+      });
+    })();
+  }
+
+  // Deliver scores queued while offline.
+  if (remote) {
+    void remote.flush();
+    window.addEventListener('online', () => void remote.flush());
+    window.setInterval(() => {
+      if (remote.pending) void remote.flush();
+    }, 60_000);
   }
 
   function newPlayer() {
     if (state.current !== 'summary') return;
     session = null;
+    summaryId = '';
     state.transition('menu');
     enterMenu();
   }
 
-  // ── Attract mode: an abandoned game goes back to the rotating menu ──
-  const idle = createIdleWatcher(ATTRACT_TIMEOUT_MS, () => {
-    if (admin.isOpen) return idle.poke();
-    timer.stop();
-    session = null; // an unfinished game is dropped, not scored
-    if (state.current !== 'menu') state.transition('menu');
-    // Also refreshes an idle menu: clears a half-typed name, shows a new place.
-    enterMenu();
+  // ── Attract mode (stand only): an abandoned game goes back to the rotating menu ──
+  if (ATTRACT_ENABLED) {
+    const idle = createIdleWatcher(ATTRACT_TIMEOUT_MS, () => {
+      if (admin.isOpen) return idle.poke();
+      timer.stop();
+      session = null; // an unfinished game is dropped, not scored
+      summaryId = '';
+      if (state.current !== 'menu') state.transition('menu');
+      // Also refreshes an idle menu: clears a half-typed name, shows a new place.
+      enterMenu();
+      idle.poke();
+    });
+    for (const type of ['pointerdown', 'pointermove', 'keydown', 'wheel', 'touchstart'] as const) {
+      window.addEventListener(type, () => idle.poke(), { passive: true, capture: true });
+    }
     idle.poke();
-  });
-  for (const type of ['pointerdown', 'pointermove', 'keydown', 'wheel', 'touchstart'] as const) {
-    window.addEventListener(type, () => idle.poke(), { passive: true, capture: true });
   }
-  idle.poke();
 
   // ── Keyboard ──
   window.addEventListener('keydown', (e) => {
