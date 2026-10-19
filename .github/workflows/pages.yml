@@ -1,0 +1,49 @@
+# Online (phone) version on GitHub Pages. The shared leaderboard API stays on Netlify
+# (netlify/functions), so this site has no hosting badge. See DEPLOY.md.
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run test
+      - run: npm run build
+        env:
+          VITE_MAPILLARY_TOKEN: ${{ secrets.VITE_MAPILLARY_TOKEN }}
+          VITE_ADMIN_PIN: ${{ secrets.VITE_ADMIN_PIN }}
+          VITE_PUBLIC_URL: https://ahmetelcin.github.io/IAESTEGUESSER/
+          VITE_SCORES_API: https://iaesteguesser.netlify.app/api
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

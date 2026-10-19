@@ -1,8 +1,20 @@
 # Yayın: telefon sürümü + ortak liderlik tablosu
 
-Online sürüm Netlify'da çalışır; ortak skor tablosu MongoDB Atlas'ta durur. Stant
-bilgisayarı aynı tabloya internet üzerinden yazar, internet yoksa skorları kendinde
-biriktirip bağlantı gelince gönderir.
+Oyunun online sürümü **GitHub Pages**'te (https://ahmetelcin.github.io/IAESTEGUESSER/),
+ortak skor API'si **Netlify**'da (https://iaesteguesser.netlify.app/api), skorlar
+**MongoDB Atlas**'ta durur. Oyun Netlify'da değil Pages'te: Netlify ücretsiz planda her
+sayfaya gizlenemeyen bir rozet ekliyor; API sadece JSON döndürdüğü için etkilenmez.
+Stant bilgisayarı aynı tabloya yazar, internet yoksa skorları kendinde biriktirip
+bağlantı gelince gönderir.
+
+## 0. GitHub Pages (bir kez)
+
+1. Repo → **Settings → Pages → Source: GitHub Actions**.
+2. Repo → **Settings → Secrets and variables → Actions → New repository secret**:
+   `VITE_MAPILLARY_TOKEN` (ve isteğe bağlı `VITE_ADMIN_PIN`).
+3. **Actions → Pages → Run workflow** (sonra her push'ta kendiliğinden yayınlanır).
+
+API ve site adresi `.github/workflows/pages.yml` içinde yazılı.
 
 ## 1. MongoDB Atlas (ücretsiz)
 
